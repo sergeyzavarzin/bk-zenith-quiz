@@ -1,0 +1,51 @@
+.match {
+  padding-bottom: 10px;
+
+  &__top, &__bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__rivals {
+    margin: 0 10px;
+    font-weight: bold;
+    min-width: 50%;
+    text-align: center;
+  }
+
+  &__logo {
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__logo-img {
+    width: 100%;
+  }
+
+  &__info {
+    font-size: 12px;
+    color: grey;
+  }
+
+  &__score {
+    padding: 4px;
+    border-radius: 4px;
+    background: green;
+    display: inline-block;
+    font-weight: bold;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    margin: 0 9px;
+    box-sizing: border-box;
+    line-height: 18px;
+
+    &--fail {
+      background: red;
+
+    }
+  }
+}
