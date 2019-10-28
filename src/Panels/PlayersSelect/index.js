@@ -8,49 +8,67 @@ import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderBut
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
+import Icon16CheckCircle from '@vkontakte/icons/dist/16/check_circle';
 import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
-import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
 import {Div} from '@vkontakte/vkui';
 
 import players from '../../constants/players';
+import Jersey from '../../Components/Jersey';
+import {withAppContext} from '../../context/AppContext';
 
-class PlayesrsSelect extends React.Component {
-
-  state = {
-    selectedPlayers: [],
-  };
-
+class PlayersSelect extends React.Component {
   render() {
-    const { id, go } = this.props;
+    const {
+      id, go, nextScreen,
+      label, title,
+      handleItemSelect, isSelected
+    } = this.props;
     return (
       <Panel id={id}>
         <PanelHeader
           left={
+            id === 'select-first-five' &&
             <HeaderButton
               data-to='voting'
               onClick={go}
             >
               <Icon24Back/>
-            </HeaderButton>}
-        >
-          {
-            id === 'select-first-five' ?
-              'Выберите 5 игроков' : 'Выберите игрока'
+            </HeaderButton>
           }
+        >
+          {label}
         </PanelHeader>
-        <Group title="Стартовая пятерка?">
+        <Group title={title} style={{marginBottom: 75}}>
           <List>
             {
               players.map(player =>
                 <Cell
                   key={player.id}
-                  before={<Avatar size={42} src={player.photo}/>}
-                  selectable
-                  description={player.role}
-                  asideContent={<Counter type="primary">{player.number}</Counter>}
-                  onClick={() => console.log(231)}
+                  before={
+                    <Div style={{paddingLeft: 0, width: 26, height: 26}}>
+                      {
+                        isSelected(player.id) ?
+                          <Icon16CheckCircle width={26} height={26}/> :
+                          <div style={{
+                            borderRadius: '50%',
+                            border: '2px solid rgb(170, 174, 179)',
+                            height: '100%',
+                            boxSizing: 'border-box'
+                          }}/>
+                      }
+                    </Div>
+                  }
+                  asideContent={<Jersey number={player.number}/>}
+                  selected={player.id > 3}
+                  onClick={() => handleItemSelect(player.id)}
                 >
-                  {player.name}
+                  <Div style={{padding: 0, display: 'flex', alignItems: 'center'}}>
+                    <Avatar size={42} src={player.photo} style={{marginRight: 10}}/>
+                    <div>
+                      <b>{player.name}</b>
+                      <div style={{fontSize: 14, color: 'grey'}}>{player.role}</div>
+                    </div>
+                  </Div>
                 </Cell>
               )
             }
@@ -60,7 +78,7 @@ class PlayesrsSelect extends React.Component {
           <Div style={{background: 'white'}}>
             <Button
               size="xl"
-              data-to='voting'
+              data-to={nextScreen}
               onClick={go}
             >
               Выбрать
@@ -70,6 +88,6 @@ class PlayesrsSelect extends React.Component {
       </Panel>
     )
   }
-}
+};
 
-export default PlayesrsSelect;
+export default withAppContext(PlayersSelect);

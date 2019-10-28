@@ -5,7 +5,8 @@ import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import List from '@vkontakte/vkui/dist/components/List/List';
 import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
 import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
-import Counter from '@vkontakte/vkui/dist/components/Counter/Counter';
+
+import Jersey from '../../Components/Jersey';
 
 import players from '../../constants/players';
 
@@ -26,7 +27,7 @@ const Players = ({id, go}) => {
                 before={<Avatar size={72} src={player.photo}/>}
                 size="l"
                 description={player.role}
-                asideContent={<Counter type="primary">{player.number}</Counter>}
+                asideContent={<Jersey number={player.number}/>}
                 bottomContent={
                   <div style={{ display: 'flex' }}>
                     <span style={{ margin: '0 15px 0 0' }}>Рост: {player.height}</span>
