@@ -6,10 +6,10 @@ import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import FormLayoutGroup from '@vkontakte/vkui/dist/components/FormLayoutGroup/FormLayoutGroup';
 import Input from '@vkontakte/vkui/dist/components/Input/Input';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import {Div} from '@vkontakte/vkui';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
+import {withAppContext} from '../../../context/AppContext';
 
-const TotalScore = ({id, go}) => {
+const TotalScore = ({id, go, context: {setRivalScore, setClubScore, sendVote, state}}) => {
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -18,10 +18,16 @@ const TotalScore = ({id, go}) => {
       <Group title="Точный счет?">
         <FormLayout>
           <FormLayoutGroup top="Зенит">
-            <Input type="number" min={0}/>
+            <Input
+              type="number"
+              onChange={({target: {value}}) => setClubScore(value)}
+            />
           </FormLayoutGroup>
           <FormLayoutGroup top="Соперник">
-            <Input type="number" min={0}/>
+            <Input
+              type="number"
+              onChange={({target: {value}}) => setRivalScore(value)}
+            />
           </FormLayoutGroup>
         </FormLayout>
         <FixedLayout vertical="bottom">
@@ -30,7 +36,10 @@ const TotalScore = ({id, go}) => {
               <Button
                 size="xl"
                 data-to='voting'
-                onClick={go}
+                onClick={(e) => {
+                  sendVote();
+                  go(e);
+                }}
               >
                 Отправить
               </Button>
@@ -42,4 +51,4 @@ const TotalScore = ({id, go}) => {
   )
 };
 
-export default TotalScore;
+export default withAppContext(TotalScore);

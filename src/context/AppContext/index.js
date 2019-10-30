@@ -12,6 +12,9 @@ class AppProvider extends Component {
     twoScore: null,
     threeScore: null,
     tossing: null,
+    winner: null,
+    clubScore: 0,
+    rivalScore: 0,
   };
 
   componentDidMount() {
@@ -41,11 +44,44 @@ class AppProvider extends Component {
     this.setState({firstFive: selectedPlayers});
   };
 
-  setTwoScore = (id) => this.setState({twoScore: id});
+  setTwoScore = (twoScore) => this.setState({twoScore});
 
-  setThreeScore = (id) => this.setState({threeScore: id});
+  setThreeScore = (threeScore) => this.setState({threeScore});
 
-  setTossing = (id) => this.setState({tossing: id});
+  setTossing = (tossing) => this.setState({tossing});
+
+  setWinner = (winner) => this.setState({winner});
+
+  setScore = (name) => (score) => {
+    if (!(/^\d+$/.test(score))) return false;
+    if (score.length) {
+      this.setState({[name]: parseInt(score)})
+    } else {
+      this.setState({[name]: 0});
+    }
+  };
+
+  setRivalScore = (rivalScore) => this.setScore('rivalScore')(rivalScore);
+
+  setClubScore = (clubScore) => this.setScore('clubScore')(clubScore);
+
+  sendVote = () => {
+    const { firstFive, tossing, twoScore, threeScore, clubScore, rivalScore} = this.state;
+    axios
+      .post('http://192.168.0.200:8080/vote/create', {
+        id: 100,
+        playerId: 101,
+        matchId: 102,
+        firstFive,
+        tossing,
+        twoScore,
+        threeScore,
+        winner: clubScore > rivalScore,
+        score: [clubScore, rivalScore]
+      })
+      .then(result => console.log(result))
+      .catch(err => console.log(err));
+  };
 
   render() {
     return (
@@ -58,6 +94,10 @@ class AppProvider extends Component {
           setTwoScore: this.setTwoScore,
           setThreeScore: this.setThreeScore,
           setTossing: this.setTossing,
+          setWinner: this.setWinner,
+          setClubScore: this.setClubScore,
+          setRivalScore: this.setRivalScore,
+          sendVote: this.sendVote,
         }}
       >
         {this.props.children}
