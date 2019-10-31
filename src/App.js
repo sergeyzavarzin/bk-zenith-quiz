@@ -1,7 +1,6 @@
 import React from 'react';
 import Epic from '@vkontakte/vkui/dist/components/Epic/Epic';
 import View from '@vkontakte/vkui/dist/components/View/View';
-import connect from '@vkontakte/vk-connect';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import AppBar from './Components/AppBar';
@@ -28,25 +27,7 @@ class App extends React.Component {
     activePanelPlayers: 'players',
   };
 
-  componentDidMount() {
-    connect.subscribe(({ detail: { type, data }}) => {
-      if (type === 'VKWebAppUpdateConfig') {
-        const schemeAttribute = document.createAttribute('scheme');
-        schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
-        document.body.attributes.setNamedItem(schemeAttribute);
-      }
-    });
-    this.fetchUserData()
-      .then(user => this.setState({user}))
-      .catch(err => console.log(err));
-  }
-
-  fetchUserData = async () => {
-    const user = await connect.sendPromise('VKWebAppGetUserInfo');
-    return user;
-  };
-
-  onStoryChange = (e) => {
+  onStoryChange = e => {
     this.setState({
       activeStory: e.currentTarget.dataset.story
     })
@@ -71,14 +52,14 @@ class App extends React.Component {
         activePanelTable,
         activePanelProfile,
         activePanelPlayers,
-        user,
       },
       props: {
         context: {
           state: {
             firstFive,
             twoScore,
-            threeScore
+            threeScore,
+            user,
           },
           addPlayerToFirstFive,
           setTwoScore,
@@ -101,10 +82,10 @@ class App extends React.Component {
             activeStory={activeStory}
             onStoryChange={onStoryChange}
           />
-        }>
-
+        }
+      >
         <View id='voting-view' activePanel={activePanelVoting}>
-          <Voting id='voting' go={goVoting}/>
+          <Voting id='voting' go={goVoting} changeStory={onStoryChange}/>
           <PlayersSelect
             id='select-first-five'
             go={goVoting}

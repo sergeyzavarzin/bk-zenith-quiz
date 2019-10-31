@@ -8,7 +8,9 @@ import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import {withAppContext} from '../../../context/AppContext';
 
-const Winner = ({id, go, context: { setWinner }}) => {
+const Winner = ({id, go, context}) => {
+  const {setWinner, state} = context;
+  const {rivals, activeMatchVote} = state;
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -29,7 +31,7 @@ const Winner = ({id, go, context: { setWinner }}) => {
             value="2"
             onClick={() => setWinner(2)}
           >
-            Соперник
+            {rivals && rivals.find(rival => rival.id === activeMatchVote.rivalId).name}
           </Radio>
         </FormLayout>
         <FixedLayout vertical="bottom">

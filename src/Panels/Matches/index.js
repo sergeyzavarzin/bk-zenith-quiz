@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import Group from '@vkontakte/vkui/dist/components/Group/Group';
@@ -7,58 +8,66 @@ import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
 
 import MatchItem from '../../Components/Match';
 
-import matches, {STATUSES} from '../../mocks/matches';
+import {withAppContext} from '../../context/AppContext';
 
-const Matches = ({id, go}) => {
+import {DATE_FORMAT} from '../../constants/format';
+
+const Matches = ({id, go, context: {state: {matches, rivals}}}) => {
+  const upcomingMatches = matches.filter(match => !match.score.length);
+  const endedMatches = matches.filter(match => match.score.length);
   return (
     <Panel id={id}>
       <PanelHeader>
         Матчи
       </PanelHeader>
-      <Group title="Предстоящие">
-        <List>
-          {
-            matches
-              .filter(match => match.status === STATUSES.PLAYED)
-              .map(match =>
-                <Cell
-                  key={match.id}
-                  size="l"
-                >
-                  <MatchItem
-                    rival={match.rival}
-                    beginTime={match.beginTime}
-                    place={match.place}
-                  />
-                </Cell>
-              )
-          }
-        </List>
-      </Group>
-      <Group title="Завершенные">
-        <List>
-          {
-            matches
-              .filter(match => match.status !== STATUSES.PLAYED)
-              .map(match =>
-                <Cell
-                  key={match.id}
-                  size="l"
-                >
-                  <MatchItem
-                    rival={match.rival}
-                    beginTime={match.beginTime}
-                    place={match.place}
-                    game={match.game}
-                  />
-                </Cell>
-              )
-          }
-        </List>
-      </Group>
+      {
+        !!upcomingMatches.length &&
+        <Group title="Предстоящие">
+          <List>
+            {
+              upcomingMatches
+                .map(match =>
+                  <Cell
+                    key={match.id}
+                    size="l"
+                  >
+                    <MatchItem
+                      rival={rivals.find(rival => rival.id === match.rivalId)}
+                      beginTime={moment(match.startDateTime).format(DATE_FORMAT)}
+                      place={match.place}
+                    />
+                  </Cell>
+                )
+            }
+          </List>
+        </Group>
+      }
+      {
+        !!endedMatches.length &&
+        <Group title="Завершенные">
+          <List>
+            {
+              endedMatches
+                .map(match =>
+                  <Cell
+                    key={match.id}
+                    size="l"
+                  >
+                    <MatchItem
+                      rival={rivals.find(rival => rival.id === match.rivalId)}
+                      beginTime={moment(match.startDateTime).format(DATE_FORMAT)}
+                      place={match.place}
+                      game={match.score}
+                    />
+                  </Cell>
+                )
+            }
+          </List>
+        </Group>
+      }
     </Panel>
   );
 };
 
-export default Matches;
+export default withAppContext(Matches);
 

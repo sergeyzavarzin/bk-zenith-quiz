@@ -8,7 +8,9 @@ import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import {withAppContext} from '../../../context/AppContext';
 
-const Tossing = ({id, go, context: { setTossing }}) => {
+const Tossing = ({id, go, context}) => {
+  const {setTossing, state} = context;
+  const {rivals, activeMatchVote} = state;
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -18,7 +20,6 @@ const Tossing = ({id, go, context: { setTossing }}) => {
         <FormLayout>
           <Radio
             name="radio"
-            value="1"
             defaultChecked
             onClick={() => setTossing(1)}
           >
@@ -26,10 +27,9 @@ const Tossing = ({id, go, context: { setTossing }}) => {
           </Radio>
           <Radio
             name="radio"
-            value="2"
             onClick={() => setTossing(2)}
           >
-            Соперник
+            {rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId).name}
           </Radio>
         </FormLayout>
         <FixedLayout vertical="bottom">

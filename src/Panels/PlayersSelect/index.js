@@ -88,6 +88,6 @@ class PlayersSelect extends React.Component {
       </Panel>
     )
   }
-};
+}
 
 export default withAppContext(PlayersSelect);

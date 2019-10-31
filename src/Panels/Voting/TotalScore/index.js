@@ -9,7 +9,9 @@ import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import {withAppContext} from '../../../context/AppContext';
 
-const TotalScore = ({id, go, context: {setRivalScore, setClubScore, sendVote, state}}) => {
+const TotalScore = ({id, go, context}) => {
+  const {setRivalScore, setClubScore, sendVote, state} = context;
+  const {activeMatchVote, rivals} = state;
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -23,7 +25,7 @@ const TotalScore = ({id, go, context: {setRivalScore, setClubScore, sendVote, st
               onChange={({target: {value}}) => setClubScore(value)}
             />
           </FormLayoutGroup>
-          <FormLayoutGroup top="Соперник">
+          <FormLayoutGroup top={rivals && rivals.find(rival => rival.id === activeMatchVote.rivalId).name}>
             <Input
               type="number"
               onChange={({target: {value}}) => setRivalScore(value)}

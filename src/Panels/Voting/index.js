@@ -1,55 +1,84 @@
 import React from 'react';
+import moment from 'moment';
+import {Div} from '@vkontakte/vkui';
 import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
 import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import List from '@vkontakte/vkui/dist/components/List/List';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import {Div} from '@vkontakte/vkui';
-import matches from '../../mocks/matches';
 import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
+import Icon56NotificationOutline from '@vkontakte/icons/dist/56/notification_outline';
+
 import MatchItem from '../../Components/Match';
+
+import {DATE_FORMAT} from '../../constants/format'
 
 import {withAppContext} from '../../context/AppContext';
 
 class Voting extends React.Component {
 
-  state = {
-    firstFive: [],
-    tossing: null,
-    twoScore: null,
-    threeScore: null,
-    winner: null,
-    score: [null, null],
-  };
-
   render() {
-    const { id, go } = this.props;
+    const {id, go, changeStory} = this.props;
+    const {activeMatchVote, rivals, userVotes} = this.props.context.state;
+    const isUserSendAnswerForCurrentVote = userVotes.some(vote => vote.matchId === activeMatchVote.id);
     return (
-      <Panel id={id}>
+      <Panel id={id} >
         <PanelHeader>
           Голосование
         </PanelHeader>
-        <Group title="Предстоящий матч">
-          <List>
-            <Cell
-              size="l"
-            >
-              <MatchItem
-                rival={matches[0].rival}
-                beginTime={matches[0].beginTime}
-                place={matches[0].place}
-              />
-            </Cell>
-          </List>
-          <Div>
-            <Button
-              size='xl'
-              data-to='select-first-five'
-              onClick={go}
-            >
-              Начать
-            </Button>
-          </Div>
+        <Group title={activeMatchVote && !isUserSendAnswerForCurrentVote ? "Предстоящий матч" : ""}>
+          {
+            activeMatchVote && !isUserSendAnswerForCurrentVote &&
+            <>
+              <List>
+                <Cell
+                  size="l"
+                >
+                  {
+                    activeMatchVote &&
+                    <MatchItem
+                      rival={rivals.find(rival => rival.id === activeMatchVote.rivalId)}
+                      beginTime={moment(activeMatchVote.startDateTime).format(DATE_FORMAT)}
+                      place={activeMatchVote.place}
+                    />
+                  }
+                </Cell>
+              </List>
+              <Div>
+                <Button
+                  size='xl'
+                  data-to='select-first-five'
+                  onClick={go}
+                >
+                  Начать
+                </Button>
+              </Div>
+            </>
+          }
+          {
+            isUserSendAnswerForCurrentVote &&
+            <>
+              <Div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                color: 'grey',
+              }}>
+                <Icon56NotificationOutline/>
+                <p style={{fontSize: '22px', margin: '30px 0'}}>
+                  Нет активных голосований
+                </p>
+                <Button
+                  size='xl'
+                  data-story='matches-view'
+                  onClick={changeStory}
+                >
+                  Отрыть таблицу матчей
+                </Button>
+              </Div>
+            </>
+          }
         </Group>
       </Panel>
     )

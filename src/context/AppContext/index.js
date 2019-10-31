@@ -1,13 +1,24 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 import axios from 'axios';
+import connectOnline from '@vkontakte/vk-connect';
+import connectMock from '@vkontakte/vk-connect-mock';
+
+import {API_URL} from '../../constants/endpoints';
+
+const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
 export const AppContext = React.createContext(true);
 
 class AppProvider extends Component {
 
   state = {
+    isAppLoaded: false,
+    user: null,
     rivals: [],
     matches: [],
+    userVotes: [],
+    activeMatchVote: null,
     firstFive: [],
     twoScore: null,
     threeScore: null,
@@ -18,22 +29,53 @@ class AppProvider extends Component {
   };
 
   componentDidMount() {
-    // this.fetchMatches();
-    // this.fetchRivals();
+    const { subscribeVKActions, fetchMatches, fetchRivals, fetchUserData, fetchUserVotes } = this;
+    subscribeVKActions();
+    Promise
+      .all([fetchRivals(), fetchMatches(), fetchUserData()])
+      .then(([rivals, matches, user]) => {
+        const sortedMatches = matches.filter(match => !match.score.length)
+          .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
+        const activeMatchVote = sortedMatches[0];
+        this.setState({user, rivals, matches, activeMatchVote});
+        return {user, activeMatchVote}
+      })
+      .then(async ({user, activeMatchVote}) => {
+        const userVotes = await fetchUserVotes(user.id, activeMatchVote.id);
+        this.setState({userVotes: userVotes.data})
+      })
+      .catch(err => console.log(err))
+      .finally(() => this.setState({isAppLoaded: true}));
   }
 
-  fetchRivals = () => {
-    axios
-      .get('http://192.168.0.200:8080/rival')
-      .then(response => this.setState({rivals: response.data}))
-      .catch(err => console.log(err))
+  subscribeVKActions = () => {
+    connect.subscribe(({ detail: { type, data }}) => {
+      if (type === 'VKWebAppUpdateConfig') {
+        const schemeAttribute = document.createAttribute('scheme');
+        schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
+        document.body.attributes.setNamedItem(schemeAttribute);
+      }
+    });
   };
 
-  fetchMatches = () => {
-    axios
-      .get('http://192.168.0.200:8080/match')
-      .then(response => this.setState({matches: response.data}))
-      .catch(err => console.log(err))
+  fetchUserData = async () => {
+    const user = await connect.sendPromise('VKWebAppGetUserInfo');
+    return user;
+  };
+
+  fetchRivals = async () => {
+    const rivals = await axios.get(`${API_URL}/rival`);
+    return rivals.data;
+  };
+
+  fetchMatches = async () => {
+    const matches = await axios.get(`${API_URL}/match`);
+    return matches.data;
+  };
+
+  fetchUserVotes = async (userId) => {
+    const userVotes = axios.get(`${API_URL}/vote?playerId=${userId}`);
+    return userVotes;
   };
 
   addPlayerToFirstFive = (item) => {
@@ -66,20 +108,22 @@ class AppProvider extends Component {
   setClubScore = (clubScore) => this.setScore('clubScore')(clubScore);
 
   sendVote = () => {
-    const { firstFive, tossing, twoScore, threeScore, clubScore, rivalScore} = this.state;
+    const {firstFive, tossing, twoScore, threeScore, clubScore, rivalScore, user, activeMatchVote} = this.state;
     axios
-      .post('http://192.168.0.200:8080/vote/create', {
-        id: 100,
-        playerId: 101,
-        matchId: 102,
+      .post(`${API_URL}/vote/create`, {
+        id: `${user.id}-${activeMatchVote.id}`,
+        playerId: `${user.id}`,
+        matchId: activeMatchVote.id,
         firstFive,
-        tossing,
+        tossing: tossing === 1,
         twoScore,
         threeScore,
         winner: clubScore > rivalScore,
         score: [clubScore, rivalScore]
       })
-      .then(result => console.log(result))
+      .then(({data}) => this.setState(prevState => {
+        return {userVotes: [data, ...prevState.userVotes] }
+      }))
       .catch(err => console.log(err));
   };
 
@@ -110,7 +154,7 @@ export function withAppContext(Component) {
   return function WrapperComponent(props) {
     return (
       <AppContext.Consumer>
-        {state => <Component {...props} context={state} />}
+        {state => <Component {...props} context={state}/>}
       </AppContext.Consumer>
     );
   };
