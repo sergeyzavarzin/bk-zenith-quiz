@@ -6,10 +6,9 @@ import List from '@vkontakte/vkui/dist/components/List/List';
 import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
 import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
-import Icon24Help from '@vkontakte/icons/dist/24/help';
 import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 
-const Index = ({ id, go, fetchedUser }) => (
+const Home = ({ id, go, fetchedUser, userScore }) => (
 	<Panel id={id}>
 		<PanelHeader>Профиль</PanelHeader>
 		{
@@ -18,7 +17,7 @@ const Index = ({ id, go, fetchedUser }) => (
 				<Cell
 					before={fetchedUser.photo_200 ? <Avatar size={72} src={fetchedUser.photo_200}/> : null}
 					size='l'
-					description='300 баллов'
+					description={`${userScore} баллов`}
 				>
 					{`${fetchedUser.first_name} ${fetchedUser.last_name}`}
 				</Cell>
@@ -26,14 +25,20 @@ const Index = ({ id, go, fetchedUser }) => (
 		}
 		<Group>
 			<List>
-				<Cell expandable before={<Icon24Settings />}>Помощь</Cell>
-				<Cell expandable before={<Icon24Help />}>О пиложении</Cell>
+				<Cell
+					expandable
+					before={<Icon24Settings />}
+					data-to='help'
+					onClick={go}
+				>
+					Помощь
+				</Cell>
 			</List>
 		</Group>
 	</Panel>
 );
 
-Index.propTypes = {
+Home.propTypes = {
 	id: PropTypes.string.isRequired,
 	go: PropTypes.func.isRequired,
 	fetchedUser: PropTypes.shape({
@@ -46,4 +51,4 @@ Index.propTypes = {
 	}),
 };
 
-export default Index;
+export default Home;

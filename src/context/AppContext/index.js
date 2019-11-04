@@ -15,10 +15,12 @@ class AppProvider extends Component {
   state = {
     isAppLoaded: false,
     user: null,
+    userScore: 0,
     rivals: [],
     matches: [],
     userVotes: [],
     activeMatchVote: null,
+    activeMatch: null,
     firstFive: [],
     twoScore: null,
     threeScore: null,
@@ -33,11 +35,12 @@ class AppProvider extends Component {
     subscribeVKActions();
     Promise
       .all([fetchRivals(), fetchMatches(), fetchUserData()])
-      .then(([rivals, matches, user]) => {
+      .then(([rivals, matches, userData]) => {
+        const {user, userScore} = userData;
         const sortedMatches = matches.filter(match => !match.score.length)
           .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
         const activeMatchVote = sortedMatches[0];
-        this.setState({user, rivals, matches, activeMatchVote});
+        this.setState({user, userScore, rivals, matches, activeMatchVote});
         return {user, activeMatchVote}
       })
       .then(async ({user, activeMatchVote}) => {
@@ -60,7 +63,14 @@ class AppProvider extends Component {
 
   fetchUserData = async () => {
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
-    return user;
+    const {id} = user;
+    const userData = await axios.get(`${API_URL}/user/${id}`);
+    if (!userData.data) {
+      const createdUser = await axios.post(`${API_URL}/user/create`, {id});
+      return {userScore: 0, user};
+    } else {
+      return {userScore: userData.data.score, user};
+    }
   };
 
   fetchRivals = async () => {
@@ -142,6 +152,7 @@ class AppProvider extends Component {
           setClubScore: this.setClubScore,
           setRivalScore: this.setRivalScore,
           sendVote: this.sendVote,
+          setActiveMatch: (activeMatch) => this.setState({activeMatch}),
         }}
       >
         {this.props.children}

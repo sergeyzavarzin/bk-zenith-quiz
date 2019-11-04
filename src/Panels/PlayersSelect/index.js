@@ -21,7 +21,7 @@ class PlayersSelect extends React.Component {
     const {
       id, go, nextScreen,
       label, title,
-      handleItemSelect, isSelected
+      handleItemSelect, isSelected, isButtonDisabled
     } = this.props;
     return (
       <Panel id={id}>
@@ -77,6 +77,11 @@ class PlayersSelect extends React.Component {
         <FixedLayout vertical="bottom">
           <Div style={{background: 'white'}}>
             <Button
+              style={isButtonDisabled ? {} : {
+                opacity: 0.5,
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}
               size="xl"
               data-to={nextScreen}
               onClick={go}

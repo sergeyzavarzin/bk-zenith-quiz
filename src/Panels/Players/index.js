@@ -35,7 +35,7 @@ const Players = ({id, go}) => {
                   </div>
                 }
               >
-                {player.name}
+                <b>{player.name}</b>
               </Cell>
             )
           }

@@ -1,11 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
+import moment from 'moment';
+import ReactMomentCountDown from 'react-moment-countdown';
+import Button from '@vkontakte/vkui/dist/components/Button/Button';
+import Link from '@vkontakte/vkui/dist/components/Link/Link';
 
 import ZenithLogo from '../../img/zenith.png';
 
+import {DATE_FORMAT} from '../../constants/format';
+
 import './Match.scss';
 
-const Match = ({rival, place, beginTime, game}) => {
+const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => {
+  const countdown = moment(beginTime).subtract(10, 'm');
   return rival ? (
     <div className='match'>
       <div className='match__top'>
@@ -38,10 +45,37 @@ const Match = ({rival, place, beginTime, game}) => {
         </div>
       </div>
       <div className='match__bottom'>
-        <span className='match__info'>
-          {place}, {beginTime}
-        </span>
+        <div className='match__info'>
+          {place}, {moment(beginTime).format(DATE_FORMAT)}
+        </div>
+        {
+          enableCountdown &&
+          <div className={classNames('match__countdown', {
+            'match__countdown--red': countdown.diff(moment(), 'days') === 0
+          })}>
+            <span>
+              <b>До окончания голосования:</b><br/>
+              <ReactMomentCountDown
+                toDate={countdown}
+                targetFormatMask='DD [дн.] HH [ч.] mm [мин.] ss [сек.]'
+              />
+            </span>
+          </div>
+        }
       </div>
+      {
+        buyTickets &&
+        <div className='match__tickets'>
+          <Button size='xl' component='a' href={buyTickets}>
+            <Link
+              to={buyTickets}
+              target='_blank'
+            >
+              Купить билеты
+            </Link>
+          </Button>
+        </div>
+      }
     </div>
   ) : (<></>)
 };

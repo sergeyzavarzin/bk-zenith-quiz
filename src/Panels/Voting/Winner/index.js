@@ -7,10 +7,13 @@ import Radio from '@vkontakte/vkui/dist/components/Radio/Radio';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import {withAppContext} from '../../../context/AppContext';
+import {Div} from '@vkontakte/vkui';
+import Zenith from '../../../img/zenith.png';
 
 const Winner = ({id, go, context}) => {
   const {setWinner, state} = context;
-  const {rivals, activeMatchVote} = state;
+  const {rivals, activeMatchVote, winner} = state;
+  const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId)
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -20,24 +23,44 @@ const Winner = ({id, go, context}) => {
         <FormLayout>
           <Radio
             name="radio"
-            value="1"
-            defaultChecked
             onClick={() => setWinner(1)}
           >
-            Зенит
+            <Div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: 90,
+              }}
+            >
+              <img width={40} src={Zenith} alt='Зенит'/>
+              <b style={{marginLeft: 15}}>Зенит</b>
+            </Div>
           </Radio>
           <Radio
             name="radio"
-            value="2"
             onClick={() => setWinner(2)}
           >
-            {rivals && rivals.find(rival => rival.id === activeMatchVote.rivalId).name}
+            <Div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: 90,
+              }}
+            >
+              <img width={40} src={currentRival.logo} alt={currentRival.name}/>
+              <b style={{marginLeft: 15}}>{currentRival.name}</b>
+            </Div>
           </Radio>
         </FormLayout>
         <FixedLayout vertical="bottom">
           <Group>
             <FormLayout>
               <Button
+                style={winner ? {} : {
+                  opacity: 0.5,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                }}
                 size="xl"
                 data-to='select-total-score'
                 onClick={go}

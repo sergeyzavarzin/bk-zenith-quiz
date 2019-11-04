@@ -1,10 +1,19 @@
 .match {
-  padding-bottom: 10px;
+  font-size: 18px;
+  min-height: 110px;
 
   &__top, &__bottom {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__top {
+    min-height: 70px;
+  }
+
+  &__bottom {
+    flex-direction: column;
   }
 
   &__rivals {
@@ -26,7 +35,7 @@
   }
 
   &__info {
-    font-size: 12px;
+    font-size: 14px;
     color: grey;
   }
 
@@ -35,7 +44,8 @@
     border-radius: 4px;
     background: green;
     display: inline-block;
-    font-weight: bold;
+    font-weight: normal;
+    letter-spacing: .5px;
     color: #fff;
     min-width: 24px;
     height: 24px;
@@ -49,6 +59,24 @@
 
     &--draw {
       background: orange;
+    }
+  }
+
+  &__countdown {
+    text-align: center;
+    margin-top: 30px;
+    line-height: 27px;
+
+    &--red {
+      color: red;
+    }
+  }
+
+  &__tickets {
+    margin-top: 25px;
+
+    a {
+      color: #fff;
     }
   }
 }

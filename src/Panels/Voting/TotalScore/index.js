@@ -11,7 +11,8 @@ import {withAppContext} from '../../../context/AppContext';
 
 const TotalScore = ({id, go, context}) => {
   const {setRivalScore, setClubScore, sendVote, state} = context;
-  const {activeMatchVote, rivals} = state;
+  const {activeMatchVote, rivals, clubScore, rivalScore} = state;
+  const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId)
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -25,7 +26,7 @@ const TotalScore = ({id, go, context}) => {
               onChange={({target: {value}}) => setClubScore(value)}
             />
           </FormLayoutGroup>
-          <FormLayoutGroup top={rivals && rivals.find(rival => rival.id === activeMatchVote.rivalId).name}>
+          <FormLayoutGroup top={currentRival.name}>
             <Input
               type="number"
               onChange={({target: {value}}) => setRivalScore(value)}
@@ -36,6 +37,11 @@ const TotalScore = ({id, go, context}) => {
           <Group>
             <FormLayout>
               <Button
+                style={(clubScore && rivalScore) ? {} : {
+                  opacity: 0.5,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                }}
                 size="xl"
                 data-to='voting'
                 onClick={(e) => {

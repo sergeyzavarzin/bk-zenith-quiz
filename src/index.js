@@ -7,13 +7,16 @@ import connect from '@vkontakte/vk-connect';
 import App from './App';
 
 import AppProvider from './context/AppContext';
+import HelpProvider from './context/HelpContext';
 
 connect.send('VKWebAppInit');
 
 const Application = () => {
   return (
     <AppProvider>
-      <App/>
+      <HelpProvider>
+        <App/>
+      </HelpProvider>
     </AppProvider>
   )
 };

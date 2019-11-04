@@ -11,8 +11,6 @@ import Icon56NotificationOutline from '@vkontakte/icons/dist/56/notification_out
 
 import MatchItem from '../../Components/Match';
 
-import {DATE_FORMAT} from '../../constants/format'
-
 import {withAppContext} from '../../context/AppContext';
 
 class Voting extends React.Component {
@@ -26,7 +24,7 @@ class Voting extends React.Component {
         <PanelHeader>
           Голосование
         </PanelHeader>
-        <Group title={activeMatchVote && !isUserSendAnswerForCurrentVote ? "Предстоящий матч" : ""}>
+        <Group title={activeMatchVote && !isUserSendAnswerForCurrentVote ? "Открытые голосования" : ""}>
           {
             activeMatchVote && !isUserSendAnswerForCurrentVote &&
             <>
@@ -38,8 +36,9 @@ class Voting extends React.Component {
                     activeMatchVote &&
                     <MatchItem
                       rival={rivals.find(rival => rival.id === activeMatchVote.rivalId)}
-                      beginTime={moment(activeMatchVote.startDateTime).format(DATE_FORMAT)}
+                      beginTime={activeMatchVote.startDateTime}
                       place={activeMatchVote.place}
+                      enableCountdown
                     />
                   }
                 </Cell>

@@ -5,21 +5,25 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 import AppBar from './Components/AppBar';
 import Home from './Panels/Home';
+import Help from './Panels/Help';
+import HelpView from './Panels/Help/HelpView';
 import Players from './Panels/Players';
 import Matches from './Panels/Matches';
+import MatchView from './Panels/MatchResults';
 import PlayersSelect from './Panels/PlayersSelect';
 import Table from './Panels/Table';
 import Voting from './Panels/Voting';
 import Tossing from './Panels/Voting/Tossing';
 import Winner from './Panels/Voting/Winner';
 import TotalScore from './Panels/Voting/TotalScore';
+
 import {withAppContext} from './context/AppContext';
 
 class App extends React.Component {
 
   state = {
     user: null,
-    activeStory: 'voting-view',
+    activeStory: 'matches-view',
     activePanelVoting: 'voting',
     activePanelMatches: 'matches',
     activePanelTable: 'table',
@@ -60,6 +64,7 @@ class App extends React.Component {
             twoScore,
             threeScore,
             user,
+            userScore,
           },
           addPlayerToFirstFive,
           setTwoScore,
@@ -94,6 +99,7 @@ class App extends React.Component {
             title='Выберите игроков'
             handleItemSelect={addPlayerToFirstFive}
             isSelected={(id) => firstFive.includes(id)}
+            isButtonDisabled={firstFive.length === 5}
           />
           <PlayersSelect
             id='select-two-score'
@@ -103,6 +109,7 @@ class App extends React.Component {
             title='Выберите игрока'
             handleItemSelect={setTwoScore}
             isSelected={(id) => id === twoScore}
+            isButtonDisabled={!!twoScore}
           />
           <PlayersSelect
             id='select-three-score'
@@ -112,6 +119,7 @@ class App extends React.Component {
             title='Выберите игрока'
             handleItemSelect={setThreeScore}
             isSelected={(id) => id === threeScore}
+            isButtonDisabled={!!threeScore}
           />
           <Tossing id='select-tossing' go={goVoting}/>
           <Winner id='select-winner' go={goVoting}/>
@@ -120,6 +128,7 @@ class App extends React.Component {
 
         <View id='matches-view' activePanel={activePanelMatches}>
           <Matches id='matches' go={goMatches}/>
+          <MatchView id='match-view' go={goMatches}/>
         </View>
 
         <View id='table-view' activePanel={activePanelTable}>
@@ -131,7 +140,9 @@ class App extends React.Component {
         </View>
 
         <View id='profile-view' activePanel={activePanelProfile}>
-          <Home id='home' go={goProfile} fetchedUser={user}/>
+          <Home id='home' go={goProfile} fetchedUser={user} userScore={userScore}/>
+          <Help id='help' go={goProfile}/>
+          <HelpView id='help-answer' go={goProfile}/>
         </View>
       </Epic>
     )

@@ -12,9 +12,14 @@ import {withAppContext} from '../../context/AppContext';
 
 import {DATE_FORMAT} from '../../constants/format';
 
-const Matches = ({id, go, context: {state: {matches, rivals}}}) => {
+const Matches = ({id, go, context: {state, setActiveMatch}}) => {
+  const {matches, rivals} = state;
   const upcomingMatches = matches.filter(match => !match.score.length);
   const endedMatches = matches.filter(match => match.score.length);
+  const viewMatchInfo = (event, activeMatch) => {
+    setActiveMatch(activeMatch);
+    go(event);
+  };
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -33,8 +38,9 @@ const Matches = ({id, go, context: {state: {matches, rivals}}}) => {
                   >
                     <MatchItem
                       rival={rivals.find(rival => rival.id === match.rivalId)}
-                      beginTime={moment(match.startDateTime).format(DATE_FORMAT)}
+                      beginTime={match.startDateTime}
                       place={match.place}
+                      buyTickets={match.buyTicketsUrl || 'https://tickets.fc-zenit.ru/#basketball'}
                     />
                   </Cell>
                 )
@@ -52,6 +58,9 @@ const Matches = ({id, go, context: {state: {matches, rivals}}}) => {
                   <Cell
                     key={match.id}
                     size="l"
+                    expandable
+                    data-to='match-view'
+                    onClick={(e) => viewMatchInfo(e, match)}
                   >
                     <MatchItem
                       rival={rivals.find(rival => rival.id === match.rivalId)}
