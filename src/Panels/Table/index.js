@@ -6,27 +6,26 @@ import List from '@vkontakte/vkui/dist/components/List/List';
 import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
 import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
 
-import table from '../../mocks/table';
+import {withAppContext} from '../../context/AppContext';
 
-const Table = ({id, go}) => {
+const Table = ({id, go, context}) => {
+  const {leaderboard} = context.state;
   return (
     <Panel id={id}>
       <PanelHeader>
         Турнирная таблица
       </PanelHeader>
-      <Group title="Топ 10 голосующих">
+      <Group title={`Топ 10 голосующих`}>
         <List>
           {
-            table
+            leaderboard
               .sort((a, b) => a.score > b.score ?  -1 : 1)
               .map(item =>
                 <Cell
                   key={item.id}
-                  before={<Avatar size={42} src={item.photo}/>}
+                  before={<Avatar size={42} src={item.img}/>}
                   size="m"
-                  description={item.role}
                   asideContent={`${item.score} очков`}
-
                 >
                   {item.name}
                 </Cell>
@@ -38,5 +37,5 @@ const Table = ({id, go}) => {
   );
 };
 
-export default Table;
+export default withAppContext(Table);
 

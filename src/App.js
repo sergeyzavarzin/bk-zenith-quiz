@@ -23,7 +23,7 @@ class App extends React.Component {
 
   state = {
     user: null,
-    activeStory: 'matches-view',
+    activeStory: 'voting-view',
     activePanelVoting: 'voting',
     activePanelMatches: 'matches',
     activePanelTable: 'table',

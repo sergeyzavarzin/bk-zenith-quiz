@@ -55,7 +55,7 @@ class Voting extends React.Component {
             </>
           }
           {
-            isUserSendAnswerForCurrentVote &&
+            isUserSendAnswerForCurrentVote || !activeMatchVote &&
             <>
               <Div style={{
                 display: 'flex',

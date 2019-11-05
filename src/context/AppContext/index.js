@@ -16,6 +16,7 @@ class AppProvider extends Component {
     isAppLoaded: false,
     user: null,
     userScore: 0,
+    leaderboard: [],
     rivals: [],
     matches: [],
     userVotes: [],
@@ -31,16 +32,16 @@ class AppProvider extends Component {
   };
 
   componentDidMount() {
-    const { subscribeVKActions, fetchMatches, fetchRivals, fetchUserData, fetchUserVotes } = this;
+    const { subscribeVKActions, fetchMatches, fetchRivals, fetchUserData, fetchUserVotes, fetchLeaderboard } = this;
     subscribeVKActions();
     Promise
-      .all([fetchRivals(), fetchMatches(), fetchUserData()])
-      .then(([rivals, matches, userData]) => {
+      .all([fetchRivals(), fetchMatches(), fetchUserData(), fetchLeaderboard()])
+      .then(([rivals, matches, userData, leaderboard]) => {
         const {user, userScore} = userData;
         const sortedMatches = matches.filter(match => !match.score.length)
           .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
         const activeMatchVote = sortedMatches[0];
-        this.setState({user, userScore, rivals, matches, activeMatchVote});
+        this.setState({user, userScore, rivals, matches, activeMatchVote, leaderboard});
         return {user, activeMatchVote}
       })
       .then(async ({user, activeMatchVote}) => {
@@ -63,10 +64,10 @@ class AppProvider extends Component {
 
   fetchUserData = async () => {
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
-    const {id} = user;
+    const {id, first_name, last_name, photo_100} = user;
     const userData = await axios.get(`${API_URL}/user/${id}`);
     if (!userData.data) {
-      const createdUser = await axios.post(`${API_URL}/user/create`, {id});
+      const createdUser = await axios.post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
       return {userScore: 0, user};
     } else {
       return {userScore: userData.data.score, user};
@@ -83,9 +84,14 @@ class AppProvider extends Component {
     return matches.data;
   };
 
-  fetchUserVotes = async (userId) => {
+  fetchUserVotes = async userId => {
     const userVotes = axios.get(`${API_URL}/vote?playerId=${userId}`);
     return userVotes;
+  };
+
+  fetchLeaderboard = async () => {
+    const leaderboard = await axios.get(`${API_URL}/user/leaderboard`);
+    return leaderboard.data;
   };
 
   addPlayerToFirstFive = (item) => {

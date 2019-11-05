@@ -29,7 +29,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => 
               {game[0]}
             </div>
           }
-          Зенит : {rival.name}
+          <span className='match__rivals-list'>Зенит : {rival.name}</span>
           {
             game &&
             <div className={classNames('match__score', {
@@ -46,7 +46,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => 
       </div>
       <div className='match__bottom'>
         <div className='match__info'>
-          {place}, {moment(beginTime).format(DATE_FORMAT)}
+          {place}, {moment(beginTime).format('DD MMM YYYY hh:mm')}
         </div>
         {
           enableCountdown &&
