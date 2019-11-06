@@ -16,26 +16,24 @@ const Thanks = ({id, go}) => {
       <PanelHeader>
         Спасибо
       </PanelHeader>
-      <Group style={{background: '#fff'}}>
-        <Div>
-          <div className='thanks'>
-            <img className='thanks__cup' src={Cup} alt='Cup'/>
-            <h1 className='thanks__title'>
-              Спасибо за ваш ответ!
-            </h1>
-            <p>
-
-            </p>
-            <Button
-              size="xl"
-              data-to='voting'
-              onClick={go}
-            >
-              На главную
-            </Button>
-          </div>
-        </Div>
-      </Group>
+      <Div>
+        <div className='thanks'>
+          <img className='thanks__cup' src={Cup} alt='Cup'/>
+          <h1 className='thanks__title'>
+            Спасибо за ваш ответ!
+          </h1>
+          <p className='thanks__text'>
+            Результаты матча будут объявлены после завершения матча.
+          </p>
+          <Button
+            size="xl"
+            data-to='voting'
+            onClick={go}
+          >
+            На главную
+          </Button>
+        </div>
+      </Div>
     </Panel>
   )
 };

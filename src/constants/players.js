@@ -66,7 +66,7 @@ const players = [
   },
   {
     id: 5,
-    name: 'Дмитрий Хворостов',
+    name: 'Дмитрий Хвостов',
     number: 13,
     role: ROLES.GUARD,
     age: 30,

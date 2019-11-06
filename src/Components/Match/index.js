@@ -68,7 +68,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
         buyTickets &&
         <div className='match__tickets'>
           {
-            window.innerWidth > 576 ?
+            window.matchMedia('(min-width: 576px)').matches ?
               <Button size='xl' component='a' href={buyTickets}>
                 <Link
                   to={buyTickets}

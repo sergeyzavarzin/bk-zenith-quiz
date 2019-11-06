@@ -67,7 +67,7 @@ class AppProvider extends Component {
     const {id, first_name, last_name, photo_100} = user;
     const userData = await axios.get(`${API_URL}/user/${id}`);
     if (!userData.data) {
-      const createdUser = await axios.post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
+      axios.post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
       return {userScore: 0, user};
     } else {
       return {userScore: userData.data.score, user};
@@ -101,8 +101,6 @@ class AppProvider extends Component {
     if (selectedPlayers.length > 5) return true;
     this.setState({firstFive: selectedPlayers});
   };
-
-  setActiveMatchVote = (activeMatchVote) => this.setState({activeMatchVote});
 
   setTwoScore = (twoScore) => this.setState({twoScore});
 

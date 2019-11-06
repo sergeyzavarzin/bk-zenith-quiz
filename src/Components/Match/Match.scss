@@ -89,5 +89,11 @@
     width: 160px;
     height: 1.2em;
     white-space: nowrap;
+    text-align: center;
+
+    @media all and (min-width: 576px) {
+      display: block;
+      width: 100%;
+    }
   }
 }

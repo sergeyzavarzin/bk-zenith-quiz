@@ -6,7 +6,6 @@ import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
 import Radio from '@vkontakte/vkui/dist/components/Radio/Radio';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
-import Separator from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import {Div} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../../context/AppContext';

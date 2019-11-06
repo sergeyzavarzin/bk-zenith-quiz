@@ -5,6 +5,8 @@ import Gallery from '@vkontakte/vkui/dist/components/Gallery/Gallery';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
 import {Div} from '@vkontakte/vkui';
 
+import Zenith from '../../img/zenith.png';
+
 import './Welcome.scss';
 
 const Welcome = ({id, startApp}) => {
@@ -27,8 +29,10 @@ const Welcome = ({id, startApp}) => {
             slideWidth='100%'
             slideIndex={slideIndex}
             onChange={slideIndex => setSlideIndex(slideIndex)}
+            style={{height: '100%'}}
           >
             <div className='welcome__slide'>
+              <img src={Zenith} alt='Зенит' style={{marginBottom: 30, maxWidth: 200}}/>
               Добро пожаловать в приложение "Стартовая пятерка".
             </div>
             <div className='welcome__slide'>
