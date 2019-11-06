@@ -28,8 +28,7 @@ const Thanks = ({id, go}) => {
             </p>
             <Button
               size="xl"
-              data-to='thanks'
-              block
+              data-to='voting'
               onClick={go}
             >
               На главную
