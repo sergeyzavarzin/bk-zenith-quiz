@@ -67,9 +67,20 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
       {
         buyTickets &&
         <div className='match__tickets'>
-          <Button size='xl' onClick={() => window.open(buyTickets)}>
-            Купить билеты
-          </Button>
+          {
+            window.innerWidth > 576 ?
+              <Button size='xl' component='a' href={buyTickets}>
+                <Link
+                  to={buyTickets}
+                  target='_blank'
+                >
+                  Купить билеты
+                </Link>
+              </Button> :
+              <Button size='xl' onClick={() => window.open(buyTickets, '_blank')}>
+                Купить билеты
+              </Button>
+          }
         </div>
       }
     </div>
