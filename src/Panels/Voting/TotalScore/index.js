@@ -43,7 +43,7 @@ const TotalScore = ({id, go, context}) => {
                   userSelect: 'none',
                 }}
                 size="xl"
-                data-to='voting'
+                data-to='thanks'
                 onClick={(e) => {
                   sendVote();
                   go(e);

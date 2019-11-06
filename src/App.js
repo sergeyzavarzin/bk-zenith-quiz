@@ -16,6 +16,8 @@ import Voting from './Panels/Voting';
 import Tossing from './Panels/Voting/Tossing';
 import Winner from './Panels/Voting/Winner';
 import TotalScore from './Panels/Voting/TotalScore';
+import Thanks from './Panels/Voting/Thanks';
+import Welcome from './Panels/Welcome';
 
 import {withAppContext} from './context/AppContext';
 
@@ -23,7 +25,7 @@ class App extends React.Component {
 
   state = {
     user: null,
-    activeStory: 'voting-view',
+    activeStory: 'welcome-view',
     activePanelVoting: 'voting',
     activePanelMatches: 'matches',
     activePanelTable: 'table',
@@ -79,11 +81,13 @@ class App extends React.Component {
       goProfile,
     } = this;
 
+    const isVisibleAppBar = !['welcome-view'].includes(activeStory);
+
     return (
       <Epic
         activeStory={activeStory}
         tabbar={
-          <AppBar
+          isVisibleAppBar && <AppBar
             activeStory={activeStory}
             onStoryChange={onStoryChange}
           />
@@ -124,6 +128,7 @@ class App extends React.Component {
           <Tossing id='select-tossing' go={goVoting}/>
           <Winner id='select-winner' go={goVoting}/>
           <TotalScore id='select-total-score' go={goVoting}/>
+          <Thanks id='thanks' go={goVoting}/>
         </View>
 
         <View id='matches-view' activePanel={activePanelMatches}>
@@ -143,6 +148,10 @@ class App extends React.Component {
           <Home id='home' go={goProfile} fetchedUser={user} userScore={userScore}/>
           <Help id='help' go={goProfile}/>
           <HelpView id='help-answer' go={goProfile}/>
+        </View>
+
+        <View id='welcome-view' activePanel={activePanelMatches}>
+          <Welcome id='matches' startApp={() => this.setState({activeStory: 'voting-view'})}/>
         </View>
       </Epic>
     )

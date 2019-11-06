@@ -102,6 +102,8 @@ class AppProvider extends Component {
     this.setState({firstFive: selectedPlayers});
   };
 
+  setActiveMatchVote = (activeMatchVote) => this.setState({activeMatchVote});
+
   setTwoScore = (twoScore) => this.setState({twoScore});
 
   setThreeScore = (threeScore) => this.setState({threeScore});

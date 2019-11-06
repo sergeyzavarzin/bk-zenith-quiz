@@ -17,16 +17,19 @@ class Voting extends React.Component {
 
   render() {
     const {id, go, changeStory} = this.props;
-    const {activeMatchVote, rivals, userVotes} = this.props.context.state;
+    const {setActiveMatch, state} = this.props.context;
+    const {activeMatchVote, rivals, userVotes} = state;
     const isUserSendAnswerForCurrentVote = userVotes.some(vote => vote.matchId === activeMatchVote.id);
+    const now = moment();
+    const isTimeEnd = activeMatchVote && moment.duration(now.diff(activeMatchVote.startDateTime)).asMinutes() > -10;
     return (
       <Panel id={id} >
         <PanelHeader>
           Голосование
         </PanelHeader>
-        <Group title={activeMatchVote && !isUserSendAnswerForCurrentVote ? "Открытые голосования" : ""}>
+        <Group title={(activeMatchVote && !isUserSendAnswerForCurrentVote && !isTimeEnd) ? "Открытые голосования" : ""}>
           {
-            activeMatchVote && !isUserSendAnswerForCurrentVote &&
+            (activeMatchVote && !isUserSendAnswerForCurrentVote && !isTimeEnd) ?
             <>
               <List>
                 <Cell
@@ -39,6 +42,7 @@ class Voting extends React.Component {
                       beginTime={activeMatchVote.startDateTime}
                       place={activeMatchVote.place}
                       enableCountdown
+                      onCountdownEnd={() => setActiveMatch(null)}
                     />
                   }
                 </Cell>
@@ -52,10 +56,7 @@ class Voting extends React.Component {
                   Начать
                 </Button>
               </Div>
-            </>
-          }
-          {
-            isUserSendAnswerForCurrentVote || !activeMatchVote &&
+            </> :
             <>
               <Div style={{
                 display: 'flex',

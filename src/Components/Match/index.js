@@ -11,7 +11,7 @@ import {DATE_FORMAT} from '../../constants/format';
 
 import './Match.scss';
 
-const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => {
+const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCountdownEnd}) => {
   const countdown = moment(beginTime).subtract(10, 'm');
   return rival ? (
     <div className='match'>
@@ -46,7 +46,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => 
       </div>
       <div className='match__bottom'>
         <div className='match__info'>
-          {place}, {moment(beginTime).format('DD MMM YYYY hh:mm')}
+          {place}, {moment(beginTime).format(DATE_FORMAT)}
         </div>
         {
           enableCountdown &&
@@ -58,6 +58,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => 
               <ReactMomentCountDown
                 toDate={countdown}
                 targetFormatMask='DD [дн.] HH [ч.] mm [мин.] ss [сек.]'
+                onCountdownEnd={onCountdownEnd}
               />
             </span>
           </div>
@@ -66,13 +67,8 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets}) => 
       {
         buyTickets &&
         <div className='match__tickets'>
-          <Button size='xl' component='a' href={buyTickets}>
-            <Link
-              to={buyTickets}
-              target='_blank'
-            >
-              Купить билеты
-            </Link>
+          <Button size='xl' onClick={() => window.open(buyTickets)}>
+            Купить билеты
           </Button>
         </div>
       }
