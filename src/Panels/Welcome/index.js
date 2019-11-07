@@ -3,13 +3,18 @@ import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
 import Gallery from '@vkontakte/vkui/dist/components/Gallery/Gallery';
 import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
+import PanelSpinner from '@vkontakte/vkui/dist/components/PanelSpinner/PanelSpinner';
 import {Div} from '@vkontakte/vkui';
+
+import {withAppContext} from '../../context/AppContext';
 
 import Zenith from '../../img/zenith.png';
 
 import './Welcome.scss';
 
-const Welcome = ({id, startApp}) => {
+const Welcome = ({id, startApp, context}) => {
+
+  const {isAppLoaded} = context.state;
 
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -23,39 +28,43 @@ const Welcome = ({id, startApp}) => {
 
   return (
     <Panel id={id} theme='white'>
-      <Div>
-        <div className='welcome'>
-          <Gallery
-            slideWidth='100%'
-            slideIndex={slideIndex}
-            onChange={slideIndex => setSlideIndex(slideIndex)}
-            style={{height: '100%'}}
-          >
-            <div className='welcome__slide'>
-              <img src={Zenith} alt='Зенит' style={{marginBottom: 30, maxWidth: 200}}/>
-              Добро пожаловать в приложение "Стартовая пятерка".
+      {
+        isAppLoaded ? <>
+          <Div>
+            <div className='welcome'>
+              <Gallery
+                slideWidth='100%'
+                slideIndex={slideIndex}
+                onChange={slideIndex => setSlideIndex(slideIndex)}
+                style={{height: '100%'}}
+              >
+                <div className='welcome__slide'>
+                  <img src={Zenith} alt='Зенит' style={{marginBottom: 30, maxWidth: 200}}/>
+                  Добро пожаловать в приложение "Стартовая пятерка".
+                </div>
+                <div className='welcome__slide'>
+                  Голосуй и зарабатывай очки.
+                </div>
+                <div className='welcome__slide'>
+                  Лучшие голосующие получат призы.
+                </div>
+              </Gallery>
             </div>
-            <div className='welcome__slide'>
-              Голосуй и зарабатывай очки.
-            </div>
-            <div className='welcome__slide'>
-              Лучшие голосующие получат призы.
-            </div>
-          </Gallery>
-        </div>
-      </Div>
-      <FixedLayout vertical='bottom'>
-        <Div>
-          <Button
-            size="xl"
-            onClick={next}
-          >
-            {slideIndex === 2 ? 'Начать' : 'Далее'}
-          </Button>
-        </Div>
-      </FixedLayout>
+          </Div>
+          <FixedLayout vertical='bottom'>
+            <Div>
+              <Button
+                size="xl"
+                onClick={next}
+              >
+                {slideIndex === 2 ? 'Начать' : 'Далее'}
+              </Button>
+            </Div>
+          </FixedLayout>
+        </> : <PanelSpinner/>
+      }
     </Panel>
   )
 };
 
-export default Welcome;
+export default withAppContext(Welcome);

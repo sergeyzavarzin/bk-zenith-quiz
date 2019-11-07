@@ -14,6 +14,7 @@ class AppProvider extends Component {
 
   state = {
     isAppLoaded: false,
+    isUserNew: true,
     user: null,
     userScore: 0,
     leaderboard: [],
@@ -37,11 +38,11 @@ class AppProvider extends Component {
     Promise
       .all([fetchRivals(), fetchMatches(), fetchUserData(), fetchLeaderboard()])
       .then(([rivals, matches, userData, leaderboard]) => {
-        const {user, userScore} = userData;
+        const {user, userScore, isUserNew} = userData;
         const sortedMatches = matches.filter(match => !match.score.length)
           .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
         const activeMatchVote = sortedMatches[0];
-        this.setState({user, userScore, rivals, matches, activeMatchVote, leaderboard});
+        this.setState({user, userScore, rivals, matches, activeMatchVote, leaderboard, isUserNew});
         return {user, activeMatchVote}
       })
       .then(async ({user, activeMatchVote}) => {
@@ -68,9 +69,9 @@ class AppProvider extends Component {
     const userData = await axios.get(`${API_URL}/user/${id}`);
     if (!userData.data) {
       axios.post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
-      return {userScore: 0, user};
+      return {userScore: 0, user, isUserNew: true};
     } else {
-      return {userScore: userData.data.score, user};
+      return {userScore: userData.data.score, user, isUserNew: false};
     }
   };
 

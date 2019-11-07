@@ -1,0 +1,25 @@
+.match-result {
+
+  &__success, &__fail {
+    padding: 7px;
+    border-radius: 7px;
+
+
+  }
+
+  &__your-answer {
+    color: #5d5f61;
+    display: inline-block;
+    margin-bottom: 7px;
+  }
+
+  &__success {
+    background: rgba(80,200,120,.5);
+    border: 1px solid rgb(80,200,120);
+  }
+
+  &__fail {
+    background: rgba(255,0,0,.5);
+    border: 1px solid rgb(255,0,0);
+  }
+}
