@@ -11,7 +11,7 @@ import Players from './Panels/Players';
 import Matches from './Panels/Matches';
 import MatchView from './Panels/MatchResults';
 import PlayersSelect from './Panels/PlayersSelect';
-import Table from './Panels/Table';
+import Table from './Panels/LeaderBoard';
 import Voting from './Panels/Voting';
 import Tossing from './Panels/Voting/Tossing';
 import Winner from './Panels/Voting/Winner';

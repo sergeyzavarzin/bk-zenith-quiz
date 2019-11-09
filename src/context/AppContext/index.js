@@ -14,6 +14,7 @@ class AppProvider extends Component {
 
   state = {
     isAppLoaded: false,
+    isLeaderBoardLoaded: false,
     isUserNew: true,
     user: null,
     userScore: 0,
@@ -33,10 +34,14 @@ class AppProvider extends Component {
   };
 
   componentDidMount() {
-    const { subscribeVKActions, fetchMatches, fetchRivals, fetchUserData, fetchUserVotes, fetchLeaderboard } = this;
+    this.prepareAppData();
+  }
+
+  prepareAppData = () => {
+    const { subscribeVKActions, fetchMatches, fetchRivals, fetchUserData, fetchUserVotes, fetchLeaderBoard } = this;
     subscribeVKActions();
     Promise
-      .all([fetchRivals(), fetchMatches(), fetchUserData(), fetchLeaderboard()])
+      .all([fetchRivals(), fetchMatches(), fetchUserData(), fetchLeaderBoard()])
       .then(([rivals, matches, userData, leaderboard]) => {
         const {user, userScore, isUserNew} = userData;
         const sortedMatches = matches.filter(match => !match.score.length)
@@ -47,11 +52,11 @@ class AppProvider extends Component {
       })
       .then(async ({user, activeMatchVote}) => {
         const userVotes = await fetchUserVotes(user.id, activeMatchVote.id);
-        this.setState({userVotes: userVotes.data})
+        this.setState({userVotes})
       })
       .catch(err => console.log(err))
       .finally(() => this.setState({isAppLoaded: true}));
-  }
+  };
 
   subscribeVKActions = () => {
     connect.subscribe(({ detail: { type, data }}) => {
@@ -86,13 +91,22 @@ class AppProvider extends Component {
   };
 
   fetchUserVotes = async userId => {
-    const userVotes = axios.get(`${API_URL}/vote?playerId=${userId}`);
-    return userVotes;
+    const userVotes = await axios.get(`${API_URL}/vote?playerId=${userId}`);
+    return userVotes.data;
   };
 
-  fetchLeaderboard = async () => {
+  fetchLeaderBoard = async () => {
     const leaderboard = await axios.get(`${API_URL}/user/leaderboard`);
     return leaderboard.data;
+  };
+
+  updateLeaderBoard = async () => {
+    this.setState({isLeaderBoardLoaded: true});
+    const leaderboard = await this.fetchLeaderBoard();
+    this.setState({
+      isLeaderBoardLoaded: false,
+      leaderboard
+    });
   };
 
   addPlayerToFirstFive = (item) => {
@@ -159,6 +173,7 @@ class AppProvider extends Component {
           setClubScore: this.setClubScore,
           setRivalScore: this.setRivalScore,
           sendVote: this.sendVote,
+          updateLeaderBoard: this.updateLeaderBoard,
           setActiveMatch: (activeMatch) => this.setState({activeMatch}),
         }}
       >
