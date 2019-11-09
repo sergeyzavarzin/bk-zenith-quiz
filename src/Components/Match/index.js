@@ -2,8 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import ReactMomentCountDown from 'react-moment-countdown';
-import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import Link from '@vkontakte/vkui/dist/components/Link/Link';
+import {Link, Button} from '@vkontakte/vkui';
 
 import ZenithLogo from '../../img/zenith.png';
 

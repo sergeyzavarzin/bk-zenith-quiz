@@ -1,12 +1,8 @@
 import React from 'react';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import {Div} from '@vkontakte/vkui';
+import {Div, Group, PanelHeader, Panel, HeaderButton} from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withHelpContext} from '../../../context/HelpContext';
-import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
 
 const HelpView = ({id, go, context}) => {
   const {selectHelp, state: {selectedHelp}} = context;

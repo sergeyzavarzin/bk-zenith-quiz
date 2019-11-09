@@ -1,9 +1,7 @@
 import React from 'react';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
+import {Div, Button, Panel, PanelHeader} from '@vkontakte/vkui';
+
 import {withAppContext} from '../../../context/AppContext';
-import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import {Div} from '@vkontakte/vkui';
 
 import Cup from '../../../img/trophy.svg';
 

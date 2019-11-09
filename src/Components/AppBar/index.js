@@ -38,7 +38,7 @@ const AppBar = ({activeStory, onStoryChange}) => {
         onClick={onStoryChange}
         selected={activeStory === 'players-view'}
         data-story='players-view'
-        text='Игроки'
+        text='Команда'
       >
         <Icon28Users />
       </TabbarItem>

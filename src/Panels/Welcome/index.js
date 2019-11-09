@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import Gallery from '@vkontakte/vkui/dist/components/Gallery/Gallery';
-import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
-import PanelSpinner from '@vkontakte/vkui/dist/components/PanelSpinner/PanelSpinner';
-import {Div} from '@vkontakte/vkui';
+import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../context/AppContext';
 
@@ -18,16 +13,10 @@ const Welcome = ({id, startApp, context}) => {
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const next = () => {
-    if (slideIndex !== 2) {
-      setSlideIndex(slideIndex + 1);
-    } else {
-      startApp();
-    }
-  };
-
+  const next = () => slideIndex !== 2 ? setSlideIndex(slideIndex + 1) : startApp();
+  
   return (
-    <Panel id={id} theme='white'>
+    <Panel id={id} theme='white' centered={!isAppLoaded}>
       {
         isAppLoaded ? <>
           <Div>

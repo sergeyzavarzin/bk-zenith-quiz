@@ -1,12 +1,5 @@
 import React from 'react';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import FormLayout from '@vkontakte/vkui/dist/components/FormLayout/FormLayout';
-import Radio from '@vkontakte/vkui/dist/components/Radio/Radio';
-import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import FixedLayout from '@vkontakte/vkui/dist/components/FixedLayout/FixedLayout';
-import {Div} from '@vkontakte/vkui';
+import {Div, FixedLayout, Button, Radio, FormLayout, Group, PanelHeader, Panel} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../../context/AppContext';
 
@@ -15,7 +8,7 @@ import Zenith from '../../../img/zenith.png';
 const Tossing = ({id, go, context}) => {
   const {setTossing, state} = context;
   const {rivals, activeMatchVote, tossing} = state;
-  const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId)
+  const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
   return (
     <Panel id={id}>
       <PanelHeader>

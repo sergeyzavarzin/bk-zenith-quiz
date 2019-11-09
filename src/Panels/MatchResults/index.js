@@ -1,14 +1,17 @@
 import React from 'react';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
-import Icon24Back from '@vkontakte/icons/dist/24/back';
-import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
-import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
-import {Div} from '@vkontakte/vkui';
+import {
+  Panel,
+  Div,
+  PanelHeader,
+  Group,
+  HeaderButton,
+  Avatar,
+  Cell
+} from '@vkontakte/vkui';
 import Icon24Done from '@vkontakte/icons/dist/24/done';
 import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
+import Icon24Back from '@vkontakte/icons/dist/24/back';
+
 
 import players from '../../constants/players';
 import Zenith from '../../img/zenith.png';
@@ -46,12 +49,6 @@ const MatchView = ({id, go, context}) => {
   const userVoteMatch = activeMatch && userVotes.find(vote => vote.matchId === activeMatch.id);
   const threeScoreAnswer = activeMatch && players.find(player => player.id === userVoteMatch.threeScore);
   const twoScoreAnswer = activeMatch && players.find(player => player.id === userVoteMatch.threeScore);
-  // const firstFiveGuessed = userVoteMatch && [...firstFive, ...userVoteMatch.firstFive].reduce((acc, el) => {
-  //   acc[el] = (acc[el] || 0) + 1;
-  //   return acc;
-  // });
-  //
-  // console.log(firstFiveGuessed)
 
   const goBack = (event) => {
     setActiveMatch(null);

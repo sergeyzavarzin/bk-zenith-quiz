@@ -1,22 +1,17 @@
 import React from 'react';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import List from '@vkontakte/vkui/dist/components/List/List';
-import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
-import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
+import {Avatar, Cell, List, Group, Panel, PanelHeader} from '@vkontakte/vkui';
 
 import Jersey from '../../Components/Jersey';
 
 import players from '../../constants/players';
 
-const Players = ({id, go}) => {
+const Players = ({id}) => {
   return (
     <Panel id={id}>
       <PanelHeader>
         Игроки
       </PanelHeader>
-      <Group title="Команда БК Зенит">
+      <Group title="Команда">
         <List>
           {
             players

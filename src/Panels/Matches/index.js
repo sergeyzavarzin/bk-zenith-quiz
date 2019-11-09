@@ -1,10 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import Panel from '@vkontakte/vkui/dist/components/Panel/Panel';
-import PanelHeader from '@vkontakte/vkui/dist/components/PanelHeader/PanelHeader';
-import Group from '@vkontakte/vkui/dist/components/Group/Group';
-import List from '@vkontakte/vkui/dist/components/List/List';
-import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
+import {Cell, List, Group, PanelHeader, Panel} from '@vkontakte/vkui';
 
 import MatchItem from '../../Components/Match';
 
