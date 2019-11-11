@@ -47,14 +47,14 @@ const MatchView = ({id, go, context}) => {
   const threeScore = activeMatch && players.find(player => player.id === activeMatch.threeScore);
 
   const userVoteMatch = activeMatch && userVotes.find(vote => vote.matchId === activeMatch.id);
-  const threeScoreAnswer = activeMatch && players.find(player => player.id === userVoteMatch.threeScore);
-  const twoScoreAnswer = activeMatch && players.find(player => player.id === userVoteMatch.threeScore);
+  const threeScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
+  const twoScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
 
   const goBack = (event) => {
     setActiveMatch(null);
     go(event);
   };
-
+  
   return (
     <Panel id={id}>
       {
@@ -68,10 +68,16 @@ const MatchView = ({id, go, context}) => {
                 <Icon24Back/>
               </HeaderButton>
             }>
-            Зенит : {rivals.find(rival => rival.id === activeMatch.rivalId).name}
+            Зенит : {currentRival.name}
           </PanelHeader>
           <Group title='Победитель'>
-            <Div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', fontSize: 20}}>
+            <Div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              fontSize: 20
+            }}>
               {
                 activeMatch.score[0] !== activeMatch.score[1] ?
                   <>
@@ -117,7 +123,13 @@ const MatchView = ({id, go, context}) => {
               <Answer
                 isSuccess={userVoteMatch.score[0] > userVoteMatch.score[1]}
               >
-                <Div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', fontSize: 20}}>
+                <Div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  fontSize: 20
+                }}>
                   {
                     userVoteMatch.score[0] !== userVoteMatch.score[1] ?
                       <>

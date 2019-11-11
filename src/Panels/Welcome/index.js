@@ -14,7 +14,7 @@ const Welcome = ({id, startApp, context}) => {
   const [slideIndex, setSlideIndex] = useState(0);
 
   const next = () => slideIndex !== 2 ? setSlideIndex(slideIndex + 1) : startApp();
-  
+
   return (
     <Panel id={id} theme='white' centered={!isAppLoaded}>
       {
