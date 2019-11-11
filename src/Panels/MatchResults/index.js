@@ -50,11 +50,13 @@ const MatchView = ({id, go, context}) => {
   const threeScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
   const twoScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
 
+  console.log(userVoteMatch, userVotes, activeMatch)
+
   const goBack = (event) => {
     setActiveMatch(null);
     go(event);
   };
-  
+
   return (
     <Panel id={id}>
       {

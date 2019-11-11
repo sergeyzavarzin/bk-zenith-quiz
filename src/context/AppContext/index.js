@@ -48,10 +48,10 @@ class AppProvider extends Component {
           .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
         const activeMatchVote = sortedMatches[0];
         this.setState({user, userScore, rivals, matches, activeMatchVote, leaderboard, isUserNew});
-        return {user, activeMatchVote}
+        return user;
       })
-      .then(async ({user, activeMatchVote}) => {
-        const userVotes = await fetchUserVotes(user.id, activeMatchVote.id);
+      .then(async user => {
+        const userVotes = await fetchUserVotes(user.id);
         this.setState({userVotes})
       })
       .catch(err => console.log(err))

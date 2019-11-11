@@ -10,7 +10,7 @@ import {withAppContext} from '../../context/AppContext';
 const Voting = ({id, go, changeStory, context}) => {
   const {setActiveMatch, state} = context;
   const {activeMatchVote, rivals, userVotes} = state;
-  const isUserSendAnswerForCurrentVote = userVotes.some(vote => vote.matchId === activeMatchVote.id);
+  const isUserSendAnswerForCurrentVote = activeMatchVote && userVotes.some(vote => vote.matchId === activeMatchVote.id);
   const now = moment();
   const isTimeEnd = activeMatchVote && moment.duration(now.diff(activeMatchVote.startDateTime)).asMinutes() > -10;
   return (
