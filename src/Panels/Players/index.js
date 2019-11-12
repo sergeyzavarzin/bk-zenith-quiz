@@ -1,5 +1,7 @@
 import React from 'react';
-import {Avatar, Cell, List, Group, Panel, PanelHeader} from '@vkontakte/vkui';
+import {Avatar, Cell, List, Group, Panel, PanelHeader, Link} from '@vkontakte/vkui';
+import Icon24LogoInstagram from '@vkontakte/icons/dist/24/logo_instagram';
+import Icon24LogoTwitter from '@vkontakte/icons/dist/24/logo_twitter';
 
 import Jersey from '../../Components/Jersey';
 
@@ -22,7 +24,23 @@ const Players = ({id}) => {
                 before={<Avatar size={72} src={player.photo}/>}
                 size="l"
                 description={player.role}
-                asideContent={<Jersey number={player.number}/>}
+                asideContent={
+                  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    {
+                      player.instagram &&
+                      <Link href={`https://www.instagram.com/${player.instagram}`} target='_blank'>
+                        <Icon24LogoInstagram width={30} height={30} style={{marginLeft: 5}}/>
+                      </Link>
+                    }
+                    {
+                      player.twitter &&
+                      <Link href={`https://twitter.com/${player.twitter}`} target='_blank'>
+                        <Icon24LogoTwitter width={30} height={30} style={{marginLeft: 5}}/>
+                      </Link>
+                    }
+                    <Jersey number={player.number}/>
+                  </div>
+                }
                 bottomContent={
                   <div style={{ display: 'flex' }}>
                     <span style={{ margin: '0 15px 0 0' }}>Рост: {player.height}</span>

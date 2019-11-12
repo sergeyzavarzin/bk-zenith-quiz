@@ -26,6 +26,8 @@ const players = [
     weight: 77,
     country: 'Франция',
     photo: Albicy,
+    twitter: 'andrewalbicy',
+    instagram: 'andrewalbicy',
     images: [],
   },
   {
@@ -38,6 +40,8 @@ const players = [
     weight: 95,
     country: 'Россия',
     photo: Voronov,
+    twitter: '',
+    instagram: 'evgeny.voronov',
     images: [],
   },
   {
@@ -50,6 +54,8 @@ const players = [
     weight: 93,
     country: 'Россия',
     photo: Ponkrashov,
+    twitter: 'ponkrash',
+    instagram: 'antonponkrashov',
     images: [],
   },
   {
@@ -62,6 +68,8 @@ const players = [
     weight: 80,
     country: 'США',
     photo: Renfro,
+    twitter: 'lilaI523',
+    instagram: 'renfroe32alex',
     images: [],
   },
   {
@@ -74,6 +82,8 @@ const players = [
     weight: 84,
     country: 'Россия',
     photo: Khvorostov,
+    twitter: '',
+    instagram: 'xvost',
     images: [],
   },
   {
@@ -86,6 +96,8 @@ const players = [
     weight: 86,
     country: 'США',
     photo: Hollinz,
+    twitter: 'aHolli_20',
+    instagram: 'aholli_20',
     images: [],
   },
   {
@@ -98,6 +110,8 @@ const players = [
     weight: 107,
     country: 'США',
     photo: Abromajtiz,
+    twitter: 'timabro21',
+    instagram: 'timabro',
     images: [],
   },
   {
@@ -110,6 +124,8 @@ const players = [
     weight: 100,
     country: 'Россия',
     photo: Zubkov,
+    twitter: '',
+    instagram: 'k1x1k',
     images: [],
   },
   {
@@ -122,6 +138,8 @@ const players = [
     weight: 95,
     country: 'Польша',
     photo: Ponitka,
+    twitter: '',
+    instagram: 'mateuszponitka',
     images: [],
   },
   {
@@ -134,6 +152,8 @@ const players = [
     weight: 104,
     country: 'США',
     photo: Thomas,
+    twitter: '',
+    instagram: 'thecommonname',
     images: [],
   },
   {
@@ -146,6 +166,8 @@ const players = [
     weight: 103,
     country: 'Россия',
     photo: Trushkin,
+    twitter: 'vladtrushkin1',
+    instagram: 'vlajko11',
     images: [],
   },
   {
@@ -158,6 +180,8 @@ const players = [
     weight: 116,
     country: 'США',
     photo: Iverson,
+    twitter: 'colton_iverson',
+    instagram: 'colton_iverson',
     images: [],
   },
   {
@@ -170,6 +194,8 @@ const players = [
     weight: 113,
     country: 'Мексика',
     photo: Ayon,
+    twitter: 'ayongustavo',
+    instagram: 'ayongustavo14',
     images: [],
   },
   {
@@ -182,6 +208,8 @@ const players = [
     weight: 100,
     country: 'Россия',
     photo: Pushkov,
+    twitter: '',
+    instagram: '14push',
     images: [],
   },
 ];
