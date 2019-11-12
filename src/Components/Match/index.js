@@ -12,6 +12,7 @@ import './Match.scss';
 
 const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCountdownEnd}) => {
   const countdown = moment(beginTime).subtract(10, 'm');
+  // const time = moment
   return rival ? (
     <div className='match'>
       <div className='match__top'>

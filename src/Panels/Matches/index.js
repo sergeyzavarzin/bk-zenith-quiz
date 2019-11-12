@@ -60,7 +60,7 @@ const Matches = ({id, go, context: {state, setActiveMatch}}) => {
                   >
                     <MatchItem
                       rival={rivals.find(rival => rival.id === match.rivalId)}
-                      beginTime={moment(match.startDateTime).format(DATE_FORMAT)}
+                      beginTime={match.startDateTime}
                       place={match.place}
                       game={match.score}
                     />
