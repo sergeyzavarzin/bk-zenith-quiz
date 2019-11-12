@@ -12,7 +12,6 @@ import './Match.scss';
 
 const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCountdownEnd}) => {
   const countdown = moment(beginTime).subtract(10, 'm');
-  // const time = moment
   return rival ? (
     <div className='match'>
       <div className='match__top'>
@@ -28,9 +27,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
             })}>
               {game[0]}
             </div>
-          }
-          <span className='match__rivals-list'>Зенит : {rival.name}</span>
-          {
+          } : {
             game &&
             <div className={classNames('match__score', {
               'match__score--fail': game[0] > game[1],
@@ -43,6 +40,9 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
         <div className='match__logo'>
           <img className='match__logo-img' src={rival.logo} alt={rival.name}/>
         </div>
+      </div>
+      <div className='match__middle'>
+        <span className='match__rivals-list'>Зенит : {rival.name}</span>
       </div>
       <div className='match__bottom'>
         <div className='match__info'>
