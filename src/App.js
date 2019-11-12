@@ -21,6 +21,8 @@ import Welcome from './Panels/Welcome';
 
 import {withAppContext} from './context/AppContext';
 
+import './App.scss';
+
 class App extends React.Component {
 
   state = {

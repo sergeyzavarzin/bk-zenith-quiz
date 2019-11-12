@@ -77,8 +77,8 @@
   &__tickets {
     margin-top: 25px;
 
-    a {
-      color: #fff;
+    .Link {
+      color: var(--linkButtonColor);
     }
   }
 
