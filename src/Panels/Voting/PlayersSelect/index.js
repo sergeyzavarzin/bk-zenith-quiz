@@ -12,9 +12,9 @@ import Icon16CheckCircle from '@vkontakte/icons/dist/16/check_circle';
 import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
 import {Div} from '@vkontakte/vkui';
 
-import players from '../../constants/players';
-import Jersey from '../../Components/Jersey';
-import {withAppContext} from '../../context/AppContext';
+import players from '../../../constants/players';
+import Jersey from '../../../Components/Jersey';
+import {withAppContext} from '../../../context/AppContext';
 
 class PlayersSelect extends React.Component {
   render() {

@@ -8,6 +8,7 @@ import Jersey from '../../Components/Jersey';
 import players from '../../constants/players';
 
 const Players = ({id}) => {
+
   return (
     <Panel id={id}>
       <PanelHeader>

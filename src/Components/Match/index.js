@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import ReactMomentCountDown from 'react-moment-countdown';
-import {Link, Button} from '@vkontakte/vkui';
+import {Button} from '@vkontakte/vkui';
 
 import ZenithLogo from '../../img/zenith.png';
 
@@ -12,7 +12,7 @@ import './Match.scss';
 
 const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCountdownEnd}) => {
   const countdown = moment(beginTime).subtract(10, 'm');
-  return rival ? (
+  return !!rival &&
     <div className='match'>
       <div className='match__top'>
         <div className='match__logo'>
@@ -27,7 +27,9 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
             })}>
               {game[0]}
             </div>
-          } : {
+          }
+          <b> : </b>
+          {
             game &&
             <div className={classNames('match__score', {
               'match__score--fail': game[0] > game[1],
@@ -70,12 +72,7 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
           {
             !window.matchMedia('(min-width: 576px)').matches ?
               <Button size='xl' component='a' href={buyTickets}>
-                <Link
-                  to={buyTickets}
-                  target='_blank'
-                >
-                  Купить билеты
-                </Link>
+                Купить билеты
               </Button> :
               <Button size='xl' onClick={() => window.open(buyTickets, '_blank')}>
                 Купить билеты
@@ -84,7 +81,6 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
         </div>
       }
     </div>
-  ) : (<></>)
 };
 
 export default Match;

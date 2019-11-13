@@ -23,8 +23,8 @@ const Thanks = ({id, go}) => {
             Результаты матча будут объявлены после завершения матча.
           </p>
           <Button
-            size="xl"
-            data-to='voting'
+            size='xl'
+            data-to='matches'
             onClick={go}
           >
             На главную

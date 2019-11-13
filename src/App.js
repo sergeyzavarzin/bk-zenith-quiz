@@ -10,9 +10,9 @@ import HelpView from './Panels/Help/HelpView';
 import Players from './Panels/Players';
 import Matches from './Panels/Matches';
 import MatchView from './Panels/MatchResults';
-import PlayersSelect from './Panels/PlayersSelect';
+import PlayersSelect from './Panels/Voting/PlayersSelect';
 import Table from './Panels/LeaderBoard';
-import Voting from './Panels/Voting';
+import Market from './Panels/Market';
 import Tossing from './Panels/Voting/Tossing';
 import Winner from './Panels/Voting/Winner';
 import TotalScore from './Panels/Voting/TotalScore';
@@ -28,7 +28,7 @@ class App extends React.Component {
   state = {
     user: null,
     activeStory: 'welcome-view',
-    activePanelVoting: 'voting',
+    activePanelStore: 'market',
     activePanelMatches: 'matches',
     activePanelTable: 'table',
     activePanelProfile: 'home',
@@ -38,7 +38,7 @@ class App extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.context.state.isUserNew && prevState.activeStory === 'welcome-view') {
       return {
-        activeStory: 'voting-view',
+        activeStory: 'market-view',
       };
     }
     return null;
@@ -54,7 +54,7 @@ class App extends React.Component {
     [story]: e.currentTarget.dataset.to
   });
 
-  goVoting = e => this.go('activePanelVoting')(e);
+  goStore= e => this.go('activePanelStore')(e);
   goMatches = e => this.go('activePanelMatches')(e);
   goProfile = e => this.go('activePanelProfile')(e);
   goPlayers = e => this.go('activePanelPlayers')(e);
@@ -62,35 +62,25 @@ class App extends React.Component {
 
   render() {
     const {
-      state : {
-        activeStory,
-        activePanelVoting,
-        activePanelMatches,
-        activePanelTable,
-        activePanelProfile,
-        activePanelPlayers,
-      },
-      props: {
-        context: {
-          state: {
-            firstFive,
-            twoScore,
-            threeScore,
-            user,
-            userScore,
-          },
-          addPlayerToFirstFive,
-          setTwoScore,
-          setThreeScore,
-        },
-      },
+      state,
+      props,
       onStoryChange,
-      goVoting,
+      goStore,
       goMatches,
       goTable,
       goPlayers,
       goProfile,
     } = this;
+
+    const {
+      activeStory, activePanelStore, activePanelMatches,
+      activePanelTable, activePanelProfile, activePanelPlayers,
+    } = state;
+
+    const {
+      state: {firstFive, twoScore, threeScore, user, userScore},
+      addPlayerToFirstFive, setTwoScore, setThreeScore,
+    } = props.context;
 
     const isVisibleAppBar = !['welcome-view'].includes(activeStory);
 
@@ -104,11 +94,17 @@ class App extends React.Component {
           />
         }
       >
-        <View id='voting-view' activePanel={activePanelVoting}>
-          <Voting id='voting' go={goVoting} changeStory={onStoryChange}/>
+        <View id='market-view' activePanel={activePanelStore}>
+          <Market id='market' go={goStore} changeStory={onStoryChange}/>
+        </View>
+
+        <View id='matches-view' activePanel={activePanelMatches}>
+          <Matches id='matches' go={goMatches}/>
+          <MatchView id='match-view' go={goMatches}/>
+
           <PlayersSelect
             id='select-first-five'
-            go={goVoting}
+            go={goMatches}
             nextScreen='select-tossing'
             label='Угадайте стартовую пятерку'
             title='Выберите игроков'
@@ -118,7 +114,7 @@ class App extends React.Component {
           />
           <PlayersSelect
             id='select-two-score'
-            go={goVoting}
+            go={goMatches}
             nextScreen='select-three-score'
             label='Кто первым забьет двухочковый?'
             title='Выберите игрока'
@@ -128,7 +124,7 @@ class App extends React.Component {
           />
           <PlayersSelect
             id='select-three-score'
-            go={goVoting}
+            go={goMatches}
             nextScreen='select-winner'
             label='Кто первым забьет трехочковый?'
             title='Выберите игрока'
@@ -136,15 +132,10 @@ class App extends React.Component {
             isSelected={(id) => id === threeScore}
             isButtonDisabled={!!threeScore}
           />
-          <Tossing id='select-tossing' go={goVoting}/>
-          <Winner id='select-winner' go={goVoting}/>
-          <TotalScore id='select-total-score' go={goVoting}/>
-          <Thanks id='thanks' go={goVoting}/>
-        </View>
-
-        <View id='matches-view' activePanel={activePanelMatches}>
-          <Matches id='matches' go={goMatches}/>
-          <MatchView id='match-view' go={goMatches}/>
+          <Tossing id='select-tossing' go={goMatches}/>
+          <Winner id='select-winner' go={goMatches}/>
+          <TotalScore id='select-total-score' go={goMatches}/>
+          <Thanks id='thanks' go={goMatches}/>
         </View>
 
         <View id='table-view' activePanel={activePanelTable}>
@@ -164,7 +155,7 @@ class App extends React.Component {
         <View id='welcome-view' activePanel='welcome'>
           <Welcome
             id='welcome'
-            startApp={() => this.setState({activeStory: 'voting-view'})}
+            startApp={() => this.setState({activeStory: 'matches-view'})}
           />
         </View>
       </Epic>
