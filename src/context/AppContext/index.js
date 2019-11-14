@@ -10,7 +10,7 @@ const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOn
 
 export const AppContext = React.createContext(true);
 
-class AppProvider extends Component {
+class AppContextProvider extends Component {
 
   state = {
     isAppLoaded: false,
@@ -193,4 +193,4 @@ export function withAppContext(Component) {
   };
 }
 
-export default AppProvider;
+export default AppContextProvider;

@@ -4,7 +4,7 @@ import {help as helpConstants} from '../../constants/help';
 
 export const HelpContext = React.createContext(true);
 
-class AppProvider extends Component {
+class HelpContextProvider extends Component {
 
   state = {
     selectedHelp: helpConstants[0],
@@ -38,4 +38,4 @@ export function withHelpContext(Component) {
   };
 }
 
-export default AppProvider;
+export default HelpContextProvider;

@@ -1,32 +1,51 @@
 import React from 'react';
-import {Panel, PanelHeader, HeaderButton, Div} from '@vkontakte/vkui';
-import Icon24Sort from '@vkontakte/icons/dist/24/sort';
+import {Panel, PanelHeader, HeaderButton, Div, PanelSpinner} from '@vkontakte/vkui';
+import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 
-import {withAppContext} from '../../context/AppContext';
+import {withMarketContext} from '../../context/MarketContext';
+
 import MarketItem from './MarketItem';
 
-const Store = ({id}) => {
-  return (
-    <Panel id={id}>
-      <PanelHeader
-        left={<HeaderButton><Icon24Sort/></HeaderButton>}
-      >
-        Магазин
-      </PanelHeader>
-      <Div>
-        <MarketItem
-          image='https://printbar.ru/upload/thumb/images/87/875d6fe5ja81_320x0.jpg'
-          name='Майка с принтом'
-          price={300}
-        />
-        <MarketItem
-          image='http://basket.fc-zenit.ru/upload/resize_cache/iblock/848/820_1300_0/8480c536fb94f2181deb43d91953e440.jpg'
-          name='Билет на матч'
-          price={500}
-        />
-      </Div>
-    </Panel>
-  )
-};
+class Store extends React.Component {
 
-export default withAppContext(Store);
+  componentDidMount() {
+    const {fetchMerch, state: {merch}} = this.props.context;
+    if (!merch) {
+      fetchMerch();
+    }
+  }
+
+  render() {
+    const {id, go, context} = this.props;
+    const {merch} = context.state;
+    return (
+      <Panel id={id}>
+        <PanelHeader
+          left={
+            <HeaderButton
+              data-to='home'
+              onClick={go}
+            >
+              <Icon24BrowserBack/>
+            </HeaderButton>}
+        >
+          Магазин
+        </PanelHeader>
+        <Div>
+          {
+            merch ? merch.map(item =>
+              <MarketItem
+                key={item.id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+              />
+            ) : <PanelSpinner/>
+          }
+        </Div>
+      </Panel>
+    )
+  }
+}
+
+export default withMarketContext(Store);

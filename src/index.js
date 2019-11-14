@@ -6,18 +6,21 @@ import connect from '@vkontakte/vk-connect';
 
 import App from './App';
 
-import AppProvider from './context/AppContext';
-import HelpProvider from './context/HelpContext';
+import AppContextProvider from './context/AppContext';
+import HelpContextProvider from './context/HelpContext';
+import MarketContextProvider from './context/MarketContext';
 
 connect.send('VKWebAppInit');
 
 const Application = () => {
   return (
-    <AppProvider>
-      <HelpProvider>
-        <App/>
-      </HelpProvider>
-    </AppProvider>
+    <AppContextProvider>
+      <HelpContextProvider>
+        <MarketContextProvider>
+          <App/>
+        </MarketContextProvider>
+      </HelpContextProvider>
+    </AppContextProvider>
   )
 };
 

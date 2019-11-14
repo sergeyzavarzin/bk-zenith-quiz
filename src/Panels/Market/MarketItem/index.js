@@ -6,11 +6,15 @@ import './MarketItem.scss';
 const MarketItem = ({image, name, price}) => {
   return (
     <div className='market-item'>
-      <img
-        className='market-item__image'
-        src={image}
-        alt={name}
-      />
+      <div
+        className='market-item__image-wrapper'
+      >
+        <img
+          className='market-item__image'
+          src={image}
+          alt={name}
+        />
+      </div>
       <div className='market-item__name'>{name}</div>
       <Button
         level='commerce'
