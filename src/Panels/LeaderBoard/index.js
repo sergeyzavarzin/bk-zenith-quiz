@@ -13,14 +13,14 @@ import {withAppContext} from '../../context/AppContext';
 
 class Table extends React.Component {
   render() {
-    const {id, context} = this.props;
+    const {id, appContext} = this.props;
     const {
       state: {
         leaderboard,
         isLeaderBoardLoaded
       },
       updateLeaderBoard
-    } = context;
+    } = appContext;
     return (
       <Panel id={id}>
         <PanelHeader>

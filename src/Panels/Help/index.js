@@ -6,7 +6,7 @@ import {withHelpContext} from '../../context/HelpContext';
 
 import {help} from '../../constants/help';
 
-const Help = ({id, go, context: {selectHelp}}) => {
+const Help = ({id, go, helpContext: {selectHelp}}) => {
   const select = (e) => {
     selectHelp(e.currentTarget.dataset.help);
     go(e);

@@ -9,6 +9,7 @@ class MarketContextProvider extends Component {
 
   state = {
     merch: null,
+    selectedMerchItem: null,
   };
 
   fetchMerch = () => {
@@ -17,12 +18,20 @@ class MarketContextProvider extends Component {
       .catch(err => console.log(err));
   };
 
+  setSelectedMerchItem = id => {
+    const {merch} = this.state;
+    this.setState({
+      selectedMerchItem: merch.find(item => item.id === id)
+    })
+  };
+
   render() {
     return (
       <MarketContext.Provider
         value={{
           state: this.state,
           fetchMerch: this.fetchMerch,
+          setSelectedMerchItem: this.setSelectedMerchItem,
         }}
       >
         {this.props.children}
@@ -35,7 +44,7 @@ export function withMarketContext(Component) {
   return function WrapperComponent(props) {
     return (
       <MarketContext.Consumer>
-        {state => <Component {...props} context={state}/>}
+        {state => <Component {...props} marketContext={state}/>}
       </MarketContext.Consumer>
     );
   };

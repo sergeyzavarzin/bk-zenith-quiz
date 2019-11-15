@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import connect from '@vkontakte/vk-connect';
 
-import App from './App';
+import App from './Components/App/App';
 
 import AppContextProvider from './context/AppContext';
 import HelpContextProvider from './context/HelpContext';

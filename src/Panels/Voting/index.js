@@ -7,8 +7,8 @@ import MatchItem from '../../Components/Match';
 
 import {withAppContext} from '../../context/AppContext';
 
-const Voting = ({id, go, changeStory, context}) => {
-  const {setActiveMatch, state} = context;
+const Voting = ({id, go, changeStory, appContext}) => {
+  const {setActiveMatch, state} = appContext;
   const {activeMatchVote, rivals, userVotes} = state;
   const isUserSendAnswerForCurrentVote = activeMatchVote && userVotes.some(vote => vote.matchId === activeMatchVote.id);
   const now = moment();

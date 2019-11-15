@@ -3,8 +3,8 @@ import {FixedLayout, Button, Input, FormLayoutGroup, FormLayout, Group, PanelHea
 
 import {withAppContext} from '../../../context/AppContext';
 
-const TotalScore = ({id, go, context}) => {
-  const {setRivalScore, setClubScore, sendVote, state} = context;
+const TotalScore = ({id, go, appContext}) => {
+  const {setRivalScore, setClubScore, sendVote, state} = appContext;
   const {activeMatchVote, rivals, clubScore, rivalScore} = state;
   const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId)
   return (

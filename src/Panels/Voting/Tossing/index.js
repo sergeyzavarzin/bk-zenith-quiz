@@ -5,8 +5,8 @@ import {withAppContext} from '../../../context/AppContext';
 
 import Zenith from '../../../img/zenith.png';
 
-const Tossing = ({id, go, context}) => {
-  const {setTossing, state} = context;
+const Tossing = ({id, go, appContext}) => {
+  const {setTossing, state} = appContext;
   const {rivals, activeMatchVote, tossing} = state;
   const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
   return (

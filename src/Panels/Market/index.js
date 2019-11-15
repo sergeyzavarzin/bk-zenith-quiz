@@ -9,15 +9,15 @@ import MarketItem from './MarketItem';
 class Store extends React.Component {
 
   componentDidMount() {
-    const {fetchMerch, state: {merch}} = this.props.context;
+    const {fetchMerch, state: {merch}} = this.props.marketContext;
     if (!merch) {
       fetchMerch();
     }
   }
 
   render() {
-    const {id, go, context} = this.props;
-    const {merch} = context.state;
+    const {id, go, marketContext} = this.props;
+    const {merch} = marketContext.state;
     return (
       <Panel id={id}>
         <PanelHeader
@@ -36,9 +36,11 @@ class Store extends React.Component {
             merch ? merch.map(item =>
               <MarketItem
                 key={item.id}
+                id={item.id}
                 image={item.image}
                 name={item.name}
                 price={item.price}
+                go={go}
               />
             ) : <PanelSpinner/>
           }

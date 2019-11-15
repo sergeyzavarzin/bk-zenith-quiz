@@ -45,7 +45,7 @@ const Home = ({ id, go, fetchedUser, userScore }) => (
 				<Cell
 					expandable
 					before={<Icon24Reorder />}
-					data-to='market'
+					data-to='purchases'
 					onClick={go}
 				>
 					Мои покупки

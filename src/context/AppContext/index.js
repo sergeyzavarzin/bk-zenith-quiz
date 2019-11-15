@@ -187,7 +187,7 @@ export function withAppContext(Component) {
   return function WrapperComponent(props) {
     return (
       <AppContext.Consumer>
-        {state => <Component {...props} context={state}/>}
+        {state => <Component {...props} appContext={state}/>}
       </AppContext.Consumer>
     );
   };

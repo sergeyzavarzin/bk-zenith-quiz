@@ -7,9 +7,9 @@ import Zenith from '../../img/zenith.png';
 
 import './Welcome.scss';
 
-const Welcome = ({id, startApp, context}) => {
+const Welcome = ({id, startApp, appContext}) => {
 
-  const {isAppLoaded} = context.state;
+  const {isAppLoaded} = appContext.state;
 
   const [slideIndex, setSlideIndex] = useState(0);
 

@@ -5,7 +5,7 @@ import MatchItem from '../../Components/Match';
 
 import {withAppContext} from '../../context/AppContext';
 
-const Matches = ({id, go, context: {state, setActiveMatch}}) => {
+const Matches = ({id, go, appContext: {state, setActiveMatch}}) => {
   const {matches, rivals} = state;
   const upcomingMatches = matches.filter(match => !match.score.length);
   const endedMatches = matches.filter(match => match.score.length);

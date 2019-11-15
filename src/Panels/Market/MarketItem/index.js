@@ -1,9 +1,12 @@
 import React from 'react';
 import {Button, Counter} from '@vkontakte/vkui';
 
+import {withMarketContext} from '../../../context/MarketContext';
+
 import './MarketItem.scss';
 
-const MarketItem = ({image, name, price}) => {
+const MarketItem = ({id, name, image, price, marketContext, go}) => {
+  const {setSelectedMerchItem} = marketContext;
   return (
     <div className='market-item'>
       <div
@@ -20,6 +23,11 @@ const MarketItem = ({image, name, price}) => {
         level='commerce'
         size='xl'
         after={<Counter>{price}</Counter>}
+        data-to='order'
+        onClick={e => {
+          setSelectedMerchItem(id);
+          go(e);
+        }}
       >
         Купить
       </Button>
@@ -27,4 +35,4 @@ const MarketItem = ({image, name, price}) => {
   )
 };
 
-export default MarketItem;
+export default withMarketContext(MarketItem);

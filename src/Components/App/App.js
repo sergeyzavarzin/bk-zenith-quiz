@@ -2,24 +2,26 @@ import React from 'react';
 import {Epic, View} from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 
-import AppBar from './Components/AppBar';
-import Home from './Panels/Home';
-import Help from './Panels/Help';
-import HelpView from './Panels/Help/HelpView';
-import Players from './Panels/Players';
-import Voting from './Panels/Voting';
-import Matches from './Panels/Matches';
-import MatchView from './Panels/MatchResults';
-import PlayersSelect from './Panels/Voting/PlayersSelect';
-import Table from './Panels/LeaderBoard';
-import Market from './Panels/Market';
-import Tossing from './Panels/Voting/Tossing';
-import Winner from './Panels/Voting/Winner';
-import TotalScore from './Panels/Voting/TotalScore';
-import Thanks from './Panels/Voting/Thanks';
-import Welcome from './Panels/Welcome';
+import AppBar from '../AppBar';
+import Home from '../../Panels/Home';
+import Help from '../../Panels/Help';
+import HelpView from '../../Panels/Help/HelpView';
+import Players from '../../Panels/Players';
+import Voting from '../../Panels/Voting';
+import Matches from '../../Panels/Matches';
+import MatchView from '../../Panels/MatchResults';
+import PlayersSelect from '../../Panels/Voting/PlayersSelect';
+import Table from '../../Panels/LeaderBoard';
+import Market from '../../Panels/Market';
+import Tossing from '../../Panels/Voting/Tossing';
+import Winner from '../../Panels/Voting/Winner';
+import TotalScore from '../../Panels/Voting/TotalScore';
+import Thanks from '../../Panels/Voting/Thanks';
+import Welcome from '../../Panels/Welcome';
+import Purchases from '../../Panels/Purchases';
+import Order from '../../Panels/Order';
 
-import {withAppContext} from './context/AppContext';
+import {withAppContext} from '../../context/AppContext';
 
 import './App.scss';
 
@@ -36,7 +38,7 @@ class App extends React.Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.context.state.isUserNew && prevState.activeStory === 'welcome-view') {
+    if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
       return {
         activeStory: 'voting-view',
       };
@@ -77,7 +79,7 @@ class App extends React.Component {
     const {
       state: {firstFive, twoScore, threeScore, user, userScore},
       addPlayerToFirstFive, setTwoScore, setThreeScore,
-    } = props.context;
+    } = props.appContext;
     const isVisibleAppBar = !['welcome-view'].includes(activeStory);
     return (
       <Epic
@@ -145,6 +147,8 @@ class App extends React.Component {
           <Help id='help' go={goProfile}/>
           <HelpView id='help-answer' go={goProfile}/>
           <Market id='market' go={goProfile}/>
+          <Purchases id='purchases' go={goProfile}/>
+          <Order id='order' go={goProfile}/>
         </View>
 
         <View id='welcome-view' activePanel='welcome'>

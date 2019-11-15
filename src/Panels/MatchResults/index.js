@@ -36,9 +36,9 @@ const Answer = ({children, isSuccess}) => {
   )
 };
 
-const MatchView = ({id, go, context}) => {
-  const {setActiveMatch} = context;
-  const {activeMatch, rivals, userVotes} = context.state;
+const MatchView = ({id, go, appContext}) => {
+  const {setActiveMatch} = appContext;
+  const {activeMatch, rivals, userVotes} = appContext.state;
 
   const currentRival = activeMatch && rivals.find(rival => rival.id === activeMatch.rivalId);
 

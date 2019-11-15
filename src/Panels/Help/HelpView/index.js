@@ -4,8 +4,8 @@ import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withHelpContext} from '../../../context/HelpContext';
 
-const HelpView = ({id, go, context}) => {
-  const {selectHelp, state: {selectedHelp}} = context;
+const HelpView = ({id, go, helpContext}) => {
+  const {selectHelp, state: {selectedHelp}} = helpContext;
   const goBack = (event) => {
     selectHelp(null);
     go(event);

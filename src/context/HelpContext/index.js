@@ -32,7 +32,7 @@ export function withHelpContext(Component) {
   return function WrapperComponent(props) {
     return (
       <HelpContext.Consumer>
-        {state => <Component {...props} context={state}/>}
+        {state => <Component {...props} helpContext={state}/>}
       </HelpContext.Consumer>
     );
   };
