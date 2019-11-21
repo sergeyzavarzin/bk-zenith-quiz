@@ -1,9 +1,9 @@
 import React from 'react';
 import {Div, Panel, PanelHeader, Group, FormLayout, Radio, Button, FixedLayout} from '@vkontakte/vkui';
 
-import {withAppContext} from '../../../context/AppContext';
+import {withAppContext} from '../../../Contexts/AppContext';
 
-import Zenith from '../../../img/zenith.png';
+import Zenith from '../../../Images/zenith.png';
 
 const Winner = ({id, go, appContext}) => {
   const {setWinner, state} = appContext;

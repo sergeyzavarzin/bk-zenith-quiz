@@ -1,14 +1,21 @@
 import React from 'react';
+import moment from 'moment';
 import {Cell, List, Group, PanelHeader, Panel} from '@vkontakte/vkui';
 
 import MatchItem from '../../Components/Match';
 
-import {withAppContext} from '../../context/AppContext';
+import {withAppContext} from '../../Contexts/AppContext';
 
 const Matches = ({id, go, appContext: {state, setActiveMatch}}) => {
   const {matches, rivals} = state;
-  const upcomingMatches = matches.filter(match => !match.score.length);
-  const endedMatches = matches.filter(match => match.score.length);
+  const sortByDate = (a, b) =>
+    new moment(a.startDateTime).format('YYYYMMDD') - new moment(b.startDateTime).format('YYYYMMDD');
+  const upcomingMatches = matches
+    .filter(match => !match.score.length)
+    .sort(sortByDate);
+  const endedMatches = matches
+    .filter(match => match.score.length)
+    .sort(sortByDate);
   const viewMatchInfo = (event, activeMatch) => {
     setActiveMatch(activeMatch);
     go(event);

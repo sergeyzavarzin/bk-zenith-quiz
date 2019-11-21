@@ -9,7 +9,7 @@ import {
   Avatar,
 } from '@vkontakte/vkui';
 
-import {withAppContext} from '../../context/AppContext';
+import {withAppContext} from '../../Contexts/AppContext';
 
 class Table extends React.Component {
   render() {
@@ -34,13 +34,13 @@ class Table extends React.Component {
             <List>
               {
                 leaderboard
-                  .sort((a, b) => a.score > b.score ? -1 : 1)
+                  .sort((a, b) => a.totalScore > b.totalScore ? -1 : 1)
                   .map(item =>
                     <Cell
-                      key={item.id}
+                      key={item._id}
                       before={<Avatar size={42} src={item.img}/>}
                       size="m"
-                      asideContent={`${item.score} очков`}
+                      asideContent={`${item.totalScore} очков`}
                     >
                       {item.name}
                     </Cell>

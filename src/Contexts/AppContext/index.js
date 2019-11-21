@@ -4,7 +4,7 @@ import axios from 'axios';
 import connectOnline from '@vkontakte/vk-connect';
 import connectMock from '@vkontakte/vk-connect-mock';
 
-import {API_URL} from '../../constants/endpoints';
+import {API_URL} from '../../Constants/endpoints';
 
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
@@ -18,6 +18,7 @@ class AppContextProvider extends Component {
     isUserNew: true,
     user: null,
     userScore: 0,
+    userTotalScore: 0,
     leaderboard: [],
     rivals: [],
     matches: [],
@@ -38,16 +39,23 @@ class AppContextProvider extends Component {
   }
 
   prepareAppData = () => {
-    const { subscribeVKActions, fetchMatches, fetchRivals, fetchUserData, fetchUserVotes, fetchLeaderBoard } = this;
+    const {
+      subscribeVKActions,
+      fetchMatches,
+      fetchRivals,
+      fetchUserData,
+      fetchUserVotes,
+      fetchLeaderBoard
+    } = this;
     subscribeVKActions();
     Promise
       .all([fetchRivals(), fetchMatches(), fetchUserData(), fetchLeaderBoard()])
       .then(([rivals, matches, userData, leaderboard]) => {
-        const {user, userScore, isUserNew} = userData;
+        const {user, userScore, userTotalScore, isUserNew} = userData;
         const sortedMatches = matches.filter(match => !match.score.length)
           .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
         const activeMatchVote = sortedMatches[0];
-        this.setState({user, userScore, rivals, matches, activeMatchVote, leaderboard, isUserNew});
+        this.setState({user, userScore, userTotalScore, rivals, matches, activeMatchVote, leaderboard, isUserNew});
         return user;
       })
       .then(async user => {
@@ -73,10 +81,11 @@ class AppContextProvider extends Component {
     const {id, first_name, last_name, photo_100} = user;
     const userData = await axios.get(`${API_URL}/user/${id}`);
     if (!userData.data) {
-      axios.post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
-      return {userScore: 0, user, isUserNew: true};
+      axios
+        .post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
+      return {userScore: 0, userTotalScore: 0, user, isUserNew: true};
     } else {
-      return {userScore: userData.data.score, user, isUserNew: false};
+      return {userScore: userData.data.score, userTotalScore: userData.data.totalScore, user, isUserNew: false};
     }
   };
 
@@ -107,6 +116,12 @@ class AppContextProvider extends Component {
       isLeaderBoardLoaded: false,
       leaderboard
     });
+  };
+
+  updateUserData = async () => {
+    const userData = await this.fetchUserData();
+    const {userScore, userTotalScore} = userData;
+    this.setState({userScore, userTotalScore})
   };
 
   addPlayerToFirstFive = (item) => {
@@ -174,6 +189,7 @@ class AppContextProvider extends Component {
           setRivalScore: this.setRivalScore,
           sendVote: this.sendVote,
           updateLeaderBoard: this.updateLeaderBoard,
+          updateUserData: this.updateUserData,
           setActiveMatch: (activeMatch) => this.setState({activeMatch}),
         }}
       >

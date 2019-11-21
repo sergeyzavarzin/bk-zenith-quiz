@@ -1,7 +1,7 @@
 import React from 'react';
 import {FixedLayout, Button, Input, FormLayoutGroup, FormLayout, Group, PanelHeader, Panel} from '@vkontakte/vkui';
 
-import {withAppContext} from '../../../context/AppContext';
+import {withAppContext} from '../../../Contexts/AppContext';
 
 const TotalScore = ({id, go, appContext}) => {
   const {setRivalScore, setClubScore, sendVote, state} = appContext;

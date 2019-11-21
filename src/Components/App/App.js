@@ -20,8 +20,9 @@ import Thanks from '../../Panels/Voting/Thanks';
 import Welcome from '../../Panels/Welcome';
 import Purchases from '../../Panels/Purchases';
 import Order from '../../Panels/Order';
+import OrderInfo from '../../Panels/OrderInfo';
 
-import {withAppContext} from '../../context/AppContext';
+import {withAppContext} from '../../Contexts/AppContext';
 
 import './App.scss';
 
@@ -30,17 +31,17 @@ class App extends React.Component {
   state = {
     user: null,
     activeStory: 'welcome-view',
-    activePanelStore: 'voting',
+    activePanelVoting: 'voting',
     activePanelMatches: 'matches',
     activePanelTable: 'table',
-    activePanelProfile: 'home',
+    activePanelProfile: 'market',
     activePanelPlayers: 'players',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
       return {
-        activeStory: 'voting-view',
+        activeStory: 'profile-view',
       };
     }
     return null;
@@ -73,11 +74,11 @@ class App extends React.Component {
       goProfile,
     } = this;
     const {
-      activeStory, activePanelStore, activePanelMatches,
+      activeStory, activePanelVoting, activePanelMatches,
       activePanelTable, activePanelProfile, activePanelPlayers,
     } = state;
     const {
-      state: {firstFive, twoScore, threeScore, user, userScore},
+      state: {firstFive, twoScore, threeScore},
       addPlayerToFirstFive, setTwoScore, setThreeScore,
     } = props.appContext;
     const isVisibleAppBar = !['welcome-view'].includes(activeStory);
@@ -91,7 +92,7 @@ class App extends React.Component {
           />
         }
       >
-        <View id='voting-view' activePanel={activePanelStore}>
+        <View id='voting-view' activePanel={activePanelVoting}>
           <Voting id='voting' go={goVoting} changeStory={onStoryChange}/>
           <PlayersSelect
             id='select-first-five'
@@ -143,12 +144,13 @@ class App extends React.Component {
         </View>
 
         <View id='profile-view' activePanel={activePanelProfile}>
-          <Home id='home' go={goProfile} fetchedUser={user} userScore={userScore}/>
+          <Home id='home' go={goProfile}/>
           <Help id='help' go={goProfile}/>
           <HelpView id='help-answer' go={goProfile}/>
           <Market id='market' go={goProfile}/>
           <Purchases id='purchases' go={goProfile}/>
           <Order id='order' go={goProfile}/>
+          <OrderInfo id='order-info' go={goProfile}/>
         </View>
 
         <View id='welcome-view' activePanel='welcome'>

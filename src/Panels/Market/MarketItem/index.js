@@ -1,12 +1,16 @@
 import React from 'react';
 import {Button, Counter} from '@vkontakte/vkui';
 
-import {withMarketContext} from '../../../context/MarketContext';
+import {withMarketContext} from '../../../Contexts/MarketContext';
 
 import './MarketItem.scss';
 
 const MarketItem = ({id, name, image, price, marketContext, go}) => {
   const {setSelectedMerchItem} = marketContext;
+  const handleButtonClick = e => {
+    setSelectedMerchItem(id);
+    go(e);
+  };
   return (
     <div className='market-item'>
       <div
@@ -24,10 +28,7 @@ const MarketItem = ({id, name, image, price, marketContext, go}) => {
         size='xl'
         after={<Counter>{price}</Counter>}
         data-to='order'
-        onClick={e => {
-          setSelectedMerchItem(id);
-          go(e);
-        }}
+        onClick={handleButtonClick}
       >
         Купить
       </Button>

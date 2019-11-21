@@ -1,0 +1,5 @@
+export const ORDER_STATUSES = {
+  CREATED: 'CREATED',
+  SENDED: 'SENDED',
+  DELIVERED: 'DELIVERED',
+};

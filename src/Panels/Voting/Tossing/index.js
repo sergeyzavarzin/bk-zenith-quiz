@@ -1,9 +1,9 @@
 import React from 'react';
 import {Div, FixedLayout, Button, Radio, FormLayout, Group, PanelHeader, Panel} from '@vkontakte/vkui';
 
-import {withAppContext} from '../../../context/AppContext';
+import {withAppContext} from '../../../Contexts/AppContext';
 
-import Zenith from '../../../img/zenith.png';
+import Zenith from '../../../Images/zenith.png';
 
 const Tossing = ({id, go, appContext}) => {
   const {setTossing, state} = appContext;

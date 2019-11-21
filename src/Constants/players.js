@@ -1,19 +1,19 @@
 import ROLES from './roles';
 
-import Albicy from '../img/Albicy_240x240.jpg';
-import Voronov from '../img/Voron_240x240.jpg';
-import Ponkrashov from '../img/Ponkr_240x240.jpg';
-import Renfro from '../img/Renf_240x240.jpg';
-import Khvorostov from '../img/Khvo_240x240.jpg';
-import Hollinz from '../img/Holli_240x240.jpg';
-import Abromajtiz from '../img/Abro_240x240.jpg';
-import Zubkov from '../img/Zub_240x240.jpg';
-import Ponitka from '../img/Poni_240x240.jpg';
-import Thomas from '../img/Tom_240x240.jpg';
-import Trushkin from '../img/Tru_240x240.jpg';
-import Iverson from '../img/Iver_240x240.jpg';
-import Ayon from '../img/Ayon_240x240.jpg';
-import Pushkov from '../img/Pukh_240x240.jpg';
+import Albicy from '../Images/Albicy_240x240.jpg';
+import Voronov from '../Images/Voron_240x240.jpg';
+import Ponkrashov from '../Images/Ponkr_240x240.jpg';
+import Renfro from '../Images/Renf_240x240.jpg';
+import Khvorostov from '../Images/Khvo_240x240.jpg';
+import Hollinz from '../Images/Holli_240x240.jpg';
+import Abromajtiz from '../Images/Abro_240x240.jpg';
+import Zubkov from '../Images/Zub_240x240.jpg';
+import Ponitka from '../Images/Poni_240x240.jpg';
+import Thomas from '../Images/Tom_240x240.jpg';
+import Trushkin from '../Images/Tru_240x240.jpg';
+import Iverson from '../Images/Iver_240x240.jpg';
+import Ayon from '../Images/Ayon_240x240.jpg';
+import Pushkov from '../Images/Pukh_240x240.jpg';
 
 const players = [
   {

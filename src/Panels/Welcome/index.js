@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel} from '@vkontakte/vkui';
 
-import {withAppContext} from '../../context/AppContext';
+import {withAppContext} from '../../Contexts/AppContext';
 
-import Zenith from '../../img/zenith.png';
+import Zenith from '../../Images/zenith.png';
 
 import './Welcome.scss';
 

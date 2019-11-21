@@ -1,0 +1,4 @@
+export const MERCH_TYPES = {
+  DIGITAL: 'DIGITAL',
+  PHYSICAL: 'PHYSICAL',
+};

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Div, Button, Panel, PanelHeader} from '@vkontakte/vkui';
 
-import {withAppContext} from '../../../context/AppContext';
+import {withAppContext} from '../../../Contexts/AppContext';
 
-import Cup from '../../../img/trophy.svg';
+import Cup from '../../../Images/trophy.svg';
 
 import './Thanks.scss';
 
@@ -24,7 +24,7 @@ const Thanks = ({id, go}) => {
           </p>
           <Button
             size='xl'
-            data-to='matches'
+            data-to='voting'
             onClick={go}
           >
             На главную

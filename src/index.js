@@ -6,9 +6,9 @@ import connect from '@vkontakte/vk-connect';
 
 import App from './Components/App/App';
 
-import AppContextProvider from './context/AppContext';
-import HelpContextProvider from './context/HelpContext';
-import MarketContextProvider from './context/MarketContext';
+import AppContextProvider from './Contexts/AppContext';
+import HelpContextProvider from './Contexts/HelpContext';
+import MarketContextProvider from './Contexts/MarketContext';
 
 connect.send('VKWebAppInit');
 

@@ -1,4 +1,4 @@
-import Avatar from '../img/avatar.png';
+import Avatar from '../Images/avatar.png';
 
 const table = [
   {

@@ -13,14 +13,22 @@ import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 
-import players from '../../constants/players';
-import Zenith from '../../img/zenith.png';
+import players from '../../Constants/players';
+import Zenith from '../../Images/zenith.png';
 
 import Jersey from '../../Components/Jersey';
 
-import {withAppContext} from '../../context/AppContext';
+import {withAppContext} from '../../Contexts/AppContext';
 
 import './MatchResult.scss';
+
+const resStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  fontSize: 20
+};
 
 const True = () => <Icon24Done style={{color: 'green'}}/>;
 const False = () =>  <Icon24Cancel style={{color: 'red'}}/>;
@@ -71,13 +79,7 @@ const MatchView = ({id, go, appContext}) => {
             Зенит : {currentRival.name}
           </PanelHeader>
           <Group title='Победитель'>
-            <Div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-              fontSize: 20
-            }}>
+            <Div style={resStyle}>
               {
                 activeMatch.score[0] !== activeMatch.score[1] ?
                   <>
@@ -123,13 +125,7 @@ const MatchView = ({id, go, appContext}) => {
               <Answer
                 isSuccess={userVoteMatch.score[0] > userVoteMatch.score[1]}
               >
-                <Div style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  fontSize: 20
-                }}>
+                <Div style={resStyle}>
                   {
                     userVoteMatch.score[0] !== userVoteMatch.score[1] ?
                       <>
@@ -210,8 +206,8 @@ const MatchView = ({id, go, appContext}) => {
                   asideContent={
                     <div style={{display: 'flex', alignItems: 'center'}}>
                       {
-                        (userVoteMatch && userVoteMatch.firstFive.includes(player.id)) ?
-                          <True/> : <False/>
+                        userVoteMatch &&
+                        <>{userVoteMatch.firstFive.includes(player.id) ? <True/> : <False/>}</>
                       }
                       <Jersey number={player.number}/>
                     </div>
@@ -229,15 +225,7 @@ const MatchView = ({id, go, appContext}) => {
             }
           </Group>
           <Group title='Вбрасывание выиграла команда'>
-            <Div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: 20
-              }}
-            >
+            <Div style={resStyle}>
               <img
                 width={100}
                 src={activeMatch.tossing ? Zenith : currentRival.logo}

@@ -5,7 +5,7 @@ import Icon56NotificationOutline from '@vkontakte/icons/dist/56/notification_out
 
 import MatchItem from '../../Components/Match';
 
-import {withAppContext} from '../../context/AppContext';
+import {withAppContext} from '../../Contexts/AppContext';
 
 const Voting = ({id, go, changeStory, appContext}) => {
   const {setActiveMatch, state} = appContext;

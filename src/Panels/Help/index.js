@@ -2,9 +2,9 @@ import React from 'react';
 import {PanelHeader, Panel, List, Group, Cell, HeaderButton} from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
-import {withHelpContext} from '../../context/HelpContext';
+import {withHelpContext} from '../../Contexts/HelpContext';
 
-import {help} from '../../constants/help';
+import {help} from '../../Constants/help';
 
 const Help = ({id, go, helpContext: {selectHelp}}) => {
   const select = (e) => {

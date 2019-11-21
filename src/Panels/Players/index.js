@@ -5,7 +5,7 @@ import Icon24LogoTwitter from '@vkontakte/icons/dist/24/logo_twitter';
 
 import Jersey from '../../Components/Jersey';
 
-import players from '../../constants/players';
+import players from '../../Constants/players';
 
 const Players = ({id}) => {
 

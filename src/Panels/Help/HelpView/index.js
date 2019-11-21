@@ -2,7 +2,7 @@ import React from 'react';
 import {Div, Group, PanelHeader, Panel, HeaderButton} from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 
-import {withHelpContext} from '../../../context/HelpContext';
+import {withHelpContext} from '../../../Contexts/HelpContext';
 
 const HelpView = ({id, go, helpContext}) => {
   const {selectHelp, state: {selectedHelp}} = helpContext;

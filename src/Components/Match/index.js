@@ -4,9 +4,9 @@ import moment from 'moment';
 import ReactMomentCountDown from 'react-moment-countdown';
 import {Button} from '@vkontakte/vkui';
 
-import ZenithLogo from '../../img/zenith.png';
+import ZenithLogo from '../../Images/zenith.png';
 
-import {DATE_FORMAT} from '../../constants/format';
+import {DATE_FORMAT} from '../../Constants/format';
 
 import './Match.scss';
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {help as helpConstants} from '../../constants/help';
+import {help as helpConstants} from '../../Constants/help';
 
 export const HelpContext = React.createContext(true);
 

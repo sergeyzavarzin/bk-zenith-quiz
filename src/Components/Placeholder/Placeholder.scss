@@ -1,0 +1,29 @@
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 40vh;
+
+  &__icon {
+    color: var(--placeholder_icon_foreground_secondary)
+  }
+
+  &__title {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 500;
+    color: var(--text_primary);
+    padding: 0 40px;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  &__body {
+
+  }
+
+  &__button {
+
+  }
+}

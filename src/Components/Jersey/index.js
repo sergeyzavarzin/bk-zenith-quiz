@@ -1,6 +1,6 @@
 import React from 'react';
 
-import JerseyImg from '../../img/jersey.svg';
+import JerseyImg from '../../Images/jersey.svg';
 
 import './Jersey.scss';
 

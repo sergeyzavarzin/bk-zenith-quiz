@@ -2,7 +2,7 @@ import React from 'react';
 import {Panel, PanelHeader, HeaderButton, Div, PanelSpinner} from '@vkontakte/vkui';
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 
-import {withMarketContext} from '../../context/MarketContext';
+import {withMarketContext} from '../../Contexts/MarketContext';
 
 import MarketItem from './MarketItem';
 
@@ -33,7 +33,7 @@ class Store extends React.Component {
         </PanelHeader>
         <Div>
           {
-            merch ? merch.map(item =>
+            merch ? merch.slice().reverse().map(item =>
               <MarketItem
                 key={item.id}
                 id={item.id}
