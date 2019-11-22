@@ -36,9 +36,10 @@ class MarketContextProvider extends Component {
     })
   };
 
-  createOrder = (id, userId, merchId, total, createDateTime, deliveryAddress, status, comment, cb) => {
+  createOrder = (id, userId, firstName, lastName, merchId, total, createDateTime, deliveryAddress, status, comment, cb) => {
     const {merch} = this.state;
     const orderInfo = JSON.stringify({
+      firstName, lastName,
       merch: merch.find(item => item.id === merchId),
       total, createDateTime, deliveryAddress, status, comment
     });
@@ -54,8 +55,7 @@ class MarketContextProvider extends Component {
   fetchUserOrders = userId => {
     axios
       .get(`${API_URL}/order?${queryParams({userId})}`)
-      .then(({data}) => this.setState({orders: data}))
-      .catch(() => 1);
+      .then(({data}) => this.setState({orders: data}));
   };
 
   render() {

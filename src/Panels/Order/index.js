@@ -79,7 +79,10 @@ class Order extends React.Component {
       });
       return false;
     }
-    const {email, phone, country, city, address, postIndex, description} = this.state;
+    const {
+      firstName, lastName, description,
+      email, phone, country, city, address, postIndex
+    } = this.state;
     const deliveryData = JSON.stringify({email, phone, country, city, address, postIndex});
     const orderCreateCallback = () => {
       updateUserData();
@@ -87,7 +90,7 @@ class Order extends React.Component {
     };
     createOrder(
       `${selectedMerchItem.id}-${user.id}-${moment().format('DD-MM-YYYY-HH-mm-ss')}`,
-      user.id, selectedMerchItem.id, selectedMerchItem.price,
+      user.id, firstName, lastName, selectedMerchItem.id, selectedMerchItem.price,
       moment(), deliveryData, ORDER_STATUSES.CREATED, description || '', orderCreateCallback
     );
     go(e);

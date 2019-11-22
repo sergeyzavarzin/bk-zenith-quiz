@@ -3,6 +3,8 @@ import {Avatar, Cell, Group, List, PanelHeader, Panel} from '@vkontakte/vkui';
 import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24MarketOutline from '@vkontakte/icons/dist/24/market_outline';
 import Icon24Reorder from '@vkontakte/icons/dist/24/reorder';
+import Icon28Game from '@vkontakte/icons/dist/28/game';
+import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
@@ -17,12 +19,15 @@ const Home = ({id, go, appContext}) => {
           <Cell
             before={user.photo_200 ? <Avatar size={72} src={user.photo_200}/> : null}
             size='l'
-            description={`${userScore} баллов доступно`}
+            description={`${userTotalScore} очков`}
           >
             {`${user.first_name} ${user.last_name}`}
           </Cell>
-					<Cell>
-						{userTotalScore} очков / {1} место в турнироной таблице
+          <Cell before={<Icon28FavoriteOutline width={24}/>}>
+            {userScore} баллов доступно
+          </Cell>
+					<Cell before={<Icon28Game width={24}/>}>
+						1 место в турнироной таблице
 					</Cell>
         </Group>
       }

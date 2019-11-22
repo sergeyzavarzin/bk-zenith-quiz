@@ -34,7 +34,7 @@ class App extends React.Component {
     activePanelVoting: 'voting',
     activePanelMatches: 'matches',
     activePanelTable: 'table',
-    activePanelProfile: 'market',
+    activePanelProfile: 'purchases',
     activePanelPlayers: 'players',
   };
 
