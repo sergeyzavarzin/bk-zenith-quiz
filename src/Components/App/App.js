@@ -34,14 +34,14 @@ class App extends React.Component {
     activePanelVoting: 'voting',
     activePanelMatches: 'matches',
     activePanelTable: 'table',
-    activePanelProfile: 'purchases',
+    activePanelProfile: 'home',
     activePanelPlayers: 'players',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
       return {
-        activeStory: 'profile-view',
+        activeStory: 'voting-view',
       };
     }
     return null;
