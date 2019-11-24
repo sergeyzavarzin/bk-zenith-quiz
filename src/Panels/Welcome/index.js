@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel} from '@vkontakte/vkui';
 
-import {withAppContext} from '../../Contexts/AppContext';
+import slides from './slides';
 
-import Zenith from '../../Images/zenith.png';
+import {withAppContext} from '../../Contexts/AppContext';
 
 import './Welcome.scss';
 
@@ -13,40 +13,38 @@ const Welcome = ({id, startApp, appContext}) => {
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const next = () => slideIndex !== 2 ? setSlideIndex(slideIndex + 1) : startApp();
+  const next = () => slideIndex !== slides.length - 1 ? setSlideIndex(slideIndex + 1) : startApp();
 
   return (
-    <Panel id={id} theme='white' centered={!isAppDataFetching}>
+    <Panel id={id} theme='white'>
       {
         isAppDataFetching ? <>
-          <Div>
-            <div className='welcome'>
-              <Gallery
-                slideWidth='100%'
-                slideIndex={slideIndex}
-                onChange={slideIndex => setSlideIndex(slideIndex)}
-                style={{height: '100%'}}
-              >
-                <div className='welcome__slide'>
-                  <img src={Zenith} alt='Зенит' style={{marginBottom: 30, maxWidth: 200}}/>
-                  Добро пожаловать в приложение "Стартовая пятерка".
-                </div>
-                <div className='welcome__slide'>
-                  Голосуй и зарабатывай очки.
-                </div>
-                <div className='welcome__slide'>
-                  Лучшие голосующие получат призы.
-                </div>
-              </Gallery>
-            </div>
-          </Div>
+          <div className='welcome'>
+            <Gallery
+              slideWidth='100%'
+              slideIndex={slideIndex}
+              onChange={slideIndex => setSlideIndex(slideIndex)}
+              style={{height: '100%'}}
+            >
+              {
+                slides.map((slide, index) =>
+                  <div
+                    key={index}
+                    className='welcome__slide'
+                  >
+                    <img className='welcome__image' src={slide} alt=''/>
+                  </div>
+                )
+              }
+            </Gallery>
+          </div>
           <FixedLayout vertical='bottom'>
             <Div>
               <Button
                 size="xl"
                 onClick={next}
               >
-                {slideIndex === 2 ? 'Начать' : 'Далее'}
+                {slideIndex === slides.length - 1 ? 'Начать' : 'Далее'}
               </Button>
             </Div>
           </FixedLayout>

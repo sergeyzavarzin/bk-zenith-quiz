@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import {Avatar, Cell, Group, List, PanelHeader, Panel, Spinner, PullToRefresh} from '@vkontakte/vkui';
-import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24MarketOutline from '@vkontakte/icons/dist/24/market_outline';
 import Icon24Reorder from '@vkontakte/icons/dist/24/reorder';
 import Icon28Game from '@vkontakte/icons/dist/28/game';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
+import Icon28HelpOutline from '@vkontakte/icons/dist/28/help_outline';
 
 import {withAppContext} from '../../Contexts/AppContext';
 import {API_URL} from '../../Constants/endpoints';
@@ -27,16 +27,22 @@ class Home extends React.Component {
       .then(({data: {position}}) => this.setState({position}))
   };
 
+  onRefresh = () => {
+    const {updateUserData} = this.props.appContext;
+    this.getUserPosition();
+    updateUserData();
+  };
+
   render() {
     const {id, go, appContext} = this.props;
     const {position} = this.state;
-    const {state, updateUserData} = appContext;
+    const {state} = appContext;
     const {user, userScore, userTotalScore, isUserDataFetching} = state;
     return (
       <Panel id={id}>
         <PanelHeader>Профиль</PanelHeader>
         <PullToRefresh
-          onRefresh={updateUserData}
+          onRefresh={this.onRefresh}
           isFetching={isUserDataFetching}
         >
           {
@@ -55,7 +61,7 @@ class Home extends React.Component {
               <Cell before={<Icon28Game width={24}/>}>
                 {
                   position ?
-                    <span>{position} место в турнироной таблице</span> :
+                    <span>{position} место в турнирной таблице</span> :
                     <Spinner size='small'/>
                 }
               </Cell>
@@ -65,7 +71,7 @@ class Home extends React.Component {
             <List>
               <Cell
                 expandable
-                before={<Icon24Settings/>}
+                before={<Icon28HelpOutline size={24}/>}
                 data-to='help'
                 onClick={go}
               >

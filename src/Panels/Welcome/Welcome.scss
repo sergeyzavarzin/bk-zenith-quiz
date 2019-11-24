@@ -6,4 +6,10 @@
     flex-direction: column;
     text-align: center;
   }
+
+  &__image {
+    max-height: 100vh;
+    overflow: hidden;
+    object-fit: cover;
+  }
 }

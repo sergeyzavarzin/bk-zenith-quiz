@@ -14,3 +14,9 @@ body[scheme="client_dark"] {
 body[scheme="client_ligth"] {
   --linkButtonColor: #fff;
 }
+
+#welcome {
+  .Panel__in {
+    padding: 0;
+  }
+}
