@@ -1,11 +1,11 @@
 import isMobile from '../../Constants/isMobile';
 
-import SlideMobile1 from './images/mobile/screen-matches.svg';
-import SlideMobile2 from './images/mobile/screen-voting.svg';
-import SlideMobile3 from './images/mobile/screen-score.svg';
-import SlideMobile4 from './images/mobile/screen-table.svg';
-import SlideMobile5 from './images/mobile/screen-team.svg';
-import SlideMobile6 from './images/mobile/screen-final.svg';
+import SlideMobile1 from './images/mobile/slide-matches.svg';
+import SlideMobile2 from './images/mobile/slide-voting.svg';
+import SlideMobile3 from './images/mobile/slide-score.svg';
+import SlideMobile4 from './images/mobile/slide-table.svg';
+import SlideMobile5 from './images/mobile/slide-team.svg';
+import SlideMobile6 from './images/mobile/slide-final.svg';
 
 import SlideDesktop1 from './images/desktop/screen-matches.svg';
 import SlideDesktop2 from './images/desktop/screen-voting.svg';

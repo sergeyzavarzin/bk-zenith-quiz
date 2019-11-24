@@ -25,6 +25,7 @@ const Welcome = ({id, startApp, appContext}) => {
               slideIndex={slideIndex}
               onChange={slideIndex => setSlideIndex(slideIndex)}
               style={{height: '100%'}}
+              bullets='dark'
             >
               {
                 slides.map((slide, index) =>
@@ -39,9 +40,9 @@ const Welcome = ({id, startApp, appContext}) => {
             </Gallery>
           </div>
           <FixedLayout vertical='bottom'>
-            <Div>
+            <Div style={{padding: '0 40px'}}>
               <Button
-                size="xl"
+                size='xl'
                 onClick={next}
               >
                 {slideIndex === slides.length - 1 ? 'Начать' : 'Далее'}
