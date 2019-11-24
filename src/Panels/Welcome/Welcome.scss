@@ -5,11 +5,19 @@
     align-items: center;
     flex-direction: column;
     text-align: center;
+
+    @media all and (min-width: 768px){
+      background: var(--main-gradient);
+    }
   }
 
   &__image {
     max-height: 100vh;
     overflow: hidden;
     object-fit: cover;
+
+    @media all and (min-width: 768px){
+      object-fit: unset;
+    }
   }
 }
