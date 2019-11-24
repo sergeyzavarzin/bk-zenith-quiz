@@ -54,7 +54,6 @@ class OrderInfo extends React.Component {
   render() {
     const {id, go} = this.props;
     const {orderInfo, orderData, deliveryData} = this.state;
-    console.log(orderData, deliveryData);
     const {merch, firstName, lastName, comment, status} = orderData;
     const {address, city, country, email, phone, postIndex,} = deliveryData;
     return (

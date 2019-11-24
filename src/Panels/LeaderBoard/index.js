@@ -16,8 +16,8 @@ class Table extends React.Component {
     const {id, appContext} = this.props;
     const {
       state: {
-        leaderboard,
-        isLeaderBoardLoaded
+        leaderBoard,
+        isLeaderBoardFetching
       },
       updateLeaderBoard
     } = appContext;
@@ -28,12 +28,12 @@ class Table extends React.Component {
         </PanelHeader>
         <PullToRefresh
           onRefresh={updateLeaderBoard}
-          isFetching={isLeaderBoardLoaded}
+          isFetching={isLeaderBoardFetching}
         >
           <Group title={`Топ 10 голосующих`}>
             <List>
               {
-                leaderboard
+                leaderBoard
                   .sort((a, b) => a.totalScore > b.totalScore ? -1 : 1)
                   .map(item =>
                     <Cell

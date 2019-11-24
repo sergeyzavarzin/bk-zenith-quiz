@@ -9,16 +9,16 @@ import './Welcome.scss';
 
 const Welcome = ({id, startApp, appContext}) => {
 
-  const {isAppLoaded} = appContext.state;
+  const {isAppDataFetching} = appContext.state;
 
   const [slideIndex, setSlideIndex] = useState(0);
 
   const next = () => slideIndex !== 2 ? setSlideIndex(slideIndex + 1) : startApp();
 
   return (
-    <Panel id={id} theme='white' centered={!isAppLoaded}>
+    <Panel id={id} theme='white' centered={!isAppDataFetching}>
       {
-        isAppLoaded ? <>
+        isAppDataFetching ? <>
           <Div>
             <div className='welcome'>
               <Gallery
