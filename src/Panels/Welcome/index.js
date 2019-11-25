@@ -40,7 +40,7 @@ const Welcome = ({id, startApp, appContext}) => {
             </Gallery>
           </div>
           <FixedLayout vertical='bottom'>
-            <Div style={{padding: '0 40px', marginBottom: -15}}>
+            <Div style={{padding: '0 50px', marginBottom: -15}}>
               <Button
                 size='xl'
                 onClick={next}
