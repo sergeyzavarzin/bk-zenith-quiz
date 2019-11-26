@@ -174,7 +174,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Страна'
-              defaultValue={!!country ? country : ''}
+              defaultValue={!!country && country}
               onChange={e => handleChange(e)('country')}
             />
           }
@@ -182,6 +182,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Город'
+              defaultValue={!!city && city}
               onChange={e => handleChange(e)('city')}
             />
           }
