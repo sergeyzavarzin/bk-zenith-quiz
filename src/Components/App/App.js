@@ -38,14 +38,14 @@ class App extends React.Component {
     activePanelPlayers: 'players',
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
-  //     return {
-  //       activeStory: 'voting-view',
-  //     };
-  //   }
-  //   return null;
-  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
+      return {
+        activeStory: 'voting-view',
+      };
+    }
+    return null;
+  }
 
   onStoryChange = e => {
     this.setState({

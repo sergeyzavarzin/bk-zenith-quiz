@@ -13,6 +13,7 @@ import {withAppContext} from '../../Contexts/AppContext';
 
 import {ORDER_STATUSES} from '../../Constants/orderStatuses';
 import {MERCH_TYPES} from '../../Constants/merchTypes';
+import {AGREEMENT} from '../../Constants/links';
 
 const ERRORS = {
   VALIDATION: {
@@ -39,7 +40,8 @@ class Order extends React.Component {
     address: null,
     postIndex: null,
     description: null,
-    isAgree: false,
+    agreement: false,
+    privacy: false,
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -99,7 +101,7 @@ class Order extends React.Component {
   render() {
     const {handleChange, handleSubmit} = this;
     const {id, go, marketContext} = this.props;
-    const {isValid, isAgree, firstName, lastName, country, city, error} = this.state;
+    const {isValid, firstName, lastName, country, city, error, agreement, privacy} = this.state;
     const {selectedMerchItem} = marketContext.state;
     const isPhysical = selectedMerchItem.type === MERCH_TYPES.PHYSICAL;
     return (
@@ -116,7 +118,7 @@ class Order extends React.Component {
         <Group title='Вы выбрали'>
           <List>
             <Cell
-              size="l"
+              size='l'
               before={<Avatar type='image' src={selectedMerchItem.image}/>}
               description={`${selectedMerchItem.price} баллов`}
               bottomContent={<span>В наличии: {selectedMerchItem.count} шт.</span>}
@@ -131,7 +133,7 @@ class Order extends React.Component {
             <Input
               top='Имя'
               status={!firstName && !isValid && 'error'}
-              defaultValue={firstName}
+              defaultValue={!!firstName && firstName}
               onChange={e => handleChange(e)('firstName')}
             />
           }
@@ -139,7 +141,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Фамилия'
-              defaultValue={lastName}
+              defaultValue={!!lastName && lastName}
               onChange={e => handleChange(e)('lastName')}
             />
           }
@@ -161,7 +163,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Страна'
-              defaultValue={country}
+              defaultValue={!!country && country}
               onChange={e => handleChange(e)('country')}
             />
           }
@@ -169,7 +171,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Город'
-              defaultValue={city}
+              defaultValue={!!city && city}
               onChange={e => handleChange(e)('city')}
             />
           }
@@ -201,9 +203,22 @@ class Order extends React.Component {
             </FormStatus>
           }
           <Checkbox
-            onChange={() => this.setState({isAgree: !isAgree})}
+            onChange={() => this.setState({agreement: !agreement})}
+            style={{fontSize: 12}}
           >
-            Согласен со всем <Link>этим</Link>
+            Я согласен на <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
+          </Checkbox>
+          <Checkbox
+            onChange={() => this.setState({privacy: !privacy})}
+            style={{fontSize: 12}}
+          >
+            Я ознакомлен с <Link href={AGREEMENT} target='_blank'>пользовательским соглашением</Link>
+          </Checkbox>
+          <Checkbox
+            onChange={() => 1}
+            style={{fontSize: 12}}
+          >
+            Хочу получать интересные новости о команде и событиях на указаную выше электронную почту
           </Checkbox>
           <Button
             level='commerce'
@@ -211,7 +226,7 @@ class Order extends React.Component {
             after={<Counter>{selectedMerchItem.price}</Counter>}
             data-to='purchases'
             onClick={handleSubmit}
-            style={!isAgree ? {
+            style={(!agreement || !privacy) ? {
               opacity: 0.5,
               pointerEvents: 'none',
               userSelect: 'none',
