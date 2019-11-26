@@ -6,6 +6,8 @@ import {withMarketContext} from '../../Contexts/MarketContext';
 
 import MarketItem from './MarketItem';
 
+import './Market.scss';
+
 class Store extends React.Component {
 
   componentDidMount() {
@@ -32,18 +34,20 @@ class Store extends React.Component {
           Магазин
         </PanelHeader>
         <Div>
-          {
-            merch ? merch.slice().reverse().map(item =>
-              <MarketItem
-                key={item.id}
-                id={item.id}
-                image={item.image}
-                name={item.name}
-                price={item.price}
-                go={go}
-              />
-            ) : <PanelSpinner/>
-          }
+          <div className='market'>
+            {
+              merch ? merch.slice().reverse().map(item =>
+                <MarketItem
+                  key={item.id}
+                  id={item.id}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  go={go}
+                />
+              ) : <PanelSpinner/>
+            }
+          </div>
         </Div>
       </Panel>
     )

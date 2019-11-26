@@ -15,7 +15,9 @@ import {validateEmail} from '../../Utils/validation';
 
 import {ORDER_STATUSES} from '../../Constants/orderStatuses';
 import {MERCH_TYPES} from '../../Constants/merchTypes';
-import {AGREEMENT} from '../../Constants/links';
+import {AGREEMENT, PRIVACY_POLICY} from '../../Constants/links';
+import {DELIVERY} from '../../Constants/delivery';
+import {subscribeUserToEmailNotification} from '../../Services/subscribeUserToEmailNotification';
 
 const ERRORS = {
   VALIDATION: {
@@ -42,8 +44,10 @@ class Order extends React.Component {
     address: null,
     postIndex: null,
     description: null,
+    deliveryType: DELIVERY.MATCH.type,
     agreement: false,
     privacy: false,
+    isUserWantToNewsSubscribe: false,
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -52,8 +56,8 @@ class Order extends React.Component {
       return {
         firstName: user.first_name,
         lastName: user.last_name,
-        country: user.country && user.country.title,
-        city: user.city && user.city.title,
+        country: user.country ? user.country.title : '',
+        city: user.city ? user.city.title : '',
       }
     }
   }
@@ -61,9 +65,9 @@ class Order extends React.Component {
   handleChange = e => field => this.setState({[field]: e.currentTarget.value, isValid: true});
 
   isValid = () => {
-    const {firstName, lastName, email, phone, country, city, address, postIndex, description} = this.state;
+    const {firstName, lastName, email, phone, country, city, address, postIndex} = this.state;
     return firstName && lastName && phone && country &&
-      city && address && postIndex && description && validateEmail(email);
+      city && address && postIndex && validateEmail(email);
   };
 
   handleSubmit = e => {
@@ -85,10 +89,11 @@ class Order extends React.Component {
       return false;
     }
     const {
-      firstName, lastName, description,
-      email, phone, country, city, address, postIndex
+      firstName, lastName, description, deliveryType,
+      email, phone, country, city, address, postIndex,
+      isUserWantToNewsSubscribe,
     } = this.state;
-    const deliveryData = JSON.stringify({email, phone, country, city, address, postIndex});
+    const deliveryData = JSON.stringify({deliveryType, email, phone, country, city, address, postIndex});
     const orderCreateCallback = () => {
       updateUserData();
       fetchMerch();
@@ -98,13 +103,16 @@ class Order extends React.Component {
       user.id, firstName, lastName, selectedMerchItem.id, selectedMerchItem.price,
       moment(), deliveryData, ORDER_STATUSES.CREATED, description || '', orderCreateCallback
     );
+    if (isUserWantToNewsSubscribe) {
+      subscribeUserToEmailNotification(email);
+    }
     go(e);
   };
 
   render() {
     const {handleChange, handleSubmit} = this;
     const {id, go, marketContext} = this.props;
-    const {isValid, firstName, lastName, country, city, error, agreement, privacy} = this.state;
+    const {isValid, firstName, lastName, country, city, error, agreement, privacy, isUserWantToNewsSubscribe} = this.state;
     const {selectedMerchItem} = marketContext.state;
     const isPhysical = selectedMerchItem.type === MERCH_TYPES.PHYSICAL;
     return (
@@ -131,14 +139,25 @@ class Order extends React.Component {
           </List>
         </Group>
         <FormLayout>
-          <Select
-            top='Способ доставки'
-            value='AT_MATCH'
-          >
-            <option value='AT_MATCH'>Заберу на домашнем матче</option>
-            <option value='POST'>Почтой</option>
-            <option value='COURIER'>Курьером по Санкт-Петребургу</option>
-          </Select>
+          {
+            isPhysical &&
+            <Select
+              top='Способ доставки'
+              defaultValue={DELIVERY.MATCH.type}
+              onChange={({target: {value: deliveryType}}) => this.setState({deliveryType})}
+            >
+              {
+                Object.keys(DELIVERY).map(type =>
+                  <option
+                    key={type}
+                    value={DELIVERY[type].type}
+                  >
+                    {DELIVERY[type].label}
+                  </option>
+                )
+              }
+            </Select>
+          }
           {
             isPhysical &&
             <Input
@@ -224,11 +243,11 @@ class Order extends React.Component {
             onChange={() => this.setState({privacy: !privacy})}
           >
             <div style={{fontSize: 14, marginLeft: -5}}>
-              Я ознакомлен с <Link href={AGREEMENT} target='_blank'>пользовательским соглашением</Link>
+              Я ознакомлен с <Link href={PRIVACY_POLICY} target='_blank'>пользовательским соглашением</Link>
             </div>
           </Checkbox>
           <Checkbox
-            onChange={() => 1}
+            onChange={() => this.setState({isUserWantToNewsSubscribe: !isUserWantToNewsSubscribe})}
           >
             <div style={{fontSize: 14, marginLeft: -5}}>
               Хочу получать интересные новости о&nbsp;команде и&nbsp;событиях на&nbsp;электронную почту

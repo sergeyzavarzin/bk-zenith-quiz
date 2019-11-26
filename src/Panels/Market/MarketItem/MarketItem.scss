@@ -3,6 +3,11 @@
   padding: 15px;
   background: #fff;
   margin-bottom: 15px;
+  width: 100%;
+
+  @media (min-width: 600px) {
+    width: 46%;
+  }
 
   &__image {
     max-width: 100%;

@@ -9,6 +9,7 @@ import Icon20PhoneOutline from '@vkontakte/icons/dist/20/phone_outline';
 import Icon20UserOutline from '@vkontakte/icons/dist/20/user_outline';
 import Icon20MessageOutline from '@vkontakte/icons/dist/20/message_outline';
 import Icon20RecentOutline from '@vkontakte/icons/dist/20/recent_outline';
+import Icon24Gift from '@vkontakte/icons/dist/24/gift';
 
 import {API_URL} from '../../Constants/endpoints';
 import {MERCH_TYPES} from '../../Constants/merchTypes';
@@ -17,6 +18,7 @@ import {withMarketContext} from '../../Contexts/MarketContext';
 import {copyTextToClipboard} from '../../Utils/copyToClipboard';
 
 import './OrderInfo.scss';
+import {DELIVERY} from '../../Constants/delivery';
 
 const STATUSES = {
   CREATED: 'В обработке',
@@ -55,7 +57,7 @@ class OrderInfo extends React.Component {
     const {id, go} = this.props;
     const {orderInfo, orderData, deliveryData} = this.state;
     const {merch, firstName, lastName, comment, status} = orderData;
-    const {address, city, country, email, phone, postIndex,} = deliveryData;
+    const {address, city, country, email, phone, postIndex, deliveryType} = deliveryData;
     return (
       <Panel id={id}>
         <PanelHeader
@@ -131,6 +133,10 @@ class OrderInfo extends React.Component {
                   {
                     phone &&
                     <Cell before={<Icon20PhoneOutline/>}>{phone}</Cell>
+                  }
+                  {
+                    deliveryType &&
+                    <Cell before={<Icon24Gift width={20}/>}>{DELIVERY[deliveryType].label}</Cell>
                   }
                   {
                     comment &&
