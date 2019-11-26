@@ -52,8 +52,8 @@ class Order extends React.Component {
       return {
         firstName: user.first_name,
         lastName: user.last_name,
-        country: user.country.title || '',
-        city: user.city.title || '',
+        country: user.country && user.country.title,
+        city: user.city && user.city.title,
       }
     }
   }
