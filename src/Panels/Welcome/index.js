@@ -1,17 +1,20 @@
 import React, {useState} from 'react';
-import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel} from '@vkontakte/vkui';
+import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel, Checkbox, Link, FormLayout} from '@vkontakte/vkui';
 
 import slides from './slides';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
 import './Welcome.scss';
+import {AGREEMENT, PRIVACY_POLICY} from '../../Constants/links';
 
 const Welcome = ({id, startApp, appContext}) => {
 
   const {isAppDataFetching} = appContext.state;
 
   const [slideIndex, setSlideIndex] = useState(0);
+  const [agreement, setAgreement] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
 
   const next = () => slideIndex !== slides.length - 1 ? setSlideIndex(slideIndex + 1) : startApp();
 
@@ -40,13 +43,41 @@ const Welcome = ({id, startApp, appContext}) => {
             </Gallery>
           </div>
           <FixedLayout vertical='bottom'>
-            <Div style={{padding: '0 50px', marginBottom: -15}}>
-              <Button
-                size='xl'
-                onClick={next}
-              >
-                {slideIndex === slides.length - 1 ? 'Начать' : 'Далее'}
-              </Button>
+            <Div style={{marginBottom: -15}}>
+              {
+                slideIndex === slides.length - 1 &&
+                <div className='welcome__checkbox-wrapper'>
+                  <Checkbox
+                    onChange={() => setAgreement(!agreement)}
+                  >
+                    <div>
+                      Я согласен на <br/> <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
+                    </div>
+                  </Checkbox>
+                  <Checkbox
+                    onChange={() => setPrivacy(!privacy)}
+                  >
+                    <div>
+                      Я ознакомлен с <br/> <Link href={PRIVACY_POLICY} target='_blank'>пользовательским соглашением</Link>
+                    </div>
+                  </Checkbox>
+                </div>
+              }
+              <div className='welcome__button'>
+                <Button
+                  size='xl'
+                  onClick={next}
+                  style={
+                    (slideIndex === slides.length - 1 && (!agreement || !privacy)) ? {
+                      opacity: 0.5,
+                      pointerEvents: 'none',
+                      userSelect: 'none',
+                    } : {}
+                  }
+                >
+                  {slideIndex === slides.length - 1 ? 'Начать' : 'Далее'}
+                </Button>
+              </div>
             </Div>
           </FixedLayout>
         </> : <PanelSpinner/>

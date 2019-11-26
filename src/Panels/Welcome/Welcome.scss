@@ -20,4 +20,13 @@
       object-fit: unset;
     }
   }
+
+  &__button {
+    padding: 0 50px;
+  }
+
+  &__checkbox-wrapper {
+    padding: 0 15px;
+    margin-bottom: 30px;
+  }
 }
