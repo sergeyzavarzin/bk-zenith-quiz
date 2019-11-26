@@ -64,10 +64,11 @@ class Order extends React.Component {
 
   handleChange = e => field => this.setState({[field]: e.currentTarget.value, isValid: true});
 
+  // TODO: VALIDATION!
   isValid = () => {
-    const {firstName, lastName, email, phone, country, city, address, postIndex} = this.state;
-    return firstName && lastName && phone && country &&
-      city && address && postIndex && validateEmail(email);
+    const {firstName, lastName, email, phone, country, city, address, postIndex, deliveryType} = this.state;
+    return deliveryType === DELIVERY.POST.type ? (firstName && lastName && phone && validateEmail(email) &&
+      country && city && address && postIndex) : (firstName && lastName && phone && validateEmail(email));
   };
 
   handleSubmit = e => {
@@ -98,10 +99,11 @@ class Order extends React.Component {
       updateUserData();
       fetchMerch();
     };
+    const status = deliveryType === DELIVERY.MATCH.type ? ORDER_STATUSES.AWAITING_EXTRADITION : ORDER_STATUSES.CREATED;
     createOrder(
       `${selectedMerchItem.id}-${user.id}-${moment().format('DD-MM-YYYY-HH-mm-ss')}`,
       user.id, firstName, lastName, selectedMerchItem.id, selectedMerchItem.price,
-      moment(), deliveryData, ORDER_STATUSES.CREATED, description || '', orderCreateCallback
+      moment(), deliveryData, status, description || '', orderCreateCallback
     );
     if (isUserWantToNewsSubscribe) {
       subscribeUserToEmailNotification(email);
@@ -112,7 +114,10 @@ class Order extends React.Component {
   render() {
     const {handleChange, handleSubmit} = this;
     const {id, go, marketContext} = this.props;
-    const {isValid, firstName, lastName, country, city, error, agreement, privacy, isUserWantToNewsSubscribe} = this.state;
+    const {
+      isValid, firstName, lastName, country, city, error,
+      agreement, privacy, isUserWantToNewsSubscribe, deliveryType
+    } = this.state;
     const {selectedMerchItem} = marketContext.state;
     const isPhysical = selectedMerchItem.type === MERCH_TYPES.PHYSICAL;
     return (
@@ -171,26 +176,21 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Фамилия'
+              status={!lastName && !isValid && 'error'}
               defaultValue={!!lastName && lastName}
               onChange={e => handleChange(e)('lastName')}
             />
           }
           {
             isPhysical &&
-            <Input
-              top='E-mail'
-              onChange={e => handleChange(e)('email')}
-            />
+            <Input top='E-mail' onChange={e => handleChange(e)('email')}/>
           }
           {
             isPhysical &&
-            <Input
-              top='Телефон'
-              onChange={e => handleChange(e)('phone')}
-            />
+            <Input top='Телефон' onChange={e => handleChange(e)('phone')}/>
           }
           {
-            isPhysical &&
+            isPhysical && deliveryType === DELIVERY.POST.type &&
             <Input
               top='Страна'
               defaultValue={!!country && country}
@@ -198,7 +198,7 @@ class Order extends React.Component {
             />
           }
           {
-            isPhysical &&
+            isPhysical && deliveryType === DELIVERY.POST.type &&
             <Input
               top='Город'
               defaultValue={!!city && city}
@@ -206,25 +206,16 @@ class Order extends React.Component {
             />
           }
           {
-            isPhysical &&
-            <Input
-              top='Адрес'
-              onChange={e => handleChange(e)('address')}
-            />
+            isPhysical && deliveryType === DELIVERY.POST.type &&
+            <Input top='Адрес' onChange={e => handleChange(e)('address')}/>
           }
           {
-            isPhysical &&
-            <Input
-              top='Почтовый индекс'
-              onChange={e => handleChange(e)('postIndex')}
-            />
+            isPhysical && deliveryType === DELIVERY.POST.type &&
+            <Input top='Почтовый индекс' onChange={e => handleChange(e)('postIndex')}/>
           }
           {
-            isPhysical &&
-            <Textarea
-              top='Пожелания'
-              onChange={e => handleChange(e)('description')}
-            />
+            isPhysical && deliveryType === DELIVERY.POST.type &&
+            <Textarea top='Комментарий' onChange={e => handleChange(e)('description')}/>
           }
           {
             !isValid &&

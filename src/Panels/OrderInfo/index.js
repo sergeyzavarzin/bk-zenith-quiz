@@ -17,11 +17,16 @@ import {withMarketContext} from '../../Contexts/MarketContext';
 
 import {copyTextToClipboard} from '../../Utils/copyToClipboard';
 
-import './OrderInfo.scss';
 import {DELIVERY} from '../../Constants/delivery';
 
+import './OrderInfo.scss';
+
+// TODO: add status titles to global constant
 const STATUSES = {
   CREATED: 'В обработке',
+  AWAITING_EXTRADITION: 'Ожидает выдачи',
+  SENDED: 'Отправлено',
+  DELIVERED: 'Доставлено'
 };
 
 class OrderInfo extends React.Component {
