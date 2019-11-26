@@ -4,12 +4,14 @@ import {
   Panel, PanelHeader, HeaderButton,
   FormLayout, Input, Button, Checkbox,
   Textarea, Link, Counter, FormStatus, Group,
-  List, Cell, Avatar
+  List, Cell, Avatar, Select,
 } from '@vkontakte/vkui';
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 
 import {withMarketContext} from '../../Contexts/MarketContext';
 import {withAppContext} from '../../Contexts/AppContext';
+
+import {validateEmail} from '../../Utils/validation';
 
 import {ORDER_STATUSES} from '../../Constants/orderStatuses';
 import {MERCH_TYPES} from '../../Constants/merchTypes';
@@ -60,7 +62,8 @@ class Order extends React.Component {
 
   isValid = () => {
     const {firstName, lastName, email, phone, country, city, address, postIndex, description} = this.state;
-    return firstName && lastName && email && phone && country && city && address && postIndex && description;
+    return firstName && lastName && phone && country &&
+      city && address && postIndex && description && validateEmail(email);
   };
 
   handleSubmit = e => {
@@ -128,6 +131,14 @@ class Order extends React.Component {
           </List>
         </Group>
         <FormLayout>
+          <Select
+            top='Способ доставки'
+            value='AT_MATCH'
+          >
+            <option value='AT_MATCH'>Заберу на домашнем матче</option>
+            <option value='POST'>Почтой</option>
+            <option value='COURIER'>Курьером по Санкт-Петребургу</option>
+          </Select>
           {
             isPhysical &&
             <Input
@@ -163,7 +174,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Страна'
-              defaultValue={!!country && country}
+              defaultValue={!!country ? country : ''}
               onChange={e => handleChange(e)('country')}
             />
           }
@@ -171,7 +182,7 @@ class Order extends React.Component {
             isPhysical &&
             <Input
               top='Город'
-              defaultValue={!!city && city}
+              defaultValue={!!city ? city : ''}
               onChange={e => handleChange(e)('city')}
             />
           }
@@ -204,21 +215,24 @@ class Order extends React.Component {
           }
           <Checkbox
             onChange={() => this.setState({agreement: !agreement})}
-            style={{fontSize: 12}}
           >
-            Я согласен на <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
+            <div style={{fontSize: 14, marginLeft: -5}}>
+              Я согласен на <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
+            </div>
           </Checkbox>
           <Checkbox
             onChange={() => this.setState({privacy: !privacy})}
-            style={{fontSize: 12}}
           >
-            Я ознакомлен с <Link href={AGREEMENT} target='_blank'>пользовательским соглашением</Link>
+            <div style={{fontSize: 14, marginLeft: -5}}>
+              Я ознакомлен с <Link href={AGREEMENT} target='_blank'>пользовательским соглашением</Link>
+            </div>
           </Checkbox>
           <Checkbox
             onChange={() => 1}
-            style={{fontSize: 12}}
           >
-            Хочу получать интересные новости о команде и событиях на указаную выше электронную почту
+            <div style={{fontSize: 14, marginLeft: -5}}>
+              Хочу получать интересные новости о&nbsp;команде и&nbsp;событиях на&nbsp;электронную почту
+            </div>
           </Checkbox>
           <Button
             level='commerce'

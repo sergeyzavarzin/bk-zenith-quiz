@@ -21,6 +21,7 @@ import Welcome from '../../Panels/Welcome';
 import Purchases from '../../Panels/Purchases';
 import Order from '../../Panels/Order';
 import OrderInfo from '../../Panels/OrderInfo';
+import Settings from '../../Panels/Settings';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
@@ -151,6 +152,7 @@ class App extends React.Component {
           <Purchases id='purchases' go={goProfile}/>
           <Order id='order' go={goProfile}/>
           <OrderInfo id='order-info' go={goProfile}/>
+          <Settings id='settings' go={goProfile}/>
         </View>
 
         <View id='welcome-view' activePanel='welcome'>

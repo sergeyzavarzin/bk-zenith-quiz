@@ -6,6 +6,7 @@ import Icon24Reorder from '@vkontakte/icons/dist/24/reorder';
 import Icon28Game from '@vkontakte/icons/dist/28/game';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28HelpOutline from '@vkontakte/icons/dist/28/help_outline';
+import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 
 import {withAppContext} from '../../Contexts/AppContext';
 import {API_URL} from '../../Constants/endpoints';
@@ -71,7 +72,15 @@ class Home extends React.Component {
             <List>
               <Cell
                 expandable
-                before={<Icon28HelpOutline size={24}/>}
+                before={<Icon24Settings/>}
+                data-to='settings'
+                onClick={go}
+              >
+                Настройки
+              </Cell>
+              <Cell
+                expandable
+                before={<Icon28HelpOutline width={24}/>}
                 data-to='help'
                 onClick={go}
               >
