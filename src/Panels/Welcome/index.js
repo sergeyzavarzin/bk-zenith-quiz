@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel, Checkbox, Link, FormLayout} from '@vkontakte/vkui';
+import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel, Checkbox, Link} from '@vkontakte/vkui';
 
 import slides from './slides';
 
@@ -46,18 +46,18 @@ const Welcome = ({id, startApp, appContext}) => {
             <Div style={{marginBottom: -15}}>
               {
                 slideIndex === slides.length - 1 &&
-                <div className='welcome__checkbox-wrapper'>
+                <div className='welcome-checkbox__wrapper'>
                   <Checkbox
                     onChange={() => setAgreement(!agreement)}
                   >
-                    <div>
+                    <div className='welcome-checkbox__text'>
                       Я согласен на <br/> <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
                     </div>
                   </Checkbox>
                   <Checkbox
                     onChange={() => setPrivacy(!privacy)}
                   >
-                    <div>
+                    <div className='welcome-checkbox__text'>
                       Я ознакомлен с <br/> <Link href={PRIVACY_POLICY} target='_blank'>пользовательским соглашением</Link>
                     </div>
                   </Checkbox>

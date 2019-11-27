@@ -3,7 +3,7 @@ import moment from 'moment';
 import {
   Panel, PanelHeader, HeaderButton,
   FormLayout, Input, Button, Checkbox,
-  Textarea, Link, Counter, FormStatus, Group,
+  Textarea, Counter, FormStatus, Group,
   List, Cell, Avatar, Select,
 } from '@vkontakte/vkui';
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
@@ -15,7 +15,6 @@ import {validateEmail} from '../../Utils/validation';
 
 import {ORDER_STATUSES} from '../../Constants/orderStatuses';
 import {MERCH_TYPES} from '../../Constants/merchTypes';
-import {AGREEMENT, PRIVACY_POLICY} from '../../Constants/links';
 import {DELIVERY} from '../../Constants/delivery';
 import {subscribeUserToEmailNotification} from '../../Services/subscribeUserToEmailNotification';
 
@@ -45,8 +44,6 @@ class Order extends React.Component {
     postIndex: null,
     description: null,
     deliveryType: DELIVERY.MATCH.type,
-    agreement: false,
-    privacy: false,
     isUserWantToNewsSubscribe: false,
   };
 
@@ -62,7 +59,7 @@ class Order extends React.Component {
     }
   }
 
-  handleChange = e => field => this.setState({[field]: e.currentTarget.value, isValid: true});
+  handleChange = field => e => this.setState({[field]: e.currentTarget.value, isValid: true});
 
   // TODO: VALIDATION!
   isValid = () => {
@@ -74,7 +71,7 @@ class Order extends React.Component {
   handleSubmit = e => {
     const {go, marketContext, appContext} = this.props;
     const {state: {userScore, user}, updateUserData} = appContext;
-    const {createOrder, fetchMerch, state: {selectedMerchItem}} = marketContext;
+    const {state: {selectedMerchItem}, createOrder, fetchMerch} = marketContext;
     if (userScore < selectedMerchItem.price) {
       this.setState({
         error: ERRORS.PRICE,
@@ -115,8 +112,7 @@ class Order extends React.Component {
     const {handleChange, handleSubmit} = this;
     const {id, go, marketContext} = this.props;
     const {
-      isValid, firstName, lastName, country, city, error,
-      agreement, privacy, isUserWantToNewsSubscribe, deliveryType
+      isValid, firstName, lastName, country, city, error, isUserWantToNewsSubscribe, deliveryType
     } = this.state;
     const {selectedMerchItem} = marketContext.state;
     const isPhysical = selectedMerchItem.type === MERCH_TYPES.PHYSICAL;
@@ -169,7 +165,7 @@ class Order extends React.Component {
               top='Имя'
               status={!firstName && !isValid && 'error'}
               defaultValue={!!firstName && firstName}
-              onChange={e => handleChange(e)('firstName')}
+              onChange={handleChange('firstName')}
             />
           }
           {
@@ -178,23 +174,23 @@ class Order extends React.Component {
               top='Фамилия'
               status={!lastName && !isValid && 'error'}
               defaultValue={!!lastName && lastName}
-              onChange={e => handleChange(e)('lastName')}
+              onChange={handleChange('lastName')}
             />
           }
           {
             isPhysical &&
-            <Input top='E-mail' onChange={e => handleChange(e)('email')}/>
+            <Input top='E-mail' onChange={handleChange('email')}/>
           }
           {
             isPhysical &&
-            <Input top='Телефон' onChange={e => handleChange(e)('phone')}/>
+            <Input top='Телефон' onChange={handleChange('phone')}/>
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
             <Input
               top='Страна'
               defaultValue={!!country && country}
-              onChange={e => handleChange(e)('country')}
+              onChange={handleChange('country')}
             />
           }
           {
@@ -202,20 +198,20 @@ class Order extends React.Component {
             <Input
               top='Город'
               defaultValue={!!city && city}
-              onChange={e => handleChange(e)('city')}
+              onChange={handleChange('city')}
             />
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
-            <Input top='Адрес' onChange={e => handleChange(e)('address')}/>
+            <Input top='Адрес' onChange={handleChange('address')}/>
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
-            <Input top='Почтовый индекс' onChange={e => handleChange(e)('postIndex')}/>
+            <Input top='Почтовый индекс' onChange={handleChange('postIndex')}/>
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
-            <Textarea top='Комментарий' onChange={e => handleChange(e)('description')}/>
+            <Textarea top='Комментарий' onChange={handleChange('description')}/>
           }
           {
             !isValid &&
@@ -223,20 +219,6 @@ class Order extends React.Component {
               {error.body}
             </FormStatus>
           }
-          <Checkbox
-            onChange={() => this.setState({agreement: !agreement})}
-          >
-            <div style={{fontSize: 14, marginLeft: -5}}>
-              Я согласен на <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
-            </div>
-          </Checkbox>
-          <Checkbox
-            onChange={() => this.setState({privacy: !privacy})}
-          >
-            <div style={{fontSize: 14, marginLeft: -5}}>
-              Я ознакомлен с <Link href={PRIVACY_POLICY} target='_blank'>пользовательским соглашением</Link>
-            </div>
-          </Checkbox>
           <Checkbox
             onChange={() => this.setState({isUserWantToNewsSubscribe: !isUserWantToNewsSubscribe})}
           >
@@ -250,11 +232,6 @@ class Order extends React.Component {
             after={<Counter>{selectedMerchItem.price}</Counter>}
             data-to='purchases'
             onClick={handleSubmit}
-            style={(!agreement || !privacy) ? {
-              opacity: 0.5,
-              pointerEvents: 'none',
-              userSelect: 'none',
-            } : {}}
           >
             Купить
           </Button>

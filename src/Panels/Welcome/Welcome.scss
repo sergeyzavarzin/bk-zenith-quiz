@@ -26,9 +26,15 @@
   &__button {
     padding: 0 50px;
   }
+}
 
-  &__checkbox-wrapper {
+.welcome-checkbox {
+  &__wrapper {
     padding: 0 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+  }
+
+  &__text {
+    color: #000000;
   }
 }
