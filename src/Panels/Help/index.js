@@ -37,7 +37,7 @@ const Help = ({id, go, helpContext: {selectHelp}}) => {
                 data-help={item.id}
                 onClick={select}
               >
-                {item.q}
+                {item.question}
               </Cell>
             )
           }

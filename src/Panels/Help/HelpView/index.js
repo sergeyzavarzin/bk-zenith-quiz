@@ -4,6 +4,8 @@ import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withHelpContext} from '../../../Contexts/HelpContext';
 
+import './HelpView.scss';
+
 const HelpView = ({id, go, helpContext}) => {
   const {selectHelp, state: {selectedHelp}} = helpContext;
   const goBack = (event) => {
@@ -25,9 +27,11 @@ const HelpView = ({id, go, helpContext}) => {
       </PanelHeader>
       {
         selectedHelp &&
-        <Group title={selectedHelp.q}>
+        <Group title={selectedHelp.question}>
           <Div>
-            {selectedHelp.a}
+            <div className='help-view'>
+              {selectedHelp.answer}
+            </div>
           </Div>
         </Group>
       }

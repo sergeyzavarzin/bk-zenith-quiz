@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
-import {Div, PanelSpinner, FixedLayout, Gallery, Button, Panel, Checkbox, Link} from '@vkontakte/vkui';
-
-import slides from './slides';
+import {
+  Div, PanelSpinner, FixedLayout, Gallery,
+  Button, Panel, Checkbox, Link
+} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
-import './Welcome.scss';
 import {AGREEMENT, PRIVACY_POLICY} from '../../Constants/links';
+
+import slides from './slides';
+
+import './Welcome.scss';
 
 const Welcome = ({id, startApp, appContext}) => {
 
