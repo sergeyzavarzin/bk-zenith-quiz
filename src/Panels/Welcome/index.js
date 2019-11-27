@@ -22,6 +22,14 @@ const Welcome = ({id, startApp, appContext}) => {
 
   const next = () => slideIndex !== slides.length - 1 ? setSlideIndex(slideIndex + 1) : startApp();
 
+  const handleChange = slideIndex => {
+    if (slideIndex < slides.length - 1) {
+      setAgreement(false);
+      setPrivacy(false);
+    }
+    setSlideIndex(slideIndex);
+  };
+
   return (
     <Panel id={id} theme='white'>
       {
@@ -30,7 +38,7 @@ const Welcome = ({id, startApp, appContext}) => {
             <Gallery
               slideWidth='100%'
               slideIndex={slideIndex}
-              onChange={slideIndex => setSlideIndex(slideIndex)}
+              onChange={handleChange}
               style={{height: '100%'}}
               bullets='dark'
             >
@@ -55,14 +63,24 @@ const Welcome = ({id, startApp, appContext}) => {
                     onChange={() => setAgreement(!agreement)}
                   >
                     <div className='welcome-checkbox__text'>
-                      Я согласен на <br/> <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
+                      <p>
+                        Я согласен на
+                      </p>
+                      <p>
+                        <Link href={AGREEMENT} target='_blank'>обработку персональных данных</Link>
+                      </p>
                     </div>
                   </Checkbox>
                   <Checkbox
                     onChange={() => setPrivacy(!privacy)}
                   >
                     <div className='welcome-checkbox__text'>
-                      Я ознакомлен с <br/> <Link href={PRIVACY_POLICY} target='_blank'>пользовательским соглашением</Link>
+                      <p>
+                        Я ознакомлен с
+                      </p>
+                      <p>
+                        <Link href={PRIVACY_POLICY} target='_blank'>пользовательским соглашением</Link>
+                      </p>
                     </div>
                   </Checkbox>
                 </div>

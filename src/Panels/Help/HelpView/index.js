@@ -16,13 +16,11 @@ const HelpView = ({id, go, helpContext}) => {
     <Panel id={id}>
       <PanelHeader
         left={
-          <HeaderButton
-            data-to='help'
-            onClick={goBack}
-          >
+          <HeaderButton data-to='help' onClick={goBack}>
             <Icon24Back/>
           </HeaderButton>
-        }>
+        }
+      >
         Помощь
       </PanelHeader>
       {

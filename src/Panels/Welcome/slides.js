@@ -14,9 +14,10 @@ import SlideDesktop3 from './images/desktop/slide-score.svg';
 import SlideDesktop4 from './images/desktop/slide-matches.svg';
 import SlideDesktop5 from './images/desktop/slide-table.svg';
 import SlideDesktop6 from './images/desktop/slide-team.svg';
+import SlideDesktop7 from './images/desktop/slide-final.svg';
 
 const mobile = [SlideMobile1, SlideMobile2, SlideMobile3, SlideMobile4, SlideMobile5, SlideMobile6, SlideMobile7];
 
-const desktop = [SlideDesktop1, SlideDesktop2, SlideDesktop3, SlideDesktop4, SlideDesktop5, SlideDesktop6];
+const desktop = [SlideDesktop1, SlideDesktop2, SlideDesktop3, SlideDesktop4, SlideDesktop5, SlideDesktop6, SlideDesktop7];
 
 export default isMobile ? mobile : desktop;

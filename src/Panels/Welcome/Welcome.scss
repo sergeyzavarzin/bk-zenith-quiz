@@ -1,3 +1,5 @@
+@import '../../Constants/variables';
+
 .welcome {
   overflow: hidden;
 
@@ -8,7 +10,7 @@
     flex-direction: column;
     text-align: center;
 
-    @media all and (min-width: 768px){
+    @media all and #{$media} {
       background: var(--main-gradient);
     }
   }
@@ -18,13 +20,18 @@
     overflow: hidden;
     object-fit: cover;
 
-    @media all and (min-width: 768px){
+    @media all and #{$media} {
       object-fit: unset;
     }
   }
 
   &__button {
     padding: 0 50px;
+
+    @media all and #{$media} {
+      width: 70%;
+      margin: 0 auto 25px;
+    }
   }
 }
 
@@ -32,9 +39,23 @@
   &__wrapper {
     padding: 0 15px;
     margin-bottom: 20px;
+
+    @media all and #{$media} {
+      width: 70%;
+      margin: 0 auto 30px;
+    }
   }
 
   &__text {
     color: #000000;
+
+    p {
+      display: block;
+      margin: 0;
+
+      @media all and #{$media} {
+        display: inline-block;
+      }
+    }
   }
 }
