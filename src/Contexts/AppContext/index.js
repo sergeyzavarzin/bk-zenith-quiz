@@ -119,7 +119,7 @@ class AppContextProvider extends Component {
   };
 
   fetchLeaderBoard = async () => {
-    const leaderBoard = await axios.get(`${API_URL}/user/leaderBoard`);
+    const leaderBoard = await axios.get(`${API_URL}/user/leaderboard`);
     return leaderBoard.data;
   };
 
@@ -164,6 +164,7 @@ class AppContextProvider extends Component {
   };
 
   getActiveMatchVote = matches => {
+    if (!matches.length) return null;
     const sortedMatches = matches
       .filter(match => !match.score.length)
       .sort((a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime)));
