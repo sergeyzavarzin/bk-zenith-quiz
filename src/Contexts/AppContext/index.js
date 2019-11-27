@@ -150,9 +150,12 @@ class AppContextProvider extends Component {
   };
 
   getActiveMatchVote = matches => {
-    const sortedMatches = matches.filter(match => !match.score.length)
-      .sort((a, b) => new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
-    return sortedMatches[0];
+    const sortedMatches = matches
+      .filter(match => !match.score.length)
+      // .filter(matches => )
+      .sort((a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime)));
+    const now = moment();
+    return moment.duration(now.diff(sortedMatches[0].startDateTime)).asHours() > -25 ? sortedMatches[0] : null;
   };
 
   sendVote = () => {

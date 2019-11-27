@@ -24,7 +24,7 @@ const MarketItem = ({id, name, image, price, marketContext, go}) => {
       </div>
       <div className='market-item__name'>{name}</div>
       <Button
-        level='commerce'
+        level='primary'
         size='xl'
         after={<Counter>{price}</Counter>}
         data-to='order'

@@ -9,14 +9,14 @@ import {withAppContext} from '../../Contexts/AppContext';
 const Matches = ({id, go, appContext}) => {
   const {state, setActiveMatch, updateMatches} = appContext;
   const {matches, rivals, isMatchesFetching} = state;
-  const sortByDate = (a, b) =>
-    new moment(a.startDateTime).format('YYYYMMDD') - new moment(b.startDateTime).format('YYYYMMDD');
+  const sortByDateDESC = (a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime));
+  const sortByDateASC = (a, b) => moment.utc(b.startDateTime).diff(moment.utc(a.startDateTime));
   const upcomingMatches = matches
     .filter(match => !match.score.length)
-    .sort(sortByDate);
+    .sort(sortByDateDESC);
   const endedMatches = matches
     .filter(match => match.score.length)
-    .sort(sortByDate);
+    .sort(sortByDateASC);
   const viewMatchInfo = (event, activeMatch) => {
     setActiveMatch(activeMatch);
     go(event);
