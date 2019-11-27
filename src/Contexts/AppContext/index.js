@@ -69,6 +69,7 @@ class AppContextProvider extends Component {
   };
 
   fetchUserData = async () => {
+    this.subscribeVKActions();
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
     axios
       .get(`${API_URL}/user/${user.id}`)
