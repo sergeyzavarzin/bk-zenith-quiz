@@ -63,9 +63,13 @@ class Order extends React.Component {
 
   // TODO: VALIDATION!
   isValid = () => {
-    const {firstName, lastName, email, phone, country, city, address, postIndex, deliveryType} = this.state;
-    return deliveryType === DELIVERY.POST.type ? (firstName && lastName && phone && validateEmail(email) &&
-      country && city && address && postIndex) : (firstName && lastName && phone && validateEmail(email));
+    const {
+      firstName, lastName, email, phone, country,
+      city, address, postIndex, deliveryType
+    } = this.state;
+    return deliveryType === DELIVERY.POST.type ?
+      (firstName && lastName && phone && validateEmail(email) && country && city && address && postIndex) :
+      (firstName && lastName && phone && validateEmail(email));
   };
 
   handleSubmit = e => {
@@ -210,8 +214,12 @@ class Order extends React.Component {
             <Input top='Почтовый индекс' onChange={handleChange('postIndex')}/>
           }
           {
-            isPhysical && deliveryType === DELIVERY.POST.type &&
-            <Textarea top='Комментарий' onChange={handleChange('description')}/>
+            isPhysical &&
+            <Textarea
+              top='Комментарий'
+              placeholder='Например: размер, цвет и т.д.'
+              onChange={handleChange('description')}
+            />
           }
           {
             !isValid &&
