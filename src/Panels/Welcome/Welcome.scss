@@ -1,4 +1,6 @@
 .welcome {
+  overflow: hidden;
+
   &__slide {
     min-height: 300px;
     display: flex;
