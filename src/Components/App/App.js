@@ -39,14 +39,14 @@ class App extends React.Component {
     activePanelPlayers: 'players',
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
-  //     return {
-  //       activeStory: 'voting-view',
-  //     };
-  //   }
-  //   return null;
-  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
+      return {
+        activeStory: 'voting-view',
+      };
+    }
+    return null;
+  }
 
   onStoryChange = e => {
     this.setState({
@@ -158,7 +158,7 @@ class App extends React.Component {
         <View id='welcome-view' activePanel='welcome'>
           <Welcome
             id='welcome'
-            startApp={() => this.setState({activeStory: 'matches-view'})}
+            startApp={() => this.setState({activeStory: 'voting-view'})}
           />
         </View>
       </Epic>

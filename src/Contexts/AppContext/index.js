@@ -37,30 +37,21 @@ class AppContextProvider extends Component {
   };
 
   componentDidMount() {
-    this.prepareAppData();
+    this.fetchUserData();
   }
 
-  prepareAppData = () => {
-    const {
-      subscribeVKActions,
-      fetchMatches,
-      fetchRivals,
-      fetchUserData,
-      fetchUserVotes,
-      fetchLeaderBoard,
-      getActiveMatchVote,
-    } = this;
-    subscribeVKActions();
+  prepareAppData = userData => {
+    this.subscribeVKActions();
     Promise
-      .all([fetchRivals(), fetchMatches(), fetchUserData(), fetchLeaderBoard()])
-      .then(([rivals, matches, userData, leaderBoard]) => {
-        const {user, userScore, userTotalScore, isUserNew} = userData;
-        const activeMatchVote = getActiveMatchVote(matches);
-        this.setState({user, userScore, userTotalScore, rivals, matches, activeMatchVote, leaderBoard, isUserNew});
+      .all([this.fetchRivals(), this.fetchMatches(), this.fetchLeaderBoard()])
+      .then(([rivals, matches, leaderBoard]) => {
+        const {user, userScore, userTotalScore} = userData;
+        const activeMatchVote = this.getActiveMatchVote(matches);
+        this.setState({user, userScore, userTotalScore, rivals, matches, activeMatchVote, leaderBoard});
         return user;
       })
       .then(async user => {
-        const userVotes = await fetchUserVotes(user.id);
+        const userVotes = await this.fetchUserVotes(user.id);
         this.setState({userVotes})
       })
       .catch(err => console.log(err))
@@ -79,14 +70,37 @@ class AppContextProvider extends Component {
 
   fetchUserData = async () => {
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
+    axios
+      .get(`${API_URL}/user/${user.id}`)
+      .then(({data}) => this.setState({isUserNew: !data}, () => {
+        this.prepareAppData( {
+          user,
+          userScore: data.score,
+          userTotalScore: data.totalScore,
+        });
+      }))
+      .finally(() => this.setState({user}));
+  };
+
+  createUser = async () => {
+    const {user} = this.state;
     const {id, first_name, last_name, photo_100} = user;
-    const userData = await axios.get(`${API_URL}/user/${id}`);
-    if (!userData.data) {
-      axios.post(`${API_URL}/user/create`, {id, name: `${first_name} ${last_name}`, img: photo_100});
-      return {userScore: 0, userTotalScore: 0, user, isUserNew: true};
-    } else {
-      return {userScore: userData.data.score, userTotalScore: userData.data.totalScore, user, isUserNew: false};
-    }
+    const data = {
+      id,
+      name: `${first_name} ${last_name}`,
+      img: photo_100,
+      agreement: true,
+      privacy: true,
+    };
+    axios
+      .post(`${API_URL}/user/create`, data)
+      .then(({data: {score, totalScore}}) => {
+        this.prepareAppData({
+          user,
+          userScore: score,
+          userTotalScore: totalScore,
+        })
+      });
   };
 
   fetchRivals = async () => {
@@ -152,7 +166,6 @@ class AppContextProvider extends Component {
   getActiveMatchVote = matches => {
     const sortedMatches = matches
       .filter(match => !match.score.length)
-      // .filter(matches => )
       .sort((a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime)));
     const now = moment();
     return moment.duration(now.diff(sortedMatches[0].startDateTime)).asHours() > -25 ? sortedMatches[0] : null;
@@ -184,6 +197,7 @@ class AppContextProvider extends Component {
       <AppContext.Provider
         value={{
           state: this.state,
+          createUser: this.createUser,
           fetchMatches: this.fetchMatches,
           fetchRivals: this.fetchRivals,
           addPlayerToFirstFive: this.addPlayerToFirstFive,

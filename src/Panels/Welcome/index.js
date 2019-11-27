@@ -14,13 +14,20 @@ import './Welcome.scss';
 
 const Welcome = ({id, startApp, appContext}) => {
 
-  const {isAppDataFetching} = appContext.state;
+  const {state: {isAppDataFetching}, createUser} = appContext;
 
   const [slideIndex, setSlideIndex] = useState(0);
   const [agreement, setAgreement] = useState(false);
   const [privacy, setPrivacy] = useState(false);
 
-  const next = () => slideIndex !== slides.length - 1 ? setSlideIndex(slideIndex + 1) : startApp();
+  const next = () => {
+    if (slideIndex !== slides.length - 1) {
+      setSlideIndex(slideIndex + 1)
+    } else {
+      createUser();
+      startApp();
+    }
+  };
 
   const handleChange = slideIndex => {
     if (slideIndex < slides.length - 1) {
