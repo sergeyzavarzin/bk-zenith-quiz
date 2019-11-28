@@ -170,7 +170,8 @@ class AppContextProvider extends Component {
       .filter(match => !match.score.length)
       .sort((a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime)));
     const now = moment();
-    return moment.duration(now.diff(sortedMatches[0].startDateTime)).asHours() > -25 ? sortedMatches[0] : null;
+    return sortedMatches.length && moment.duration(now.diff(sortedMatches[0].startDateTime)).asHours() > -25 ?
+      sortedMatches[0] : null;
   };
 
   sendVote = () => {
