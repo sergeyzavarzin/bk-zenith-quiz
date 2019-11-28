@@ -1,15 +1,26 @@
 import React from 'react';
 import {FixedLayout, Button, Input, FormLayoutGroup, FormLayout, Group, PanelHeader, Panel} from '@vkontakte/vkui';
+import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withAppContext} from '../../../Contexts/AppContext';
+import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
 
 const TotalScore = ({id, go, appContext}) => {
   const {setRivalScore, setClubScore, sendVote, state} = appContext;
   const {activeMatchVote, rivals, clubScore, rivalScore} = state;
-  const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId)
+  const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
   return (
     <Panel id={id}>
-      <PanelHeader>
+      <PanelHeader
+        left={
+          <HeaderButton
+            data-to='select-winner'
+            onClick={go}
+          >
+            <Icon24Back/>
+          </HeaderButton>
+        }
+      >
         Голосование
       </PanelHeader>
       <Group title="Точный счет?">

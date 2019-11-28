@@ -19,7 +19,7 @@ import {withAppContext} from '../../../Contexts/AppContext';
 class PlayersSelect extends React.Component {
   render() {
     const {
-      id, go, nextScreen,
+      id, go, nextScreen, prevScreen,
       label, title,
       handleItemSelect, isSelected, isButtonDisabled
     } = this.props;
@@ -27,9 +27,8 @@ class PlayersSelect extends React.Component {
       <Panel id={id}>
         <PanelHeader
           left={
-            id === 'select-first-five' &&
             <HeaderButton
-              data-to='voting'
+              data-to={prevScreen}
               onClick={go}
             >
               <Icon24Back/>

@@ -1,9 +1,11 @@
 import React from 'react';
 import {Div, Panel, PanelHeader, Group, FormLayout, Radio, Button, FixedLayout} from '@vkontakte/vkui';
+import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withAppContext} from '../../../Contexts/AppContext';
 
 import Zenith from '../../../Images/zenith.png';
+import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
 
 const Winner = ({id, go, appContext}) => {
   const {setWinner, state} = appContext;
@@ -11,8 +13,17 @@ const Winner = ({id, go, appContext}) => {
   const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
   return (
     <Panel id={id}>
-      <PanelHeader>
-        Голосование
+      <PanelHeader
+        left={
+          <HeaderButton
+            data-to='select-three-score'
+            onClick={go}
+          >
+            <Icon24Back/>
+          </HeaderButton>
+        }
+      >
+        Кто выиграет матч?
       </PanelHeader>
       <Group title="Кто выиграет матч?">
         <FormLayout>

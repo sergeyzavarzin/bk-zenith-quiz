@@ -29,8 +29,7 @@ class Store extends React.Component {
   render() {
     const {type} = this.state;
     const {id, go, marketContext} = this.props;
-    const {merch: merches} = marketContext.state;
-    const merch = merches && merches.filter(item => item.type === type);
+    const {merch} = marketContext.state;
     return (
       <Panel id={id}>
         <PanelHeader
@@ -64,7 +63,7 @@ class Store extends React.Component {
         <Div>
           <div className='market'>
             {
-              merch ? merch.slice().reverse().map(item =>
+              merch ? merch.slice().reverse().map(item => item.type === type &&
                 <MarketItem
                   key={item.id}
                   id={item.id}

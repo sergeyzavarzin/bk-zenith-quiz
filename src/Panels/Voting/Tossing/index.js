@@ -1,9 +1,11 @@
 import React from 'react';
 import {Div, FixedLayout, Button, Radio, FormLayout, Group, PanelHeader, Panel} from '@vkontakte/vkui';
+import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withAppContext} from '../../../Contexts/AppContext';
 
 import Zenith from '../../../Images/zenith.png';
+import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
 
 const Tossing = ({id, go, appContext}) => {
   const {setTossing, state} = appContext;
@@ -11,7 +13,16 @@ const Tossing = ({id, go, appContext}) => {
   const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
   return (
     <Panel id={id}>
-      <PanelHeader>
+      <PanelHeader
+        left={
+          <HeaderButton
+            data-to='select-first-five'
+            onClick={go}
+          >
+            <Icon24Back/>
+          </HeaderButton>
+        }
+      >
         Кто выиграет вбрасывание?
       </PanelHeader>
       <Group title="Кто выиграет вбрасывание?">

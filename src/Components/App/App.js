@@ -99,6 +99,7 @@ class App extends React.Component {
             id='select-first-five'
             go={goVoting}
             nextScreen='select-tossing'
+            prevScreen='voting'
             label='Угадайте стартовую пятерку'
             title='Выберите игроков'
             handleItemSelect={addPlayerToFirstFive}
@@ -109,6 +110,7 @@ class App extends React.Component {
             id='select-two-score'
             go={goVoting}
             nextScreen='select-three-score'
+            prevScreen='select-tossing'
             label='Кто первым забьет двухочковый?'
             title='Выберите игрока'
             handleItemSelect={setTwoScore}
@@ -119,6 +121,7 @@ class App extends React.Component {
             id='select-three-score'
             go={goVoting}
             nextScreen='select-winner'
+            prevScreen='select-two-score'
             label='Кто первым забьет трехочковый?'
             title='Выберите игрока'
             handleItemSelect={setThreeScore}
