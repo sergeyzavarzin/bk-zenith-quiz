@@ -72,26 +72,6 @@ class Home extends React.Component {
             <List>
               <Cell
                 expandable
-                before={<Icon24Settings/>}
-                data-to='settings'
-                onClick={go}
-              >
-                Настройки
-              </Cell>
-              <Cell
-                expandable
-                before={<Icon28HelpOutline width={24}/>}
-                data-to='help'
-                onClick={go}
-              >
-                Помощь
-              </Cell>
-            </List>
-          </Group>
-          <Group>
-            <List>
-              <Cell
-                expandable
                 before={<Icon24MarketOutline/>}
                 data-to='market'
                 onClick={go}
@@ -105,6 +85,26 @@ class Home extends React.Component {
                 onClick={go}
               >
                 Мои покупки
+              </Cell>
+            </List>
+          </Group>
+          <Group>
+            <List>
+              <Cell
+                expandable
+                before={<Icon24Settings/>}
+                data-to='settings'
+                onClick={go}
+              >
+                Настройки
+              </Cell>
+              <Cell
+                expandable
+                before={<Icon28HelpOutline width={24}/>}
+                data-to='help'
+                onClick={go}
+              >
+                Помощь
               </Cell>
             </List>
           </Group>

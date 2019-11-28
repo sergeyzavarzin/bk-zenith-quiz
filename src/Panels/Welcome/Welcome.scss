@@ -38,7 +38,7 @@
 .welcome-checkbox {
   &__wrapper {
     padding: 0 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 
     @media all and #{$media} {
       width: 70%;
@@ -52,8 +52,10 @@
     p {
       display: block;
       margin: 0;
+      font-size: 12px;
 
       @media all and #{$media} {
+        font-size: 14px;
         display: inline-block;
       }
     }

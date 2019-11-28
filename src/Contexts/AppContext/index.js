@@ -68,6 +68,18 @@ class AppContextProvider extends Component {
     });
   };
 
+  updateUserData = async () => {
+    this.setState({isUserDataFetching: true});
+    axios
+      .get(`${API_URL}/user/${this.state.user.id}`)
+      .then(({data: {score, totalScore}}) => this.setState({
+        userScore: score,
+        userTotalScore: totalScore,
+        isUserDataFetching: false,
+      }))
+      .finally(() => this.setState({isUserDataFetching: false}));
+  };
+
   fetchUserData = async () => {
     this.subscribeVKActions();
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
@@ -131,13 +143,6 @@ class AppContextProvider extends Component {
       isLeaderBoardFetching: false,
       leaderBoard
     });
-  };
-
-  updateUserData = async () => {
-    this.setState({isUserDataFetching: true});
-    const userData = await this.fetchUserData();
-    const {userScore, userTotalScore} = userData;
-    this.setState({userScore, userTotalScore, isUserDataFetching: false})
   };
 
   updateMatches = async () => {

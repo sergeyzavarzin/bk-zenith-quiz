@@ -26,6 +26,10 @@ const ERRORS = {
   PRICE: {
     title: 'Недостаточно баллов',
     body: 'Недостаточно баллов для совершения заказа.'
+  },
+  EMAIL_SUBSCRIBE: {
+    title: 'Укажите E-mail',
+    body: 'Укажите валидный удрес электронной почты на которую женаете получать сообщения.'
   }
 };
 
@@ -74,6 +78,11 @@ class Order extends React.Component {
 
   handleSubmit = e => {
     const {go, marketContext, appContext} = this.props;
+    const {
+      firstName, lastName, description, deliveryType,
+      email, phone, country, city, address, postIndex,
+      isUserWantToNewsSubscribe,
+    } = this.state;
     const {state: {userScore, user}, updateUserData} = appContext;
     const {state: {selectedMerchItem}, createOrder, fetchMerch} = marketContext;
     if (userScore < selectedMerchItem.price) {
@@ -90,11 +99,13 @@ class Order extends React.Component {
       });
       return false;
     }
-    const {
-      firstName, lastName, description, deliveryType,
-      email, phone, country, city, address, postIndex,
-      isUserWantToNewsSubscribe,
-    } = this.state;
+    if (isUserWantToNewsSubscribe && !validateEmail(email)) {
+      this.setState({
+        error: ERRORS.EMAIL_SUBSCRIBE,
+        isValid: false
+      });
+      return false;
+    }
     const deliveryData = JSON.stringify({deliveryType, email, phone, country, city, address, postIndex});
     const orderCreateCallback = () => {
       updateUserData();
@@ -181,10 +192,7 @@ class Order extends React.Component {
               onChange={handleChange('lastName')}
             />
           }
-          {
-            isPhysical &&
-            <Input top='E-mail' onChange={handleChange('email')}/>
-          }
+          <Input top='E-mail' onChange={handleChange('email')}/>
           {
             isPhysical &&
             <Input top='Телефон' onChange={handleChange('phone')}/>
@@ -221,12 +229,6 @@ class Order extends React.Component {
               onChange={handleChange('description')}
             />
           }
-          {
-            !isValid &&
-            <FormStatus title={error.title} state='error'>
-              {error.body}
-            </FormStatus>
-          }
           <Checkbox
             onChange={() => this.setState({isUserWantToNewsSubscribe: !isUserWantToNewsSubscribe})}
           >
@@ -234,6 +236,12 @@ class Order extends React.Component {
               Хочу получать интересные новости о&nbsp;команде и&nbsp;событиях на&nbsp;электронную почту
             </div>
           </Checkbox>
+          {
+            !isValid &&
+            <FormStatus title={error.title} state={error === ERRORS.EMAIL_SUBSCRIBE ? 'default' : 'error'}>
+              {error.body}
+            </FormStatus>
+          }
           <Button
             level='commerce'
             size='xl'
