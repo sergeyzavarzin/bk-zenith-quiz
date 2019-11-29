@@ -111,11 +111,18 @@ class Order extends React.Component {
       updateUserData();
       fetchMerch();
     };
-    const status = deliveryType === DELIVERY.MATCH.type ? ORDER_STATUSES.AWAITING_EXTRADITION : ORDER_STATUSES.CREATED;
+    const status = () => {
+      if (selectedMerchItem.type === MERCH_TYPES.DIGITAL) return ORDER_STATUSES.DELIVERED;
+      if (deliveryType === DELIVERY.MATCH.type) {
+        return ORDER_STATUSES.AWAITING_EXTRADITION;
+      } else {
+        return ORDER_STATUSES.CREATED;
+      }
+    };
     createOrder(
       `${selectedMerchItem.id}-${user.id}-${moment().format('DD-MM-YYYY-HH-mm-ss')}`,
       user.id, firstName, lastName, selectedMerchItem.id, selectedMerchItem.price,
-      moment(), deliveryData, status, description || '', orderCreateCallback
+      moment(), deliveryData, status(), description || '', orderCreateCallback
     );
     if (isUserWantToNewsSubscribe) {
       subscribeUserToEmailNotification(email);
