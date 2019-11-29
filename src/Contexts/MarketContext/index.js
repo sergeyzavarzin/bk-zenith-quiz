@@ -41,7 +41,7 @@ class MarketContextProvider extends Component {
     const orderInfo = JSON.stringify({
       firstName, lastName,
       merch: merch.find(item => item.id === merchId),
-      total, createDateTime, deliveryAddress, status, comment
+      total, createDateTime, deliveryAddress, comment
     });
     const data = {id, userId, orderInfo, status};
     axios
