@@ -43,7 +43,7 @@ class MarketContextProvider extends Component {
       merch: merch.find(item => item.id === merchId),
       total, createDateTime, deliveryAddress, status, comment
     });
-    const data = {id, userId, orderInfo};
+    const data = {id, userId, orderInfo, status};
     axios
       .post(`${API_URL}/order`, data)
       .then(({data}) => this.setState(prevState => {
