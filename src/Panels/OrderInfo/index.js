@@ -35,6 +35,7 @@ class OrderInfo extends React.Component {
     orderInfo: null,
     orderData: null,
     deliveryData: null,
+    status: null,
   };
 
   componentDidMount() {
@@ -44,9 +45,10 @@ class OrderInfo extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {selectedOrder} = nextProps.marketContext.state;
     if (selectedOrder) {
+      const status = selectedOrder.status;
       const orderData = JSON.parse(selectedOrder.orderInfo);
       const deliveryData = JSON.parse(orderData.deliveryAddress);
-      return {orderData, deliveryData};
+      return {orderData, deliveryData, status};
     }
     return null;
   }
@@ -60,8 +62,8 @@ class OrderInfo extends React.Component {
 
   render() {
     const {id, go} = this.props;
-    const {orderInfo, orderData, deliveryData} = this.state;
-    const {merch, firstName, lastName, comment, status} = orderData;
+    const {orderInfo, orderData, deliveryData, status} = this.state;
+    const {merch, firstName, lastName, comment} = orderData;
     const {address, city, country, email, phone, postIndex, deliveryType} = deliveryData;
     return (
       <Panel id={id}>
