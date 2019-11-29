@@ -5,6 +5,7 @@ import Icon56MarketOutline from '@vkontakte/icons/dist/56/market_outline';
 
 import Placeholder from '../../Components/Placeholder';
 
+import {withAppContext} from '../../Contexts/AppContext';
 import {withMarketContext} from '../../Contexts/MarketContext';
 
 import './Purchases.scss';
@@ -13,7 +14,8 @@ class Purchases extends React.Component {
 
   componentDidMount() {
     const {fetchUserOrders} = this.props.marketContext;
-    fetchUserOrders();
+    const {user: {id}} = this.props.appContext.state;
+    fetchUserOrders(id);
   }
 
   render() {
@@ -83,4 +85,4 @@ class Purchases extends React.Component {
   }
 }
 
-export default withMarketContext(Purchases);
+export default withAppContext(withMarketContext(Purchases));
