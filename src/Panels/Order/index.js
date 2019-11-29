@@ -250,7 +250,7 @@ class Order extends React.Component {
             </FormStatus>
           }
           <Button
-            level='commerce'
+            level='primary'
             size='xl'
             after={<Counter>{selectedMerchItem.price}</Counter>}
             data-to='purchases'
