@@ -58,6 +58,8 @@ const MatchView = ({id, go, appContext}) => {
   const threeScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
   const twoScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
 
+  console.log(userVoteMatch)
+
   const goBack = (event) => {
     setActiveMatch(null);
     go(event);
@@ -123,7 +125,7 @@ const MatchView = ({id, go, appContext}) => {
             {
               (userVoteMatch && userVoteMatch.score && userVoteMatch.score.length === 2) &&
               <Answer
-                isSuccess={userVoteMatch.score[0] > userVoteMatch.score[1]}
+                isSuccess={userVoteMatch.winner === (activeMatch.score[0] > activeMatch.score[1])}
               >
                 <Div style={resStyle}>
                   {
