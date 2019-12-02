@@ -63,7 +63,7 @@ const Voting = ({id, go, changeStory, appContext}) => {
                     data-story='matches-view'
                     onClick={changeStory}
                   >
-                    Отрыть таблицу матчей
+                    Открыть таблицу матчей
                   </Button>
                 }
               />

@@ -21,7 +21,7 @@ const TotalScore = ({id, go, appContext}) => {
           </HeaderButton>
         }
       >
-        Голосование
+        Вопрос 6 / 6
       </PanelHeader>
       <Group title="Точный счет?">
         <FormLayout>

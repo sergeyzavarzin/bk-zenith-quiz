@@ -6,7 +6,12 @@
   --colorOrange100: rgb(255, 165, 0);
   --colorOrange50: rgba(255, 165, 0, .5);
 
-  --main-gradient: linear-gradient(90deg, rgba(0,85,207,1) 0%, rgba(0,187,238,1) 98%);
+  --main-gradient: linear-gradient(90deg, rgba(0, 85, 207, 1) 0%, rgba(0, 187, 238, 1) 98%);
+
+  --button_primary_background: rgb(0, 174, 239);
+  --header_background: var(--button_primary_background);
+  --tabbar_active_icon: var(--button_primary_background);
+  --accent: var(--button_primary_background);
 }
 
 body[scheme="client_dark"] {

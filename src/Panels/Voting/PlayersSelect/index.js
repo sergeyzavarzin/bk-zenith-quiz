@@ -17,10 +17,20 @@ import Jersey from '../../../Components/Jersey';
 import {withAppContext} from '../../../Contexts/AppContext';
 
 class PlayersSelect extends React.Component {
+
+  renderButtonText = () => {
+    const {id, selectedCount} = this.props;
+    if (id !== 'select-first-five') {
+      return 'Выбрать'
+    } else  {
+      return selectedCount < 5 ? `Выбрано ${selectedCount} из 5` : 'Далее'
+    }
+  };
+
   render() {
     const {
       id, go, nextScreen, prevScreen,
-      label, title,
+      label, title, question,
       handleItemSelect, isSelected, isButtonDisabled
     } = this.props;
     return (
@@ -37,6 +47,11 @@ class PlayersSelect extends React.Component {
         >
           {label}
         </PanelHeader>
+        <Group title='Вопрос'>
+          <Div>
+            <b>{question}</b>
+          </Div>
+        </Group>
         <Group title={title} style={{marginBottom: 75}}>
           <List>
             {
@@ -85,7 +100,7 @@ class PlayersSelect extends React.Component {
               data-to={nextScreen}
               onClick={go}
             >
-              Выбрать
+              {this.renderButtonText()}
             </Button>
           </Div>
         </FixedLayout>

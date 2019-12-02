@@ -23,7 +23,7 @@ const Tossing = ({id, go, appContext}) => {
           </HeaderButton>
         }
       >
-        Кто выиграет вбрасывание?
+        Вопрос 2 / 6
       </PanelHeader>
       <Group title="Кто выиграет вбрасывание?">
         <FormLayout>

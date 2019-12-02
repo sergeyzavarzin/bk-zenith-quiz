@@ -23,7 +23,7 @@ const Winner = ({id, go, appContext}) => {
           </HeaderButton>
         }
       >
-        Кто выиграет матч?
+        Вопрос 5 / 6
       </PanelHeader>
       <Group title="Кто выиграет матч?">
         <FormLayout>

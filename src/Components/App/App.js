@@ -100,33 +100,37 @@ class App extends React.Component {
             go={goVoting}
             nextScreen='select-tossing'
             prevScreen='voting'
-            label='Угадайте стартовую пятерку'
+            label='Вопрос 1 / 6'
             title='Выберите игроков'
             handleItemSelect={addPlayerToFirstFive}
+            selectedCount={firstFive.length}
             isSelected={id => firstFive.includes(id)}
             isButtonDisabled={firstFive.length === 5}
+            question='Выберите стартовую пятерку'
           />
           <PlayersSelect
             id='select-two-score'
             go={goVoting}
             nextScreen='select-three-score'
             prevScreen='select-tossing'
-            label='Кто первым забьет двухочковый?'
+            label='Вопрос 3 / 6'
             title='Выберите игрока'
             handleItemSelect={setTwoScore}
             isSelected={id => id === twoScore}
             isButtonDisabled={!!twoScore}
+            question='Кто первым забьет двухочковый?'
           />
           <PlayersSelect
             id='select-three-score'
             go={goVoting}
             nextScreen='select-winner'
             prevScreen='select-two-score'
-            label='Кто первым забьет трехочковый?'
+            label='Вопрос 4 / 6'
             title='Выберите игрока'
             handleItemSelect={setThreeScore}
             isSelected={id => id === threeScore}
             isButtonDisabled={!!threeScore}
+            question='Кто первым забьет трехочковый?'
           />
           <Tossing id='select-tossing' go={goVoting}/>
           <Winner id='select-winner' go={goVoting}/>

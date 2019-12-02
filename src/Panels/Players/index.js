@@ -27,25 +27,27 @@ const Players = ({id}) => {
                 description={player.role}
                 asideContent={
                   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                    {
-                      player.instagram &&
-                      <Link href={`https://www.instagram.com/${player.instagram}`} target='_blank'>
-                        <Icon24LogoInstagram width={30} height={30} style={{marginLeft: 5}}/>
-                      </Link>
-                    }
-                    {
-                      player.twitter &&
-                      <Link href={`https://twitter.com/${player.twitter}`} target='_blank'>
-                        <Icon24LogoTwitter width={30} height={30} style={{marginLeft: 5}}/>
-                      </Link>
-                    }
                     <Jersey number={player.number}/>
                   </div>
                 }
                 bottomContent={
-                  <div style={{ display: 'flex' }}>
+                  <div>
                     <span style={{ margin: '0 15px 0 0' }}>Рост: {player.height}</span>
                     <span>Вес: {player.weight}</span>
+                    <div style={{ display: 'flex', marginTop: 5 }}>
+                      {
+                        player.instagram &&
+                        <Link href={`https://www.instagram.com/${player.instagram}`} target='_blank'>
+                          <Icon24LogoInstagram width={30} height={30} style={{marginRight: 5}}/>
+                        </Link>
+                      }
+                      {
+                        player.twitter &&
+                        <Link href={`https://twitter.com/${player.twitter}`} target='_blank'>
+                          <Icon24LogoTwitter width={30} height={30} style={{marginRight: 5}}/>
+                        </Link>
+                      }
+                    </div>
                   </div>
                 }
               >
