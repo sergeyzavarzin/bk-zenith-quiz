@@ -56,9 +56,7 @@ const MatchView = ({id, go, appContext}) => {
 
   const userVoteMatch = activeMatch && userVotes.find(vote => vote.matchId === activeMatch.id);
   const threeScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
-  const twoScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.threeScore);
-
-  console.log(userVoteMatch)
+  const twoScoreAnswer = activeMatch && userVoteMatch && players.find(player => player.id === userVoteMatch.twoScore);
 
   const goBack = (event) => {
     setActiveMatch(null);
