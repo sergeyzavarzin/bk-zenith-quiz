@@ -45,7 +45,7 @@ const Matches = ({id, go, appContext}) => {
                         rival={rivals.find(rival => rival.id === match.rivalId)}
                         beginTime={match.startDateTime}
                         place={match.place}
-                        buyTickets={match.buyTicketsUrl || 'https://tickets.fc-zenit.ru/#basketball'}
+                        buyTickets={match.buyTicketsUrl}
                       />
                     </Cell>
                   )
