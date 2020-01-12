@@ -36,6 +36,8 @@ class AppContextProvider extends Component {
     rivalScore: 0,
   };
 
+  admins = ['17188634', '127017464'];
+
   componentDidMount() {
     this.fetchUserData();
   }
@@ -200,6 +202,12 @@ class AppContextProvider extends Component {
       .catch(err => console.log(err));
   };
 
+  featureToggle = () => {
+    const {id} = this.state.user;
+    if (this.admins.includes(id)) return true;
+    return false;
+  };
+
   render() {
     return (
       <AppContext.Provider
@@ -220,6 +228,7 @@ class AppContextProvider extends Component {
           setActiveMatch: activeMatch => this.setState({activeMatch}),
           setClubScore: clubScore => this.setScore('clubScore')(clubScore),
           setRivalScore: rivalScore => this.setScore('rivalScore')(rivalScore),
+          featureToggle: this.featureToggle,
         }}
       >
         {this.props.children}

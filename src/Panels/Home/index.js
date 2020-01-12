@@ -7,6 +7,7 @@ import Icon28Game from '@vkontakte/icons/dist/28/game';
 import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28HelpOutline from '@vkontakte/icons/dist/28/help_outline';
 import Icon24Settings from '@vkontakte/icons/dist/24/settings';
+import Icon24Discussions from '@vkontakte/icons/dist/24/discussions';
 
 import {withAppContext} from '../../Contexts/AppContext';
 import {API_URL} from '../../Constants/endpoints';
@@ -37,7 +38,7 @@ class Home extends React.Component {
   render() {
     const {id, go, appContext} = this.props;
     const {position} = this.state;
-    const {state} = appContext;
+    const {state, featureToggle} = appContext;
     const {user, userScore, userTotalScore, isUserDataFetching} = state;
     return (
       <Panel id={id}>
@@ -98,6 +99,16 @@ class Home extends React.Component {
               >
                 Настройки
               </Cell>
+              {
+                featureToggle() &&
+                <Cell
+                  expandable
+                  before={<Icon24Discussions width={24}/>}
+                  onClick={() => window.location.href = 'https://vk.com/write-74457752'}
+                >
+                  Связаться с нами
+                </Cell>
+              }
               <Cell
                 expandable
                 before={<Icon28HelpOutline width={24}/>}
