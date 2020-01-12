@@ -36,7 +36,7 @@ class AppContextProvider extends Component {
     rivalScore: 0,
   };
 
-  admins = ['17188634', '127017464'];
+  admins = [17188634, 127017464, 2314852];
 
   componentDidMount() {
     this.fetchUserData();
@@ -202,11 +202,7 @@ class AppContextProvider extends Component {
       .catch(err => console.log(err));
   };
 
-  featureToggle = () => {
-    const {id} = this.state.user;
-    if (this.admins.includes(id)) return true;
-    return false;
-  };
+  featureToggle = () => this.admins.includes(this.state.user.id);
 
   render() {
     return (
