@@ -55,29 +55,6 @@ const Matches = ({id, go, appContext}) => {
           featureToggle() ?
           <div style={{marginBottom: 56}}>
             {
-              (!!upcomingMatches.length && type === MATCH_TYPES.NOT_STARTED) &&
-              <Group title="Предстоящие">
-                <List>
-                  {
-                    upcomingMatches
-                      .map(match =>
-                        <Cell
-                          key={match.id}
-                          size="l"
-                        >
-                          <MatchItem
-                            rival={rivals.find(rival => rival.id === match.rivalId)}
-                            beginTime={match.startDateTime}
-                            place={match.place}
-                            buyTickets={match.buyTicketsUrl}
-                          />
-                        </Cell>
-                      )
-                  }
-                </List>
-              </Group>
-            }
-            {
               (!!endedMatches.length && type === MATCH_TYPES.ENDED) &&
               <Group title="Завершенные">
                 <List>
@@ -96,6 +73,29 @@ const Matches = ({id, go, appContext}) => {
                             beginTime={match.startDateTime}
                             place={match.place}
                             game={match.score}
+                          />
+                        </Cell>
+                      )
+                  }
+                </List>
+              </Group>
+            }
+            {
+              (!!upcomingMatches.length && type === MATCH_TYPES.NOT_STARTED) &&
+              <Group title="Предстоящие">
+                <List>
+                  {
+                    upcomingMatches
+                      .map(match =>
+                        <Cell
+                          key={match.id}
+                          size="l"
+                        >
+                          <MatchItem
+                            rival={rivals.find(rival => rival.id === match.rivalId)}
+                            beginTime={match.startDateTime}
+                            place={match.place}
+                            buyTickets={match.buyTicketsUrl}
                           />
                         </Cell>
                       )

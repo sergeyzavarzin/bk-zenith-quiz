@@ -3,12 +3,15 @@ import moment from 'moment';
 import axios from 'axios';
 import connectOnline from '@vkontakte/vk-connect';
 import connectMock from '@vkontakte/vk-connect-mock';
+import { VKMiniAppAPI } from '@vkontakte/vk-mini-apps-api';
 
 import {API_URL} from '../../Constants/endpoints';
 
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
 export const AppContext = React.createContext(true);
+
+const api = new VKMiniAppAPI(connect);
 
 class AppContextProvider extends Component {
 
@@ -21,6 +24,7 @@ class AppContextProvider extends Component {
     user: null,
     userScore: 0,
     userTotalScore: 0,
+    position: null,
     leaderBoard: [],
     rivals: [],
     matches: [],
@@ -54,7 +58,8 @@ class AppContextProvider extends Component {
       })
       .then(async user => {
         const userVotes = await this.fetchUserVotes(user.id);
-        this.setState({userVotes})
+        const position = await this.getUserPosition(user.id);
+        this.setState({userVotes, position})
       })
       .catch(err => console.log(err))
       .finally(() => this.setState({isAppDataFetching: true}));
@@ -68,6 +73,17 @@ class AppContextProvider extends Component {
         document.body.attributes.setNamedItem(schemeAttribute);
       }
     });
+  };
+
+  createRepost = postId => {
+    const {user, activeMatch} = this.state;
+    const data = {
+      postId,
+      userId: user.id,
+      matchId: activeMatch.id
+    };
+    axios
+      .post(`${API_URL}/repost`, data)
   };
 
   updateUserData = async () => {
@@ -88,7 +104,7 @@ class AppContextProvider extends Component {
     axios
       .get(`${API_URL}/user/${user.id}`)
       .then(({data}) => this.setState({isUserNew: !data}, () => {
-        this.prepareAppData( {
+        this.prepareAppData({
           user,
           userScore: data.score,
           userTotalScore: data.totalScore,
@@ -116,6 +132,12 @@ class AppContextProvider extends Component {
           userTotalScore: totalScore,
         })
       });
+  };
+
+  getUserPosition = (id = null) => {
+    axios
+      .get(`${API_URL}/user/position?id=${id || this.state.user.id}`)
+      .then(({data: {position}}) => this.setState({position}))
   };
 
   fetchRivals = async () => {
@@ -202,7 +224,7 @@ class AppContextProvider extends Component {
       .catch(err => console.log(err));
   };
 
-  featureToggle = () => this.admins.includes(this.state.user.id);
+  featureToggle = () => this.admins.includes(this.state.user ? this.state.user.id : 123);
 
   render() {
     return (
@@ -225,6 +247,8 @@ class AppContextProvider extends Component {
           setClubScore: clubScore => this.setScore('clubScore')(clubScore),
           setRivalScore: rivalScore => this.setScore('rivalScore')(rivalScore),
           featureToggle: this.featureToggle,
+          createRepost: this.createRepost,
+          api: api,
         }}
       >
         {this.props.children}

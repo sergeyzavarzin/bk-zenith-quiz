@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {Avatar, Cell, Group, List, PanelHeader, Panel, Spinner, PullToRefresh} from '@vkontakte/vkui';
 import Icon24MarketOutline from '@vkontakte/icons/dist/24/market_outline';
 import Icon24Reorder from '@vkontakte/icons/dist/24/reorder';
@@ -8,38 +7,24 @@ import Icon28FavoriteOutline from '@vkontakte/icons/dist/28/favorite_outline';
 import Icon28HelpOutline from '@vkontakte/icons/dist/28/help_outline';
 import Icon24Settings from '@vkontakte/icons/dist/24/settings';
 import Icon24Discussions from '@vkontakte/icons/dist/24/discussions';
+import Icon24Share from '@vkontakte/icons/dist/24/share';
 
 import {withAppContext} from '../../Contexts/AppContext';
-import {API_URL} from '../../Constants/endpoints';
+import {showWallPostBox} from '../../Utils/showWallPostBox';
+
+const postParams = {
+  'message': 'Заходи в приложение и голосуй за матчи любимой команды!',
+  'attachments': 'photo-74457752_457281666,https://vk.com/app7179287_-74457752'
+};
 
 class Home extends React.Component {
 
-  state = {
-    position: null,
-  };
-
-  componentDidMount() {
-    this.getUserPosition();
-  }
-
-  getUserPosition = () => {
-    const {id} = this.props.appContext.state.user;
-    axios
-      .get(`${API_URL}/user/position?id=${id}`)
-      .then(({data: {position}}) => this.setState({position}))
-  };
-
-  onRefresh = () => {
-    const {updateUserData} = this.props.appContext;
-    this.getUserPosition();
-    updateUserData();
-  };
+  onRefresh = () => this.props.appContext.updateUserData();
 
   render() {
     const {id, go, appContext} = this.props;
-    const {position} = this.state;
     const {state, featureToggle} = appContext;
-    const {user, userScore, userTotalScore, isUserDataFetching} = state;
+    const {user, userScore, userTotalScore, isUserDataFetching, position} = state;
     return (
       <Panel id={id}>
         <PanelHeader>Профиль</PanelHeader>
@@ -71,6 +56,16 @@ class Home extends React.Component {
           }
           <Group>
             <List>
+              {
+                featureToggle() &&
+                <Cell
+                  expandable
+                  before={<Icon24Share width={24}/>}
+                  onClick={() => showWallPostBox(postParams)}
+                >
+                  Поделиться с друзьями
+                </Cell>
+              }
               <Cell
                 expandable
                 before={<Icon24MarketOutline/>}
@@ -104,7 +99,8 @@ class Home extends React.Component {
                 <Cell
                   expandable
                   before={<Icon24Discussions width={24}/>}
-                  onClick={() => window.location.href = 'https://vk.com/write-74457752'}
+                  href='https://vk.me/zenitbasket'
+                  target='_blank'
                 >
                   Связаться с нами
                 </Cell>
