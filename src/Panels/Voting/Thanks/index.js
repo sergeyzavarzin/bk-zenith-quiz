@@ -9,7 +9,7 @@ import Cup from '../../../Images/trophy.svg';
 import './Thanks.scss';
 
 const Thanks = ({id, go, appContext}) => {
-  const {state, setActiveModal} = appContext;
+  const {state, setActiveModal, featureToggle} = appContext;
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -27,7 +27,7 @@ const Thanks = ({id, go, appContext}) => {
             data-to='voting'
             onClick={e => {
               go(e);
-              if (!state.isUserCreateRepostForCurrentMatch) {
+              if (!state.isUserCreateRepostForCurrentMatch && featureToggle()) {
                 setActiveModal(MODALS.INVITE_TO_REPOST);
               }
             }}
