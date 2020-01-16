@@ -248,7 +248,7 @@ class AppContextProvider extends Component {
   createWallPost = () => {
     const {activeMatchVote, rivals} = this.state;
     const currentRival = !!activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
-    const message = `Голосуй за матч Зенит : ${currentRival.name}, зарабатывай баллы и обменивай их на ценные призы!`;
+    const message = `Голосуй за матч Зенит : ${currentRival.name.trim()}, зарабатывай баллы и обменивай их на ценные призы!`;
     const attachments = 'photo-74457752_457281666,https://vk.com/app7179287_-74457752';
     api
       .postToWall(message, attachments)

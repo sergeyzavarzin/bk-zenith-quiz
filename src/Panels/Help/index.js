@@ -1,6 +1,7 @@
 import React from 'react';
 import {PanelHeader, Panel, List, Group, Cell, HeaderButton} from '@vkontakte/vkui';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
+import {version} from '../../../package.json';
 
 import {withHelpContext} from '../../Contexts/HelpContext';
 
@@ -43,6 +44,15 @@ const Help = ({id, go, helpContext: {selectHelp}}) => {
           }
         </List>
       </Group>
+      <div style={{
+        textAlign: 'center',
+        fontSize: 11,
+        marginTop: 25,
+        marginBottom: 10,
+        color: 'grey'
+      }}>
+        Версия приложения: {version}
+      </div>
     </Panel>
   )
 };
