@@ -1,5 +1,6 @@
 import React from 'react';
-import {Epic, View} from '@vkontakte/vkui';
+import {Epic, ModalCard, ModalRoot, View} from '@vkontakte/vkui';
+import Icon56FavoriteOutline from '@vkontakte/icons/dist/56/favorite_outline';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import AppBar from '../AppBar';
@@ -26,11 +27,11 @@ import Settings from '../../Panels/Settings';
 import {withAppContext} from '../../Contexts/AppContext';
 
 import './App.scss';
+import {MODALS} from '../../Constants/modals';
 
 class App extends React.Component {
 
   state = {
-    user: null,
     activeStory: 'welcome-view',
     activePanelVoting: 'voting',
     activePanelMatches: 'matches',
@@ -64,6 +65,53 @@ class App extends React.Component {
   goPlayers = e => this.go('activePanelPlayers')(e);
   goTable = e => this.go('activePanelTable')(e);
 
+  modal = () => {
+    const {createWallPost, setActiveModal, state} = this.props.appContext;
+    return (
+      <ModalRoot activeModal={state.activeModal}>
+        <ModalCard
+          id={MODALS.REPOST_SUCCESS}
+          onClose={() => setActiveModal(null)}
+          icon={<Icon56FavoriteOutline/>}
+          title='Отлично!'
+          caption='Сохраните репост у себя на стене до окончания голосования. Дополнительный балл будет зачислен по завершении матча.'
+          actionsLayout='vertical'
+          actions={
+            [
+              {
+                title: 'Ок',
+                type: 'primary',
+                action: () => setActiveModal(null)
+              }
+            ]
+          }
+        />
+        <ModalCard
+          id={MODALS.INVITE_TO_REPOST}
+          onClose={() => setActiveModal(null)}
+          icon={<Icon56FavoriteOutline/>}
+          title='Заработайте дополнительные баллы'
+          caption='Вы можете заработать дополнительный балл поделившись записью на своей стене записью о голосовании за этот матч.'
+          actionsLayout='vertical'
+          actions={
+            [
+              {
+                title: 'Поделиться',
+                type: 'primary',
+                action: createWallPost
+              },
+              {
+                title: 'Нет, спасибо',
+                type: 'secondary',
+                action: () => setActiveModal(null)
+              }
+            ]
+          }
+        />
+      </ModalRoot>
+    )
+  };
+
   render() {
     const {
       state, props,
@@ -74,6 +122,7 @@ class App extends React.Component {
       goPlayers,
       goProfile,
     } = this;
+    const modal = this.modal();
     const {
       activeStory, activePanelVoting, activePanelMatches,
       activePanelTable, activePanelProfile, activePanelPlayers,
@@ -93,8 +142,12 @@ class App extends React.Component {
           />
         }
       >
-        <View id='voting-view' activePanel={activePanelVoting}>
-          <Voting id='voting' go={goVoting} changeStory={onStoryChange}/>
+        <View id='voting-view' activePanel={activePanelVoting} modal={modal}>
+          <Voting
+            id='voting'
+            go={goVoting}
+            changeStory={onStoryChange}
+          />
           <PlayersSelect
             id='select-first-five'
             go={goVoting}

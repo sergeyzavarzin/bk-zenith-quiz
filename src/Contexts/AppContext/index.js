@@ -3,9 +3,11 @@ import moment from 'moment';
 import axios from 'axios';
 import connectOnline from '@vkontakte/vk-connect';
 import connectMock from '@vkontakte/vk-connect-mock';
-import { VKMiniAppAPI } from '@vkontakte/vk-mini-apps-api';
+import {VKMiniAppAPI} from '@vkontakte/vk-mini-apps-api';
 
 import {API_URL} from '../../Constants/endpoints';
+import {queryParams} from '../../Utils/queryParams';
+import {MODALS} from '../../Constants/modals';
 
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
@@ -16,6 +18,7 @@ const api = new VKMiniAppAPI(connect);
 class AppContextProvider extends Component {
 
   state = {
+    activeModal: null,
     isAppDataFetching: false,
     isLeaderBoardFetching: false,
     isMatchesFetching: false,
@@ -38,6 +41,7 @@ class AppContextProvider extends Component {
     winner: null,
     clubScore: 0,
     rivalScore: 0,
+    isUserCreateRepostForCurrentMatch: false,
   };
 
   admins = [17188634, 127017464, 2314852];
@@ -50,10 +54,15 @@ class AppContextProvider extends Component {
     this.subscribeVKActions();
     Promise
       .all([this.fetchRivals(), this.fetchMatches(), this.fetchLeaderBoard()])
-      .then(([rivals, matches, leaderBoard]) => {
+      .then(async ([rivals, matches, leaderBoard]) => {
         const {user, userScore, userTotalScore} = userData;
         const activeMatchVote = this.getActiveMatchVote(matches);
-        this.setState({user, userScore, userTotalScore, rivals, matches, activeMatchVote, leaderBoard});
+        const isUserCreateRepostForCurrentMatch = await this.fetchUserRepost(activeMatchVote);
+        this.setState({
+          user, userScore, userTotalScore, rivals,
+          matches, activeMatchVote, leaderBoard,
+          isUserCreateRepostForCurrentMatch,
+        });
         return user;
       })
       .then(async user => {
@@ -76,14 +85,20 @@ class AppContextProvider extends Component {
   };
 
   createRepost = postId => {
-    const {user, activeMatch} = this.state;
-    const data = {
-      postId,
-      userId: user.id,
-      matchId: activeMatch.id
-    };
+    const {user: {id: userId}, activeMatchVote: {id: matchId}} = this.state;
+    const data = {postId, userId, matchId};
     axios
       .post(`${API_URL}/repost`, data)
+      .then(response => response)
+      .catch(error => error)
+  };
+
+  fetchUserRepost = async activeMatch => {
+    if (!activeMatch) return false;
+    const {id: matchId} = activeMatch;
+    const {id: userId} = this.state.user;
+    const repost = await axios.get(`${API_URL}/repost?${queryParams({matchId, userId})}`);
+    return !!repost.data;
   };
 
   updateUserData = async () => {
@@ -226,11 +241,34 @@ class AppContextProvider extends Component {
 
   featureToggle = () => this.admins.includes(this.state.user ? this.state.user.id : 123);
 
+  setValue = name => value => this.setState({[name]: value});
+
+  setActiveModal = activeModal => this.setState({activeModal});
+
+  createWallPost = () => {
+    const {activeMatchVote, rivals} = this.state;
+    const currentRival = !!activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
+    const message = `Голосуй за матч Зенит : ${currentRival.name}, зарабатывай баллы и обменивай их на ценные призы!`;
+    const attachments = 'photo-74457752_457281666,https://vk.com/app7179287_-74457752';
+    api
+      .postToWall(message, attachments)
+      .then(postId => this.createRepost(postId))
+      .then(() => {
+        this.setState({
+          isUserCreateRepostForCurrentMatch: true,
+          activeModal: MODALS.REPOST_SUCCESS
+        });
+      })
+      .catch(error => error)
+  };
+
   render() {
     return (
       <AppContext.Provider
         value={{
           state: this.state,
+          setActiveModal: this.setActiveModal,
+          setValue: this.setValue,
           createUser: this.createUser,
           fetchMatches: this.fetchMatches,
           fetchRivals: this.fetchRivals,
@@ -248,6 +286,7 @@ class AppContextProvider extends Component {
           setRivalScore: rivalScore => this.setScore('rivalScore')(rivalScore),
           featureToggle: this.featureToggle,
           createRepost: this.createRepost,
+          createWallPost: this.createWallPost,
           api: api,
         }}
       >
