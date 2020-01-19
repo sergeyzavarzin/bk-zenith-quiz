@@ -74,7 +74,7 @@ class App extends React.Component {
           onClose={() => setActiveModal(null)}
           icon={<Icon56FavoriteOutline/>}
           title='Отлично!'
-          caption='Сохраните репост у себя на стене до окончания голосования. Дополнительный балл будет зачислен по завершении матча.'
+          caption='Сохраните репост у себя на стене до окончания голосования. Дополнительный балл будет зачислен после завершения матча.'
           actionsLayout='vertical'
           actions={
             [

@@ -44,7 +44,7 @@ class AppContextProvider extends Component {
     isUserCreateRepostForCurrentMatch: false,
   };
 
-  admins = [17188634, 127017464, 2314852];
+  admins = [17188634, 127017464, 2314852, 3918082];
 
   componentDidMount() {
     this.fetchUserData();
@@ -248,7 +248,7 @@ class AppContextProvider extends Component {
   createWallPost = () => {
     const {activeMatchVote, rivals} = this.state;
     const currentRival = !!activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
-    const message = `Голосуй за матч Зенит : ${currentRival.name.trim()}, зарабатывай баллы и обменивай их на ценные призы!`;
+    const message = `Голосуй за матч с БК ${currentRival.name.trim()} вместе со мной 🤝 Зарабатывай баллы и обменивай их на бесплатные билеты 🎫, клубную атрибутику и другие ценные призы. 🎁`;
     const attachments = 'photo-74457752_457281666,https://vk.com/app7179287_-74457752';
     api
       .postToWall(message, attachments)
