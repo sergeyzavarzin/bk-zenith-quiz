@@ -8,7 +8,7 @@ import {withAppContext} from '../../Contexts/AppContext';
 import {MATCH_TYPES} from '../../Constants/matchTypes';
 
 const Matches = ({id, go, appContext}) => {
-  const [type, setType] = useState(MATCH_TYPES.ENDED);
+  const [type, setType] = useState(MATCH_TYPES.NOT_STARTED);
   const {state, setActiveMatch, updateMatches, featureToggle} = appContext;
   const {matches, rivals, isMatchesFetching} = state;
   const sortByDateDESC = (a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime));
@@ -33,16 +33,16 @@ const Matches = ({id, go, appContext}) => {
         <FixedLayout vertical='bottom'>
           <Tabs type='default'>
             <TabsItem
-              onClick={() => setType(MATCH_TYPES.ENDED)}
-              selected={type === MATCH_TYPES.ENDED}
-            >
-              Завершенные
-            </TabsItem>
-            <TabsItem
               onClick={() => setType(MATCH_TYPES.NOT_STARTED)}
               selected={type === MATCH_TYPES.NOT_STARTED}
             >
               Предстоящие
+            </TabsItem>
+            <TabsItem
+              onClick={() => setType(MATCH_TYPES.ENDED)}
+              selected={type === MATCH_TYPES.ENDED}
+            >
+              Завершенные
             </TabsItem>
           </Tabs>
         </FixedLayout>
@@ -54,6 +54,29 @@ const Matches = ({id, go, appContext}) => {
         {
           featureToggle() ?
           <div style={{marginBottom: 56}}>
+            {
+              (!!upcomingMatches.length && type === MATCH_TYPES.NOT_STARTED) &&
+              <Group title="Предстоящие">
+                <List>
+                  {
+                    upcomingMatches
+                      .map(match =>
+                        <Cell
+                          key={match.id}
+                          size="l"
+                        >
+                          <MatchItem
+                            rival={rivals.find(rival => rival.id === match.rivalId)}
+                            beginTime={match.startDateTime}
+                            place={match.place}
+                            buyTickets={match.buyTicketsUrl}
+                          />
+                        </Cell>
+                      )
+                  }
+                </List>
+              </Group>
+            }
             {
               (!!endedMatches.length && type === MATCH_TYPES.ENDED) &&
               <Group title="Завершенные">
@@ -73,29 +96,6 @@ const Matches = ({id, go, appContext}) => {
                             beginTime={match.startDateTime}
                             place={match.place}
                             game={match.score}
-                          />
-                        </Cell>
-                      )
-                  }
-                </List>
-              </Group>
-            }
-            {
-              (!!upcomingMatches.length && type === MATCH_TYPES.NOT_STARTED) &&
-              <Group title="Предстоящие">
-                <List>
-                  {
-                    upcomingMatches
-                      .map(match =>
-                        <Cell
-                          key={match.id}
-                          size="l"
-                        >
-                          <MatchItem
-                            rival={rivals.find(rival => rival.id === match.rivalId)}
-                            beginTime={match.startDateTime}
-                            place={match.place}
-                            buyTickets={match.buyTicketsUrl}
                           />
                         </Cell>
                       )
