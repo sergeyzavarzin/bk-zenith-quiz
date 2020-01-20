@@ -26,8 +26,9 @@ import Settings from '../../Panels/Settings';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
-import './App.scss';
 import {MODALS} from '../../Constants/modals';
+
+import './App.scss';
 
 class App extends React.Component {
 

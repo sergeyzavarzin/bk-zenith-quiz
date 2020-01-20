@@ -3,7 +3,6 @@ import moment from 'moment';
 import axios from 'axios';
 import connectOnline from '@vkontakte/vk-connect';
 import connectMock from '@vkontakte/vk-connect-mock';
-import {VKMiniAppAPI} from '@vkontakte/vk-mini-apps-api';
 
 import {API_URL} from '../../Constants/endpoints';
 import {queryParams} from '../../Utils/queryParams';
@@ -12,8 +11,6 @@ import {MODALS} from '../../Constants/modals';
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
 export const AppContext = React.createContext(true);
-
-const api = new VKMiniAppAPI(connect);
 
 class AppContextProvider extends Component {
 
@@ -28,7 +25,7 @@ class AppContextProvider extends Component {
     userScore: 0,
     userTotalScore: 0,
     position: null,
-    leaderBoard: [],
+    leaderBoard: {data: [], nextPage: 0, maxPage: 2},
     rivals: [],
     matches: [],
     userVotes: [],
@@ -53,14 +50,14 @@ class AppContextProvider extends Component {
   prepareAppData = userData => {
     this.subscribeVKActions();
     Promise
-      .all([this.fetchRivals(), this.fetchMatches(), this.fetchLeaderBoard()])
-      .then(async ([rivals, matches, leaderBoard]) => {
+      .all([this.fetchRivals(), this.fetchMatches()])
+      .then(async ([rivals, matches]) => {
         const {user, userScore, userTotalScore} = userData;
         const activeMatchVote = this.getActiveMatchVote(matches);
         const isUserCreateRepostForCurrentMatch = await this.fetchUserRepost(activeMatchVote);
         this.setState({
           user, userScore, userTotalScore, rivals,
-          matches, activeMatchVote, leaderBoard,
+          matches, activeMatchVote,
           isUserCreateRepostForCurrentMatch,
         });
         return user;
@@ -82,15 +79,6 @@ class AppContextProvider extends Component {
         document.body.attributes.setNamedItem(schemeAttribute);
       }
     });
-  };
-
-  createRepost = postId => {
-    const {user: {id: userId}, activeMatchVote: {id: matchId}} = this.state;
-    const data = {postId, userId, matchId};
-    axios
-      .post(`${API_URL}/repost`, data)
-      .then(response => response)
-      .catch(error => error)
   };
 
   fetchUserRepost = async activeMatch => {
@@ -170,17 +158,24 @@ class AppContextProvider extends Component {
     return userVotes.data;
   };
 
-  fetchLeaderBoard = async () => {
-    const leaderBoard = await axios.get(`${API_URL}/user/leaderboard`);
+  fetchLeaderBoard = async page => {
+    const leaderBoard = await axios.get(`${API_URL}/user/leaderboard?page=${page}`);
     return leaderBoard.data;
   };
 
   updateLeaderBoard = async () => {
+    const {leaderBoard: {nextPage}} = this.state;
     this.setState({isLeaderBoardFetching: true});
-    const leaderBoard = await this.fetchLeaderBoard();
-    this.setState({
-      isLeaderBoardFetching: false,
-      leaderBoard
+    const leaderBoard = await this.fetchLeaderBoard(nextPage);
+    this.setState(({leaderBoard: {data}}) => {
+      return {
+        isLeaderBoardFetching: false,
+        leaderBoard: {
+          data: [...data, ...leaderBoard.data],
+          nextPage: leaderBoard.nextPage,
+          maxPage: leaderBoard.maxPage
+        }
+      }
     });
   };
 
@@ -245,21 +240,30 @@ class AppContextProvider extends Component {
 
   setActiveModal = activeModal => this.setState({activeModal});
 
+  createRepost = postId => {
+    const {user: {id: userId}, activeMatchVote: {id: matchId}} = this.state;
+    const data = {postId, userId, matchId};
+    axios
+      .post(`${API_URL}/repost`, data)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  };
+
   createWallPost = () => {
     const {activeMatchVote, rivals} = this.state;
     const currentRival = !!activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
-    const message = `Голосуй за матч с БК ${currentRival.name.trim()} вместе со мной 🤝 Зарабатывай баллы и обменивай их на бесплатные билеты 🎫, клубную атрибутику и другие ценные призы. 🎁`;
+    const message = `Голосуй за матч с БК «${currentRival.name.trim()}» вместе со мной!\nЗарабатывай баллы и обменивай их на бесплатные билеты 🎫, клубную атрибутику и другие ценные призы. 🎁`;
     const attachments = 'photo-74457752_457281666,https://vk.com/app7179287_-74457752';
-    api
-      .postToWall(message, attachments)
-      .then(postId => this.createRepost(postId))
-      .then(() => {
+    connect
+      .sendPromise('VKWebAppShowWallPostBox', {message, attachments})
+      .then(data => {
+        this.createRepost(data.post_id);
         this.setState({
           isUserCreateRepostForCurrentMatch: true,
           activeModal: MODALS.REPOST_SUCCESS
         });
       })
-      .catch(error => error)
+      .catch(error => console.log(error));
   };
 
   render() {
@@ -287,7 +291,6 @@ class AppContextProvider extends Component {
           featureToggle: this.featureToggle,
           createRepost: this.createRepost,
           createWallPost: this.createWallPost,
-          api: api,
         }}
       >
         {this.props.children}

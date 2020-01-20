@@ -11,11 +11,7 @@ import Icon24Share from '@vkontakte/icons/dist/24/share';
 
 import {withAppContext} from '../../Contexts/AppContext';
 import {showWallPostBox} from '../../Utils/showWallPostBox';
-
-const postParams = {
-  'message': 'Заходи в приложение и голосуй за матчи любимой команды!',
-  'attachments': 'photo-74457752_457281666,https://vk.com/app7179287_-74457752'
-};
+import {postParams} from '../../Constants/posts';
 
 class Home extends React.Component {
 
