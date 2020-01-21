@@ -90,10 +90,6 @@ const Voting = ({id, go, changeStory, appContext}) => {
                 }
               />
           }
-          {
-            featureToggle() &&
-            <Button onClick={createWallPost}>test repost 9</Button>
-          }
         </Group>
       </PullToRefresh>
     </Panel>
