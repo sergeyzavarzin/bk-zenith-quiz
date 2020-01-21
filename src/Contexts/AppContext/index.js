@@ -44,11 +44,11 @@ class AppContextProvider extends Component {
   admins = [17188634, 127017464, 2314852, 3918082];
 
   componentDidMount() {
+    this.subscribeVKActions();
     this.fetchUserData();
   }
 
   prepareAppData = userData => {
-    this.subscribeVKActions();
     Promise
       .all([this.fetchRivals(), this.fetchMatches()])
       .then(async ([rivals, matches]) => {
@@ -102,7 +102,6 @@ class AppContextProvider extends Component {
   };
 
   fetchUserData = async () => {
-    this.subscribeVKActions();
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
     axios
       .get(`${API_URL}/user/${user.id}`)
@@ -186,7 +185,7 @@ class AppContextProvider extends Component {
     this.setState({activeMatchVote, matches}, () => this.setState({isMatchesFetching: false}));
   };
 
-  addPlayerToFirstFive = (item) => {
+  addPlayerToFirstFive = item => {
     const {firstFive} = this.state;
     const selectedPlayers = firstFive.includes(item) ?
       firstFive.filter(playerId => playerId !== item) : [item, ...firstFive];
@@ -194,7 +193,7 @@ class AppContextProvider extends Component {
     this.setState({firstFive: selectedPlayers});
   };
 
-  setScore = (name) => (score) => {
+  setScore = name => score => {
     if (!(/^\d+$/.test(score))) return false;
     if (score.length) {
       this.setState({[name]: parseInt(score)})
@@ -252,7 +251,7 @@ class AppContextProvider extends Component {
   createWallPost = () => {
     const {activeMatchVote, rivals} = this.state;
     const currentRival = !!activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
-    const message = `Голосуй за матч с БК «${currentRival.name.trim()}» вместе со мной!\nЗарабатывай баллы и обменивай их на бесплатные билеты 🎫, клубную атрибутику и другие ценные призы. 🎁`;
+    const message = `Голосуй за матч с БК «${currentRival ? currentRival.name.trim() : 'ЦСКА'}» вместе со мной!\nЗарабатывай баллы и обменивай их на бесплатные билеты 🎫, клубную атрибутику и другие ценные призы. 🎁`;
     const attachments = 'photo-74457752_457281666,https://vk.com/app7179287_-74457752';
     connect
       .sendPromise('VKWebAppShowWallPostBox', {message, attachments})

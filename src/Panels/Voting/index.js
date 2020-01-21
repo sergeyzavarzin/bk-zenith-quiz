@@ -91,8 +91,8 @@ const Voting = ({id, go, changeStory, appContext}) => {
               />
           }
           {
-            featureToggle() && !isUserCreateRepostForCurrentMatch &&
-            <Button onClick={createWallPost}>test 3</Button>
+            featureToggle() &&
+            <Button onClick={createWallPost}>test repost 9</Button>
           }
         </Group>
       </PullToRefresh>
