@@ -7,6 +7,7 @@ import connectMock from '@vkontakte/vk-connect-mock';
 import {API_URL} from '../../Constants/endpoints';
 import {queryParams} from '../../Utils/queryParams';
 import {MODALS} from '../../Constants/modals';
+import players from '../../Constants/players';
 
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
@@ -39,6 +40,7 @@ class AppContextProvider extends Component {
     clubScore: 0,
     rivalScore: 0,
     isUserCreateRepostForCurrentMatch: false,
+    selectedPlayer: null,
   };
 
   admins = [17188634, 127017464, 2314852, 3918082];
@@ -265,6 +267,8 @@ class AppContextProvider extends Component {
       .catch(error => console.log(error));
   };
 
+  setSelectedPlayer = id => this.setState({selectedPlayer: players.find(player => player.id === id)});
+
   render() {
     return (
       <AppContext.Provider
@@ -290,6 +294,7 @@ class AppContextProvider extends Component {
           featureToggle: this.featureToggle,
           createRepost: this.createRepost,
           createWallPost: this.createWallPost,
+          setSelectedPlayer: this.setSelectedPlayer,
         }}
       >
         {this.props.children}

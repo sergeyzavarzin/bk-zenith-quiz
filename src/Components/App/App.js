@@ -8,6 +8,7 @@ import Home from '../../Panels/Home';
 import Help from '../../Panels/Help';
 import HelpView from '../../Panels/Help/HelpView';
 import Players from '../../Panels/Players';
+import PlayerInfo from '../../Panels/PlayerInfo';
 import Voting from '../../Panels/Voting';
 import Matches from '../../Panels/Matches';
 import MatchView from '../../Panels/MatchResults';
@@ -203,6 +204,7 @@ class App extends React.Component {
 
         <View id='players-view' activePanel={activePanelPlayers}>
           <Players id='players' go={goPlayers}/>
+          <PlayerInfo id='player-info' go={goPlayers}/>
         </View>
 
         <View id='profile-view' activePanel={activePanelProfile}>
