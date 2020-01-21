@@ -2,11 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import {
   Div, Panel, PanelHeader, Group,
-  List, Button, Cell, PullToRefresh
+  List, Button, Cell, PullToRefresh, FixedLayout
 } from '@vkontakte/vkui';
 import Icon56NotificationOutline from '@vkontakte/icons/dist/56/notification_outline';
 import Icon24ShareOutline from '@vkontakte/icons/dist/24/share_outline';
 
+import Advertisement from '../../Components/Advertisement';
 import MatchItem from '../../Components/Match';
 import Placeholder from '../../Components/Placeholder';
 
@@ -51,17 +52,17 @@ const Voting = ({id, go, changeStory, appContext}) => {
                 <Div>
                   {
                     isUserSendAnswerForCurrentVote ?
-                    <Div style={{textAlign: 'center'}}>
-                      Ваш ответ принят
-                    </Div> :
-                    <Button
-                      size='xl'
-                      data-to='select-first-five'
-                      onClick={go}
-                      style={{marginBottom: 15}}
-                    >
-                      Начать
-                    </Button>
+                      <Div style={{textAlign: 'center'}}>
+                        Ваш ответ принят
+                      </Div> :
+                      <Button
+                        size='xl'
+                        data-to='select-first-five'
+                        onClick={go}
+                        style={{marginBottom: 15}}
+                      >
+                        Начать
+                      </Button>
                   }
                   {
                     featureToggle() && !isUserCreateRepostForCurrentMatch &&
@@ -89,6 +90,12 @@ const Voting = ({id, go, changeStory, appContext}) => {
                   </Button>
                 }
               />
+          }
+          {
+            featureToggle() &&
+            <FixedLayout vertical='bottom'>
+              <Advertisement/>
+            </FixedLayout>
           }
         </Group>
       </PullToRefresh>
