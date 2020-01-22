@@ -5,9 +5,11 @@ import connectOnline from '@vkontakte/vk-connect';
 import connectMock from '@vkontakte/vk-connect-mock';
 
 import {API_URL} from '../../Constants/endpoints';
-import {queryParams} from '../../Utils/queryParams';
 import {MODALS} from '../../Constants/modals';
 import players from '../../Constants/players';
+
+import {queryParams} from '../../Utils/queryParams';
+import {getUrlParams} from '../../Utils/getUrlParams';
 
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
@@ -41,11 +43,13 @@ class AppContextProvider extends Component {
     rivalScore: 0,
     isUserCreateRepostForCurrentMatch: false,
     selectedPlayer: null,
+    vkParams: null,
   };
 
   admins = [17188634, 127017464, 2314852, 3918082];
 
   componentDidMount() {
+    this.setState({vkParams: getUrlParams(window.location.search)}, () => console.log(getUrlParams(window.location.search)));
     this.subscribeVKActions();
     this.fetchUserData();
   }
@@ -253,7 +257,7 @@ class AppContextProvider extends Component {
   createWallPost = () => {
     const {activeMatchVote, rivals} = this.state;
     const currentRival = !!activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
-    const message = `Голосуй за матч с БК «${currentRival ? currentRival.name.trim() : 'ЦСКА'}» вместе со мной!\nЗарабатывай баллы и обменивай их на бесплатные билеты 🎫, клубную атрибутику и другие ценные призы. 🎁`;
+    const message = `Голосуй за матч с БК «${currentRival.name.trim()}» вместе со мной!\nЗарабатывай баллы и обменивай их на бесплатные билеты, клубную атрибутику и другие ценные призы.`;
     const attachments = 'photo-74457752_457281666,https://vk.com/app7179287_-74457752';
     connect
       .sendPromise('VKWebAppShowWallPostBox', {message, attachments})
@@ -266,6 +270,24 @@ class AppContextProvider extends Component {
       })
       .catch(error => console.log(error));
   };
+
+  enableNotifications = () => connect
+    .sendPromise('VKWebAppAllowNotifications')
+    .then(() => axios.post(`${API_URL}/notification-list`, {
+      user: this.state.user.id,
+      status: 1,
+    }))
+    .catch(error => console.log(error));
+
+  disableNotifications = () => connect
+    .sendPromise('VKWebAppDenyNotifications')
+    .then(() => axios.post(`${API_URL}/notification-list`, {
+      user: this.state.user.id,
+      status: 0,
+    }))
+    .catch(error => console.log(error));
+
+  setVkParams = vkParams => this.setState({vkParams});
 
   setSelectedPlayer = id => this.setState({selectedPlayer: players.find(player => player.id === id)});
 
@@ -295,6 +317,9 @@ class AppContextProvider extends Component {
           createRepost: this.createRepost,
           createWallPost: this.createWallPost,
           setSelectedPlayer: this.setSelectedPlayer,
+          enableNotifications: this.enableNotifications,
+          disableNotifications: this.disableNotifications,
+          setVkParams: this.setVkParams,
         }}
       >
         {this.props.children}

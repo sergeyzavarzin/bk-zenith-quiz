@@ -1,8 +1,28 @@
 import React from 'react';
-import {Cell, Group, List, PanelHeader, Panel, HeaderButton, Button} from '@vkontakte/vkui';
+import {Cell, Group, List, PanelHeader, Panel, HeaderButton, Switch} from '@vkontakte/vkui';
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
+import {withAppContext} from '../../Contexts/AppContext';
+import {MODALS} from '../../Constants/modals';
 
 class Settings extends React.Component {
+
+  toggleNotifications = () => {
+    const {
+      enableNotifications,
+      disableNotifications,
+      setVkParams,
+      setActiveModal,
+      state: {vkParams}
+    } = this.props.appContext;
+    if (vkParams.vk_are_notifications_enabled) {
+      disableNotifications();
+      setVkParams({...vkParams, vk_are_notifications_enabled: 0});
+      setActiveModal(MODALS.NOTIFICATIONS_ARE_DISABLED);
+    } else {
+      enableNotifications();
+      setVkParams({...vkParams, vk_are_notifications_enabled: 1});
+    }
+  };
 
   render() {
     const {id, go} = this.props;
@@ -19,18 +39,15 @@ class Settings extends React.Component {
         </PanelHeader>
         <Group>
           <List>
-            <Cell>
-              <div style={{
-                textAlign: 'center',
-                marginBottom: 10,
-                fontSize: 18,
-              }}
-              >
-                Отписаться от новостой рассылки
-              </div>
-              <Button size='xl'>
-                Отписаться
-              </Button>
+            <Cell
+              asideContent={
+                <Switch
+                  defaultChecked={!!parseInt(this.props.appContext.state.vkParams.vk_are_notifications_enabled)}
+                  onChange={this.toggleNotifications}
+                />
+              }
+            >
+              Уведомления
             </Cell>
           </List>
         </Group>
@@ -39,4 +56,4 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+export default withAppContext(Settings);

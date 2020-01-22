@@ -1,6 +1,7 @@
 import React from 'react';
 import {Epic, ModalCard, ModalRoot, View} from '@vkontakte/vkui';
 import Icon56FavoriteOutline from '@vkontakte/icons/dist/56/favorite_outline';
+import Icon36Done from '@vkontakte/icons/dist/36/done';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import AppBar from '../AppBar';
@@ -110,6 +111,23 @@ class App extends React.Component {
             ]
           }
         />
+        <ModalCard
+          id={MODALS.NOTIFICATIONS_ARE_DISABLED}
+          onClose={() => setActiveModal(null)}
+          icon={<Icon36Done width={56}/>}
+          title='Уведомления отключены'
+          caption='Не забывыйте, что пользователи включившие уведомления получают дополнительный балл за каждое голосование.'
+          actionsLayout='vertical'
+          actions={
+            [
+              {
+                title: 'Понятно',
+                type: 'primary',
+                action: () => setActiveModal(null)
+              }
+            ]
+          }
+        />
       </ModalRoot>
     )
   };
@@ -207,7 +225,7 @@ class App extends React.Component {
           <PlayerInfo id='player-info' go={goPlayers}/>
         </View>
 
-        <View id='profile-view' activePanel={activePanelProfile}>
+        <View id='profile-view' activePanel={activePanelProfile} modal={modal}>
           <Home id='home' go={goProfile}/>
           <Help id='help' go={goProfile}/>
           <HelpView id='help-answer' go={goProfile}/>

@@ -1,2 +1,2 @@
 export const API_URL = process.env.NODE_ENV === 'development' ?
-'http://localhost:8080' : 'https://zen-quiz-api.herokuapp.com';
+  'http://localhost:8080' : 'https://zen-quiz-api.herokuapp.com';

@@ -5,6 +5,32 @@ import {withAppContext} from '../../Contexts/AppContext';
 
 import './Advertisement.scss';
 
+const ads = [
+  {
+    id: 'Winline',
+    link: 'https://winline.ru/',
+    image: 'http://adm.basket.fc-zenit.ru/upload/iblock/c20/c20c4c82528ede6d8d66213360b7167d.png',
+  },
+  {
+    id: 'Gazprom',
+    link: 'https://www.gazprom.ru/',
+    image: 'http://adm.basket.fc-zenit.ru/upload/iblock/8aa/8aa402590d098dfb4df200fede0b24cc.png',
+  },
+];
+
+const AdItem = ({id, link, image}) => (
+  <div
+    className='advertisement__slide'
+    onClick={() => window.open(link, '_blank')}
+  >
+    <img
+      className='advertisement__image'
+      src={image}
+      alt={id}
+    />
+  </div>
+);
+
 const Advertisement = () => {
   return (
     <Gallery
@@ -13,30 +39,16 @@ const Advertisement = () => {
       slideWidth='100%'
       className='advertisement'
     >
-      <a
-        className='advertisement__slide'
-        href='https://winline.ru/'
-        target='_blank'
-        rel="noopener noreferrer"
-      >
-        <img
-          className='advertisement__image'
-          src='http://adm.basket.fc-zenit.ru/upload/iblock/c20/c20c4c82528ede6d8d66213360b7167d.png'
-          alt='Winline'
-        />
-      </a>
-      <a
-        className='advertisement__slide'
-        href='https://www.gazprom.ru/'
-        target='_blank'
-        rel="noopener noreferrer"
-      >
-        <img
-          className='advertisement__image'
-          src='http://adm.basket.fc-zenit.ru/upload/iblock/8aa/8aa402590d098dfb4df200fede0b24cc.png'
-          alt='Winline'
-        />
-      </a>
+      {
+        ads.map(({id, image, link}) =>
+          <AdItem
+            key={id}
+            id={id}
+            image={image}
+            link={link}
+          />
+        )
+      }
     </Gallery>
   )
 };
