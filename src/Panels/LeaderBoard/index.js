@@ -7,6 +7,8 @@ import {
   Cell,
   PanelSpinner,
   Avatar,
+  Button,
+  Div
 } from '@vkontakte/vkui';
 
 import {withAppContext} from '../../Contexts/AppContext';
@@ -14,35 +16,24 @@ import {withAppContext} from '../../Contexts/AppContext';
 class Table extends React.Component {
 
   componentDidMount() {
-    const {updateLeaderBoard, state, featureToggle} = this.props.appContext;
-    if (featureToggle()) {
-      window.addEventListener('scroll', this.handleScroll);
-    }
+    const {updateLeaderBoard, state} = this.props.appContext;
     if (!state.leaderBoard.data.length) {
       updateLeaderBoard();
     }
   }
 
-  componentWillUnmount() {
-    const {featureToggle} = this.props.appContext;
-    if (featureToggle()) {
-      window.removeEventListener('scroll', this.handleScroll);
-    }
-  }
-
-  handleScroll = e => {
+  handleUpdateButtonClick = () => {
     const {updateLeaderBoard, state} = this.props.appContext;
     const {leaderBoard: {nextPage, maxPage}} = state;
-    const {scrollTop, offsetHeight, scrollHeight} = e.target.documentElement;
-    const scrollBottom = scrollTop + offsetHeight >= scrollHeight;
-    if (scrollBottom && nextPage < maxPage) {
+    if (nextPage < maxPage) {
       updateLeaderBoard(nextPage)
     }
   };
 
   render() {
     const {id, appContext} = this.props;
-    const {leaderBoard, isLeaderBoardFetching} = appContext.state;
+    const {featureToggle, state} = appContext;
+    const {leaderBoard, isLeaderBoardFetching} = state;
     return (
       <Panel id={id}>
         <PanelHeader>
@@ -68,6 +59,17 @@ class Table extends React.Component {
         </Group>
         {
           isLeaderBoardFetching && <PanelSpinner/>
+        }
+        {
+          !isLeaderBoardFetching && featureToggle() &&
+          <Div style={{marginBottom: 30}}>
+            <Button
+              size='xl'
+              onClick={this.handleUpdateButtonClick}
+            >
+              Показать еще
+            </Button>
+          </Div>
         }
       </Panel>
     );

@@ -164,7 +164,7 @@ class AppContextProvider extends Component {
   };
 
   fetchLeaderBoard = async page => {
-    const leaderBoard = await axios.get(`${API_URL}/user/leaderboard?page=${page}`);
+    const leaderBoard = await axios.get(`${API_URL}/user/leaderboard?limit=20&page=${page}`);
     return leaderBoard.data;
   };
 
