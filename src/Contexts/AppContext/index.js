@@ -46,7 +46,7 @@ class AppContextProvider extends Component {
     vkParams: null,
   };
 
-  admins = [17188634, 127017464, 2314852, 3918082];
+  admins = [17188634, 127017464, 2314852, 3918082, 84822103];
 
   componentDidMount() {
     this.setState({vkParams: getUrlParams(window.location.search)}, () => console.log(getUrlParams(window.location.search)));
