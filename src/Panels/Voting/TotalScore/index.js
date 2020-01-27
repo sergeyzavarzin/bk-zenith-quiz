@@ -4,9 +4,10 @@ import Icon24Back from '@vkontakte/icons/dist/24/back';
 
 import {withAppContext} from '../../../Contexts/AppContext';
 import HeaderButton from '@vkontakte/vkui/dist/components/HeaderButton/HeaderButton';
+import {MODALS} from '../../../Constants/modals';
 
 const TotalScore = ({id, go, appContext}) => {
-  const {setRivalScore, setClubScore, sendVote, state} = appContext;
+  const {setRivalScore, setClubScore, isTimeEnd, sendVote, setActiveModal, state} = appContext;
   const {activeMatchVote, rivals, clubScore, rivalScore} = state;
   const currentRival = rivals && activeMatchVote && rivals.find(rival => rival.id === activeMatchVote.rivalId);
   return (
@@ -48,9 +49,13 @@ const TotalScore = ({id, go, appContext}) => {
                   userSelect: 'none',
                 }}
                 size="xl"
-                data-to='thanks'
-                onClick={(e) => {
-                  sendVote();
+                data-to={isTimeEnd() ? 'voting' : 'thanks'}
+                onClick={e => {
+                  if (!isTimeEnd()) {
+                    sendVote();
+                  } else {
+                    setActiveModal(MODALS.VOTING_IS_ENDED);
+                  }
                   go(e);
                 }}
               >

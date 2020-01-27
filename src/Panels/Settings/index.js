@@ -16,11 +16,11 @@ class Settings extends React.Component {
     } = this.props.appContext;
     if (vkParams.vk_are_notifications_enabled) {
       disableNotifications();
-      setVkParams({...vkParams, vk_are_notifications_enabled: 0});
+      setVkParams({...vkParams, vk_are_notifications_enabled: false});
       setActiveModal(MODALS.NOTIFICATIONS_ARE_DISABLED);
     } else {
       enableNotifications();
-      setVkParams({...vkParams, vk_are_notifications_enabled: 1});
+      setVkParams({...vkParams, vk_are_notifications_enabled: true});
     }
   };
 
@@ -42,7 +42,7 @@ class Settings extends React.Component {
             <Cell
               asideContent={
                 <Switch
-                  defaultChecked={!!parseInt(this.props.appContext.state.vkParams.vk_are_notifications_enabled)}
+                  defaultChecked={this.props.appContext.state.vkParams.vk_are_notifications_enabled}
                   onChange={this.toggleNotifications}
                 />
               }

@@ -89,7 +89,7 @@ class PlayersSelect extends React.Component {
           </List>
         </Group>
         <FixedLayout vertical="bottom">
-          <Div style={{background: 'white'}}>
+          <Div className="button-next">
             <Button
               style={isButtonDisabled ? {} : {
                 opacity: 0.5,

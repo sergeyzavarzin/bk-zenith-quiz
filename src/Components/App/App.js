@@ -1,7 +1,9 @@
 import React from 'react';
 import {Epic, ModalCard, ModalRoot, View} from '@vkontakte/vkui';
 import Icon56FavoriteOutline from '@vkontakte/icons/dist/56/favorite_outline';
-import Icon36Done from '@vkontakte/icons/dist/36/done';
+import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outline';
+import Icon56RecentOutline from '@vkontakte/icons/dist/56/recent_outline';
+import Icon56NotificationOutline from '@vkontakte/icons/dist/56/notification_outline';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import AppBar from '../AppBar';
@@ -69,13 +71,13 @@ class App extends React.Component {
   goTable = e => this.go('activePanelTable')(e);
 
   modal = () => {
-    const {createWallPost, setActiveModal, state} = this.props.appContext;
+    const {createWallPost, setActiveModal, enableNotifications, state} = this.props.appContext;
     return (
       <ModalRoot activeModal={state.activeModal}>
         <ModalCard
           id={MODALS.REPOST_SUCCESS}
           onClose={() => setActiveModal(null)}
-          icon={<Icon56FavoriteOutline/>}
+          icon={<Icon56CheckCircleOutline/>}
           title='Отлично!'
           caption='Сохраните репост у себя на стене до окончания голосования. Дополнительный балл будет зачислен после завершения матча.'
           actionsLayout='vertical'
@@ -112,9 +114,31 @@ class App extends React.Component {
           }
         />
         <ModalCard
+          id={MODALS.INVITE_TO_ENABLE_NOTIFICATIONS}
+          onClose={() => setActiveModal(null)}
+          icon={<Icon56NotificationOutline/>}
+          title='Заработайте дополнительные баллы'
+          caption='У вас есть возможность включить уведомления чтобы зарабатывать дополнительный балл за каждый матч.'
+          actionsLayout='vertical'
+          actions={
+            [
+              {
+                title: 'Включить уведомления',
+                type: 'primary',
+                action: () => enableNotifications(() => setActiveModal(MODALS.INVITE_TO_REPOST))
+              },
+              {
+                title: 'Нет, спасибо',
+                type: 'secondary',
+                action: () => setActiveModal(MODALS.INVITE_TO_REPOST)
+              }
+            ]
+          }
+        />
+        <ModalCard
           id={MODALS.NOTIFICATIONS_ARE_DISABLED}
           onClose={() => setActiveModal(null)}
-          icon={<Icon36Done width={56}/>}
+          icon={<Icon56NotificationOutline />}
           title='Уведомления отключены'
           caption='Не забывыйте, что пользователи включившие уведомления получают дополнительный балл за каждое голосование.'
           actionsLayout='vertical'
@@ -122,6 +146,40 @@ class App extends React.Component {
             [
               {
                 title: 'Понятно',
+                type: 'primary',
+                action: () => setActiveModal(null)
+              }
+            ]
+          }
+        />
+        <ModalCard
+          id={MODALS.NOTIFICATIONS_ARE_ENABLED}
+          onClose={() => setActiveModal(null)}
+          icon={<Icon56NotificationOutline width={56}/>}
+          title='Уведомления включены'
+          caption='Теперь вам будет начисляться дополнительный балл за каждое голосование.'
+          actionsLayout='vertical'
+          actions={
+            [
+              {
+                title: 'Отлично!',
+                type: 'primary',
+                action: () => setActiveModal(null)
+              }
+            ]
+          }
+        />
+        <ModalCard
+          id={MODALS.VOTING_IS_ENDED}
+          onClose={() => setActiveModal(null)}
+          icon={<Icon56RecentOutline/>}
+          title='Голосование завершено'
+          caption='К сожалению, вы не успели отправить ответ.'
+          actionsLayout='vertical'
+          actions={
+            [
+              {
+                title: 'Ок',
                 type: 'primary',
                 action: () => setActiveModal(null)
               }

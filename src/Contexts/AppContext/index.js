@@ -49,7 +49,12 @@ class AppContextProvider extends Component {
   admins = [17188634, 127017464, 2314852, 3918082, 84822103];
 
   componentDidMount() {
-    this.setState({vkParams: getUrlParams(window.location.search)}, () => console.log(getUrlParams(window.location.search)));
+    const startUpParams = getUrlParams(window.location.search);
+    const vkParams = {
+      ...startUpParams,
+      vk_are_notifications_enabled: process.env.NODE_ENV === 'development' || !!parseInt(startUpParams.vk_are_notifications_enabled),
+    };
+    this.setState({vkParams}, () => console.log(vkParams));
     this.subscribeVKActions();
     this.fetchUserData();
   }
@@ -83,6 +88,12 @@ class AppContextProvider extends Component {
         const schemeAttribute = document.createAttribute('scheme');
         schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
         document.body.attributes.setNamedItem(schemeAttribute);
+      }
+      if (type === 'VKWebAppAllowNotificationsResult' && this.featureToggle()) {
+        this.setNotificationStatus(true, () => this.setActiveModal(MODALS.NOTIFICATIONS_ARE_ENABLED));
+      }
+      if (type === 'VKWebAppDenyNotificationsResult' && this.featureToggle()) {
+        this.setNotificationStatus(false, () => this.setActiveModal(MODALS.NOTIFICATIONS_ARE_DISABLED));
       }
     });
   };
@@ -218,6 +229,12 @@ class AppContextProvider extends Component {
       sortedMatches[0] : null;
   };
 
+  isTimeEnd = () => {
+    const {activeMatchVote} = this.state;
+    const now = moment();
+    return moment.duration(now.diff(activeMatchVote.startDateTime)).asMinutes() > -10;
+  };
+
   sendVote = () => {
     const {firstFive, tossing, twoScore, threeScore, clubScore, rivalScore, user, activeMatchVote} = this.state;
     const data = {
@@ -271,20 +288,23 @@ class AppContextProvider extends Component {
       .catch(error => console.log(error));
   };
 
-  enableNotifications = () => connect
+  setNotificationStatus = (status = false, cb = null) => {
+    axios
+      .post(`${API_URL}/user/notification-list`, {
+        userId: this.state.user.id,
+        isNotificationsAllowed: status,
+      })
+      .finally(() => !!cb && cb());
+  };
+
+  enableNotifications = (cb = null) => connect
     .sendPromise('VKWebAppAllowNotifications')
-    .then(() => axios.post(`${API_URL}/notification-list`, {
-      user: this.state.user.id,
-      status: 1,
-    }))
+    .then(() => this.setNotificationStatus(true, cb))
     .catch(error => console.log(error));
 
-  disableNotifications = () => connect
+  disableNotifications = (cb = null) => connect
     .sendPromise('VKWebAppDenyNotifications')
-    .then(() => axios.post(`${API_URL}/notification-list`, {
-      user: this.state.user.id,
-      status: 0,
-    }))
+    .then(() => this.setNotificationStatus(false, cb))
     .catch(error => console.log(error));
 
   setVkParams = vkParams => this.setState({vkParams});
@@ -302,6 +322,7 @@ class AppContextProvider extends Component {
           fetchMatches: this.fetchMatches,
           fetchRivals: this.fetchRivals,
           addPlayerToFirstFive: this.addPlayerToFirstFive,
+          isTimeEnd: this.isTimeEnd,
           sendVote: this.sendVote,
           updateLeaderBoard: this.updateLeaderBoard,
           updateUserData: this.updateUserData,

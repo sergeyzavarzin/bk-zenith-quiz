@@ -10,6 +10,8 @@ import './Thanks.scss';
 
 const Thanks = ({id, go, appContext}) => {
   const {state, setActiveModal, featureToggle} = appContext;
+  const hasRepost = state.isUserCreateRepostForCurrentMatch;
+  const isNotificationsEnabled = state.vkParams.vk_are_notifications_enabled;
   return (
     <Panel id={id}>
       <PanelHeader>
@@ -27,8 +29,12 @@ const Thanks = ({id, go, appContext}) => {
             data-to='voting'
             onClick={e => {
               go(e);
-              if (!state.isUserCreateRepostForCurrentMatch && featureToggle()) {
-                setActiveModal(MODALS.INVITE_TO_REPOST);
+              if (featureToggle()) {
+                if (!isNotificationsEnabled && !hasRepost) {
+                  setActiveModal(MODALS.INVITE_TO_ENABLE_NOTIFICATIONS);
+                } else if (isNotificationsEnabled && !hasRepost) {
+                  setActiveModal(MODALS.INVITE_TO_REPOST);
+                }
               }
             }}
           >
