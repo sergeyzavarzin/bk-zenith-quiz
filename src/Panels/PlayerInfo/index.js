@@ -71,8 +71,8 @@ const PlayerInfo = ({id, go, appContext}) => {
           <List>
             <Cell>
               {
-                selectedPlayer.about.map(text =>
-                  <p style={{whiteSpace: 'normal', marginTop: 0}}>
+                selectedPlayer.about.map((text, index) =>
+                  <p key={index} style={{whiteSpace: 'normal', marginTop: 0}}>
                     {text}
                   </p>
                 )

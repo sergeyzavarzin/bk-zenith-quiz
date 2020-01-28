@@ -1,5 +1,5 @@
 import React from 'react';
-import {Gallery} from '@vkontakte/vkui';
+import {Button, Gallery} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
@@ -13,12 +13,23 @@ const ads = [
   },
   {
     id: 'Gazprom',
-    link: 'https://www.gazprom.ru/',
+    link: 'https://gazprom.ru/',
     image: 'http://adm.basket.fc-zenit.ru/upload/iblock/8aa/8aa402590d098dfb4df200fede0b24cc.png',
   },
 ];
 
-const AdItem = ({id, link, image}) => (
+const AdItem = ({id, link, image}) => !window.matchMedia('(min-width: 576px)').matches ? (
+  <a
+    className='advertisement__slide'
+    href={link}
+  >
+    <img
+      className='advertisement__image'
+      src={image}
+      alt={id}
+    />
+  </a>
+) : (
   <div
     className='advertisement__slide'
     onClick={() => window.open(link, '_blank')}
