@@ -63,7 +63,7 @@ class Store extends React.Component {
         <Div>
           <div className='market'>
             {
-              merch ? merch.slice().reverse().map(item => item.type === type &&
+              merch ? merch.slice().reverse().sort((a, b) => a.price < b.price ? -1 : 1).map(item => item.type === type &&
                 <MarketItem
                   key={item.id}
                   id={item.id}
