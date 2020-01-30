@@ -1,5 +1,7 @@
 .advertisement {
-  height: 70px;
+  height: 65px;
+  z-index: 999;
+  border-bottom: 2px solid var(--background_page);
 
   &__slide {
     display: block;

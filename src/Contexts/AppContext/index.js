@@ -52,7 +52,7 @@ class AppContextProvider extends Component {
     const startUpParams = getUrlParams(window.location.search);
     const vkParams = {
       ...startUpParams,
-      vk_are_notifications_enabled: process.env.NODE_ENV === 'development' || !!parseInt(startUpParams.vk_are_notifications_enabled),
+      vk_are_notifications_enabled: process.env.NODE_ENV === 'development' ? false : !!parseInt(startUpParams.vk_are_notifications_enabled),
     };
     this.setState({vkParams}, () => console.log(vkParams));
     this.subscribeVKActions();
@@ -88,12 +88,6 @@ class AppContextProvider extends Component {
         const schemeAttribute = document.createAttribute('scheme');
         schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
         document.body.attributes.setNamedItem(schemeAttribute);
-      }
-      if (type === 'VKWebAppAllowNotificationsResult' && this.featureToggle()) {
-        this.setNotificationStatus(true, () => this.setActiveModal(MODALS.NOTIFICATIONS_ARE_ENABLED));
-      }
-      if (type === 'VKWebAppDenyNotificationsResult' && this.featureToggle()) {
-        this.setNotificationStatus(false, () => this.setActiveModal(MODALS.NOTIFICATIONS_ARE_DISABLED));
       }
     });
   };

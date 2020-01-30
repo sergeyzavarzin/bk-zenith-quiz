@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {
   Div, Panel, PanelHeader, Group,
-  List, Button, Cell, PullToRefresh, FixedLayout
+  List, Button, Cell, PullToRefresh, FixedLayout, TabsItem, Tabs
 } from '@vkontakte/vkui';
 import Icon56NotificationOutline from '@vkontakte/icons/dist/56/notification_outline';
 import Icon24ShareOutline from '@vkontakte/icons/dist/24/share_outline';
@@ -29,7 +29,7 @@ const Voting = ({id, go, changeStory, appContext}) => {
         onRefresh={updateMatches}
         isFetching={isMatchesFetching}
       >
-        <Group title={hasActiveMatchVote && 'Открытые голосования'}>
+        <Group>
           {
             hasActiveMatchVote ?
               <>
@@ -95,6 +95,21 @@ const Voting = ({id, go, changeStory, appContext}) => {
             featureToggle() &&
             <FixedLayout vertical='bottom'>
               <Advertisement/>
+              <Tabs type='default'>
+                <TabsItem
+                  // onClick={() => this.setState({type: MERCH_TYPES.DIGITAL})}
+                  // selected={type === MERCH_TYPES.DIGITAL}
+                  selected
+                >
+                  Предстоящие
+                </TabsItem>
+                <TabsItem
+                  // onClick={() => this.setState({type: MERCH_TYPES.PHYSICAL})}
+                  // selected={type === MERCH_TYPES.PHYSICAL}
+                >
+                  Завершенные
+                </TabsItem>
+              </Tabs>
             </FixedLayout>
           }
         </Group>

@@ -15,11 +15,11 @@ class Settings extends React.Component {
       state: {vkParams}
     } = this.props.appContext;
     if (vkParams.vk_are_notifications_enabled) {
-      disableNotifications();
+      disableNotifications(() => setActiveModal(MODALS.NOTIFICATIONS_ARE_DISABLED));
       setVkParams({...vkParams, vk_are_notifications_enabled: false});
       setActiveModal(MODALS.NOTIFICATIONS_ARE_DISABLED);
     } else {
-      enableNotifications();
+      enableNotifications(() => setActiveModal(MODALS.NOTIFICATIONS_ARE_ENABLED));
       setVkParams({...vkParams, vk_are_notifications_enabled: true});
     }
   };

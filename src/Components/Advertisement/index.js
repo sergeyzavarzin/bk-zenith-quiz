@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Gallery} from '@vkontakte/vkui';
+import {Gallery} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
