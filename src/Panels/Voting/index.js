@@ -139,7 +139,7 @@ const Voting = ({id, go, changeStory, appContext}) => {
                 onClick={() => setValue('votingSelectedTab')(MATCH_TYPES.NOT_STARTED)}
                 selected={votingSelectedTab === MATCH_TYPES.NOT_STARTED}
               >
-                Предстоящие
+                Активные
               </TabsItem>
               <TabsItem
                 onClick={() => setValue('votingSelectedTab')(MATCH_TYPES.ENDED)}
