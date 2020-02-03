@@ -116,7 +116,10 @@ class AppContextProvider extends Component {
     const user = await connect.sendPromise('VKWebAppGetUserInfo');
     axios
       .get(`${API_URL}/user/${user.id}`)
-      .then(({data}) => this.setState({isUserNew: !data}, () => {
+      .then(({data}) => this.setState({
+        isUserNew: !data,
+        userFlags: data.userFlags ? JSON.parse(data.userFlags) : null,
+      }, () => {
         this.prepareAppData({
           user,
           userScore: data.score,
@@ -306,6 +309,15 @@ class AppContextProvider extends Component {
 
   setSelectedPlayer = id => this.setState({selectedPlayer: players.find(player => player.id === id)});
 
+  createUserFlag = flags => {
+    const {id: userId} = this.state.user;
+    const data = {userId, flags: JSON.stringify(flags)};
+    axios
+      .post(`${API_URL}/userflag`, data)
+      .then(response => response)
+      .catch(error => error);
+  };
+
   render() {
     return (
       <AppContext.Provider
@@ -337,6 +349,7 @@ class AppContextProvider extends Component {
           enableNotifications: this.enableNotifications,
           disableNotifications: this.disableNotifications,
           setVkParams: this.setVkParams,
+          createUserFlag: this.createUserFlag,
         }}
       >
         {this.props.children}

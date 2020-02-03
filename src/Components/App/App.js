@@ -27,6 +27,7 @@ import Purchases from '../../Panels/Purchases';
 import Order from '../../Panels/Order';
 import OrderInfo from '../../Panels/OrderInfo';
 import Settings from '../../Panels/Settings';
+import UpdateV2 from '../../Panels/UpdateV2';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
@@ -43,10 +44,25 @@ class App extends React.Component {
     activePanelTable: 'table',
     activePanelProfile: 'home',
     activePanelPlayers: 'players',
+    activePanelWelcome: 'welcome',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.appContext.state.isUserNew && prevState.activeStory === 'welcome-view') {
+    const {activeStory} = prevState;
+    const {isUserNew, userFlags} = nextProps.appContext.state;
+    if (!isUserNew && activeStory === 'welcome-view') {
+      // TODO: featureToggle()
+      // if (!userFlags || (userFlags && !userFlags.isUserV2)) {
+      //   return {
+      //     activeStory: 'welcome-view',
+      //     activePanelWelcome: 'update-v-2',
+      //   };
+      // } else {
+      //   return {
+      //     activeStory: 'voting-view',
+      //   };
+      // }
+
       return {
         activeStory: 'voting-view',
       };
@@ -204,6 +220,7 @@ class App extends React.Component {
     const {
       activeStory, activePanelVoting, activePanelMatches,
       activePanelTable, activePanelProfile, activePanelPlayers,
+      activePanelWelcome,
     } = state;
     const {
       state: {firstFive, twoScore, threeScore},
@@ -295,9 +312,13 @@ class App extends React.Component {
           <Settings id='settings' go={goProfile}/>
         </View>
 
-        <View id='welcome-view' activePanel='welcome'>
+        <View id='welcome-view' activePanel={activePanelWelcome}>
           <Welcome
             id='welcome'
+            startApp={() => this.setState({activeStory: 'voting-view'})}
+          />
+          <UpdateV2
+            id='update-v-2'
             startApp={() => this.setState({activeStory: 'voting-view'})}
           />
         </View>

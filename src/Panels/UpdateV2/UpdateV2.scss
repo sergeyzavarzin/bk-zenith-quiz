@@ -1,0 +1,63 @@
+@import '../../Constants/variables';
+
+.welcome {
+  overflow: hidden;
+
+  &__slide {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+
+    @media all and #{$media} {
+      background: var(--main-gradient);
+    }
+  }
+
+  &__image {
+    max-height: 100vh;
+    overflow: hidden;
+    object-fit: cover;
+
+    @media all and #{$media} {
+      object-fit: unset;
+    }
+  }
+
+  &__button {
+    padding: 0 50px;
+
+    @media all and #{$media} {
+      width: 70%;
+      margin: 0 auto 25px;
+    }
+  }
+}
+
+.welcome-checkbox {
+  &__wrapper {
+    padding: 0 15px;
+    margin-bottom: 15px;
+
+    @media all and #{$media} {
+      width: 70%;
+      margin: 0 auto 30px;
+    }
+  }
+
+  &__text {
+    color: #000000;
+
+    p {
+      display: block;
+      margin: 0;
+      font-size: 12px;
+
+      @media all and #{$media} {
+        font-size: 14px;
+        display: inline-block;
+      }
+    }
+  }
+}
