@@ -267,11 +267,12 @@ class App extends React.Component {
           <Winner id='select-winner' go={goVoting}/>
           <TotalScore id='select-total-score' go={goVoting}/>
           <Thanks id='thanks' go={goVoting}/>
+          <MatchView withAnswers id='match-view' go={goVoting} prevScreen='voting'/>
         </View>
 
         <View id='matches-view' activePanel={activePanelMatches}>
           <Matches id='matches' go={goMatches}/>
-          <MatchView id='match-view' go={goMatches}/>
+          <MatchView id='match-view' go={goMatches} prevScreen='matches'/>
         </View>
 
         <View id='table-view' activePanel={activePanelTable}>

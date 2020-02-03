@@ -10,6 +10,7 @@ import players from '../../Constants/players';
 
 import {queryParams} from '../../Utils/queryParams';
 import {getUrlParams} from '../../Utils/getUrlParams';
+import {MATCH_TYPES} from '../../Constants/matchTypes';
 
 const connect = process.env.NODE_ENV === 'development' ? connectMock : connectOnline;
 
@@ -44,15 +45,17 @@ class AppContextProvider extends Component {
     isUserCreateRepostForCurrentMatch: false,
     selectedPlayer: null,
     vkParams: null,
+    matchesSelectedTab: MATCH_TYPES.NOT_STARTED,
+    votingSelectedTab: MATCH_TYPES.NOT_STARTED,
   };
 
-  admins = [17188634, 127017464, 2314852, 3918082, 84822103];
+  admins = [17188634, 127017464,  3918082, 84822103, 242750499, 2314852];
 
   componentDidMount() {
     const startUpParams = getUrlParams(window.location.search);
     const vkParams = {
       ...startUpParams,
-      vk_are_notifications_enabled: process.env.NODE_ENV === 'development' ? false : !!parseInt(startUpParams.vk_are_notifications_enabled),
+      vk_are_notifications_enabled: Boolean(startUpParams.vk_are_notifications_enabled),
     };
     this.setState({vkParams}, () => console.log(vkParams));
     this.subscribeVKActions();
@@ -64,19 +67,16 @@ class AppContextProvider extends Component {
       .all([this.fetchRivals(), this.fetchMatches()])
       .then(async ([rivals, matches]) => {
         const {user, userScore, userTotalScore} = userData;
-        const activeMatchVote = this.getActiveMatchVote(matches);
+        const activeMatchVote = this.getOpenForVotingMatch(matches);
         const isUserCreateRepostForCurrentMatch = await this.fetchUserRepost(activeMatchVote);
+        const userVotes = await this.fetchUserVotes({playerId: user.id, matchId: activeMatchVote ? activeMatchVote.id : 'false'});
+        const position = await this.getUserPosition(user.id);
         this.setState({
           user, userScore, userTotalScore, rivals,
           matches, activeMatchVote,
           isUserCreateRepostForCurrentMatch,
+          userVotes, position
         });
-        return user;
-      })
-      .then(async user => {
-        const userVotes = await this.fetchUserVotes(user.id);
-        const position = await this.getUserPosition(user.id);
-        this.setState({userVotes, position})
       })
       .catch(err => console.log(err))
       .finally(() => this.setState({isAppDataFetching: true}));
@@ -163,8 +163,9 @@ class AppContextProvider extends Component {
     return matches.data;
   };
 
-  fetchUserVotes = async userId => {
-    const userVotes = await axios.get(`${API_URL}/vote?playerId=${userId}`);
+
+  fetchUserVotes = async params => {
+    const userVotes = await axios.get(`${API_URL}/vote?${queryParams(params)}`);
     return userVotes.data;
   };
 
@@ -192,7 +193,7 @@ class AppContextProvider extends Component {
   updateMatches = async () => {
     this.setState({isMatchesFetching: true});
     const matches = await this.fetchMatches();
-    const activeMatchVote = this.getActiveMatchVote(matches);
+    const activeMatchVote = this.getOpenForVotingMatch(matches);
     this.setState({activeMatchVote, matches}, () => this.setState({isMatchesFetching: false}));
   };
 
@@ -213,7 +214,7 @@ class AppContextProvider extends Component {
     }
   };
 
-  getActiveMatchVote = matches => {
+  getOpenForVotingMatch = matches => {
     if (!matches.length) return null;
     const sortedMatches = matches
       .filter(match => !match.score.length)
@@ -315,6 +316,7 @@ class AppContextProvider extends Component {
           createUser: this.createUser,
           fetchMatches: this.fetchMatches,
           fetchRivals: this.fetchRivals,
+          fetchUserVotes: this.fetchUserVotes,
           addPlayerToFirstFive: this.addPlayerToFirstFive,
           isTimeEnd: this.isTimeEnd,
           sendVote: this.sendVote,
@@ -325,9 +327,9 @@ class AppContextProvider extends Component {
           setTossing: tossing => this.setState({tossing}),
           setTwoScore: twoScore => this.setState({twoScore}),
           setThreeScore: threeScore => this.setState({threeScore}),
-          setActiveMatch: activeMatch => this.setState({activeMatch}),
           setClubScore: clubScore => this.setScore('clubScore')(clubScore),
           setRivalScore: rivalScore => this.setScore('rivalScore')(rivalScore),
+          setActiveMatch: activeMatch => this.setState({activeMatch}),
           featureToggle: this.featureToggle,
           createRepost: this.createRepost,
           createWallPost: this.createWallPost,

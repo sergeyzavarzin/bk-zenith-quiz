@@ -49,6 +49,16 @@ class Order extends React.Component {
     description: null,
     deliveryType: DELIVERY.MATCH.type,
     isUserWantToNewsSubscribe: false,
+    fieldErrors: {
+      firstName: false,
+      lastName: false,
+      email: false,
+      phone: false,
+      country: false,
+      city: false,
+      address: false,
+      postIndex: false,
+    }
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -57,8 +67,8 @@ class Order extends React.Component {
       return {
         firstName: user.first_name,
         lastName: user.last_name,
-        country: user.country ? user.country.title : '',
-        city: user.city ? user.city.title : '',
+        country: user.country && user.country.title ? user.country.title : '',
+        city: user.city && user.city.title ? user.city.title : '',
       }
     }
   }
@@ -71,9 +81,23 @@ class Order extends React.Component {
       firstName, lastName, email, phone, country,
       city, address, postIndex, deliveryType
     } = this.state;
-    return deliveryType === DELIVERY.POST.type ?
-      (firstName && lastName && phone && validateEmail(email) && country && city && address && postIndex) :
-      (firstName && lastName && phone && validateEmail(email));
+    this.setState({
+      fieldErrors: {
+        firstName: !Boolean(firstName),
+        lastName: !Boolean(lastName),
+        email: !validateEmail(email),
+        phone: !Boolean(phone),
+        country: !Boolean(country),
+        city: !Boolean(city),
+        address: !Boolean(address),
+        postIndex: !Boolean(postIndex),
+      },
+    });
+    if (deliveryType === DELIVERY.POST.type) {
+      return Boolean(firstName && lastName && phone && validateEmail(email) && country && city && address && postIndex)
+    } else {
+      return Boolean(firstName && lastName && phone && validateEmail(email))
+    }
   };
 
   handleSubmit = e => {
@@ -134,7 +158,9 @@ class Order extends React.Component {
     const {handleChange, handleSubmit} = this;
     const {id, go, marketContext} = this.props;
     const {
-      isValid, firstName, lastName, country, city, error, isUserWantToNewsSubscribe, deliveryType
+      isValid, firstName, lastName, country, city,
+      error, isUserWantToNewsSubscribe, deliveryType,
+      fieldErrors
     } = this.state;
     const {selectedMerchItem} = marketContext.state;
     const isPhysical = selectedMerchItem.type === MERCH_TYPES.PHYSICAL;
@@ -199,17 +225,22 @@ class Order extends React.Component {
               onChange={handleChange('lastName')}
             />
           }
-          <Input top='E-mail' onChange={handleChange('email')}/>
+          <Input
+            top='E-mail'
+            onChange={handleChange('email')}
+            status={fieldErrors.email ? 'error' : 'default'}
+          />
           {
             isPhysical &&
-            <Input top='Телефон' onChange={handleChange('phone')}/>
+            <Input top='Телефон' onChange={handleChange('phone')} status={fieldErrors.phone ? 'error' : 'default'}/>
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
             <Input
               top='Страна'
-              defaultValue={!!country && country}
+              defaultValue={Boolean(country) ? country : ''}
               onChange={handleChange('country')}
+              status={fieldErrors.country ? 'error' : 'default'}
             />
           }
           {
@@ -218,15 +249,16 @@ class Order extends React.Component {
               top='Город'
               defaultValue={!!city && city}
               onChange={handleChange('city')}
+              status={fieldErrors.city ? 'error' : 'default'}
             />
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
-            <Input top='Адрес' onChange={handleChange('address')}/>
+            <Input top='Адрес' onChange={handleChange('address')} status={fieldErrors.address ? 'error' : 'default'}/>
           }
           {
             isPhysical && deliveryType === DELIVERY.POST.type &&
-            <Input top='Почтовый индекс' onChange={handleChange('postIndex')}/>
+            <Input top='Почтовый индекс' onChange={handleChange('postIndex')} status={fieldErrors.postIndex ? 'error' : 'default'}/>
           }
           {
             isPhysical &&

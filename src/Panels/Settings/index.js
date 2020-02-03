@@ -25,7 +25,7 @@ class Settings extends React.Component {
   };
 
   render() {
-    const {id, go} = this.props;
+    const {id, go, appContext: {featureToggle}} = this.props;
     return (
       <Panel id={id}>
         <PanelHeader
@@ -39,16 +39,19 @@ class Settings extends React.Component {
         </PanelHeader>
         <Group>
           <List>
-            <Cell
-              asideContent={
-                <Switch
-                  defaultChecked={this.props.appContext.state.vkParams.vk_are_notifications_enabled}
-                  onChange={this.toggleNotifications}
-                />
-              }
-            >
-              Уведомления
-            </Cell>
+            {
+              featureToggle() &&
+              <Cell
+                asideContent={
+                  <Switch
+                    defaultChecked={this.props.appContext.state.vkParams.vk_are_notifications_enabled}
+                    onChange={this.toggleNotifications}
+                  />
+                }
+              >
+                Уведомления
+              </Cell>
+            }
           </List>
         </Group>
       </Panel>
