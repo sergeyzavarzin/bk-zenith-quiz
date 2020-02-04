@@ -3,18 +3,21 @@ import {Gallery} from '@vkontakte/vkui';
 
 import {withAppContext} from '../../Contexts/AppContext';
 
+import GazpromLogo from './images/gazprom.png';
+import WinlineLogo from './images/winline.png';
+
 import './Advertisement.scss';
 
 const ads = [
   {
     id: 'Winline',
     link: 'https://winline.ru/',
-    image: 'http://adm.basket.fc-zenit.ru/upload/iblock/c20/c20c4c82528ede6d8d66213360b7167d.png',
+    image: WinlineLogo,
   },
   {
     id: 'Gazprom',
     link: 'https://gazprom.ru/',
-    image: 'http://adm.basket.fc-zenit.ru/upload/iblock/8aa/8aa402590d098dfb4df200fede0b24cc.png',
+    image: GazpromLogo,
   },
 ];
 

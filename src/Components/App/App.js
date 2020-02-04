@@ -51,21 +51,16 @@ class App extends React.Component {
     const {activeStory} = prevState;
     const {isUserNew, userFlags} = nextProps.appContext.state;
     if (!isUserNew && activeStory === 'welcome-view') {
-      // TODO: featureToggle()
-      // if (!userFlags || (userFlags && !userFlags.isUserV2)) {
-      //   return {
-      //     activeStory: 'welcome-view',
-      //     activePanelWelcome: 'update-v-2',
-      //   };
-      // } else {
-      //   return {
-      //     activeStory: 'voting-view',
-      //   };
-      // }
-
-      return {
-        activeStory: 'voting-view',
-      };
+      if (!userFlags || (userFlags && !userFlags.isUserV2)) {
+        return {
+          activeStory: 'welcome-view',
+          activePanelWelcome: 'update-v-2',
+        };
+      } else {
+        return {
+          activeStory: 'voting-view',
+        };
+      }
     }
     return null;
   }

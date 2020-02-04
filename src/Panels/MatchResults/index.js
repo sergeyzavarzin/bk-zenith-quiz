@@ -10,9 +10,7 @@ import {
   PanelSpinner
 } from '@vkontakte/vkui';
 import Icon24Done from '@vkontakte/icons/dist/24/done';
-import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
-
 
 import players from '../../Constants/players';
 import Zenith from '../../Images/zenith.png';
@@ -30,9 +28,6 @@ const resStyle = {
   flexDirection: 'column',
   fontSize: 20
 };
-
-const True = () => <Icon24Done style={{color: 'green'}}/>;
-const False = () => <Icon24Cancel style={{color: 'red'}}/>;
 
 const Answer = ({children, isSuccess}) => {
   return (
@@ -79,12 +74,16 @@ class MatchView extends React.Component {
   };
 
   render() {
+    const {withAnswers = false} = this.props;
     const {userVoteMatch, isLoading} = this.state;
     const {activeMatch, rivals} = this.props.appContext.state;
 
     const currentRival = activeMatch && rivals.find(rival => rival.id === activeMatch.rivalId);
 
-    const firstFive = activeMatch && players.filter(player => activeMatch.firstFive.includes(player.id));
+    const userVoteFirstFive = userVoteMatch && players.filter(player => userVoteMatch.firstFive.includes(player.id));
+    const matchResultFirstFive = activeMatch && players.filter(player => activeMatch.firstFive.includes(player.id));
+    const firstFive = withAnswers ? userVoteFirstFive : matchResultFirstFive;
+
     const twoScore = activeMatch && players.find(player => player.id === activeMatch.twoScore);
     const threeScore = activeMatch && players.find(player => player.id === activeMatch.threeScore);
 
@@ -225,6 +224,7 @@ class MatchView extends React.Component {
               }
             </Group>
             <Group title='Стартовая пятерка'>
+              {withAnswers && <Div>Ваш ответ:</Div>}
               {
                 firstFive.map(player =>
                   <Cell
@@ -235,8 +235,8 @@ class MatchView extends React.Component {
                     asideContent={
                       <div style={{display: 'flex', alignItems: 'center'}}>
                         {
-                          userVoteMatch &&
-                          <>{userVoteMatch.firstFive.includes(player.id) ? <True/> : <False/>}</>
+                          userVoteMatch && withAnswers &&
+                          <>{activeMatch.firstFive.includes(player.id) && <Icon24Done style={{color: 'green'}}/>}</>
                         }
                         <Jersey number={player.number}/>
                       </div>

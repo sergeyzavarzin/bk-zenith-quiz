@@ -32,7 +32,7 @@ class Table extends React.Component {
 
   render() {
     const {id, appContext} = this.props;
-    const {featureToggle, state} = appContext;
+    const {state} = appContext;
     const {leaderBoard, isLeaderBoardFetching} = state;
     return (
       <Panel id={id}>
@@ -61,7 +61,7 @@ class Table extends React.Component {
           isLeaderBoardFetching && <PanelSpinner/>
         }
         {
-          !isLeaderBoardFetching && featureToggle() &&
+          !isLeaderBoardFetching &&
           <Div style={{marginBottom: 30}}>
             <Button
               size='xl'

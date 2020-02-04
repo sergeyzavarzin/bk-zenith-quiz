@@ -19,7 +19,7 @@ class Home extends React.Component {
 
   render() {
     const {id, go, appContext} = this.props;
-    const {state, featureToggle} = appContext;
+    const {state} = appContext;
     const {user, userScore, userTotalScore, isUserDataFetching, position} = state;
     return (
       <Panel id={id}>
@@ -52,16 +52,13 @@ class Home extends React.Component {
           }
           <Group>
             <List>
-              {
-                featureToggle() &&
-                <Cell
-                  expandable
-                  before={<Icon24Share width={24}/>}
-                  onClick={() => showWallPostBox(postParams)}
-                >
-                  Поделиться с друзьями
-                </Cell>
-              }
+              <Cell
+                expandable
+                before={<Icon24Share width={24}/>}
+                onClick={() => showWallPostBox(postParams)}
+              >
+                Поделиться с друзьями
+              </Cell>
               <Cell
                 expandable
                 before={<Icon24MarketOutline/>}
@@ -90,17 +87,14 @@ class Home extends React.Component {
               >
                 Настройки
               </Cell>
-              {
-                featureToggle() &&
-                <Cell
-                  expandable
-                  before={<Icon24Discussions width={24}/>}
-                  href='https://vk.me/zenitbasket'
-                  target='_blank'
-                >
-                  Связаться с нами
-                </Cell>
-              }
+              <Cell
+                expandable
+                before={<Icon24Discussions width={24}/>}
+                href='https://vk.me/zenitbasket'
+                target='_blank'
+              >
+                Связаться с нами
+              </Cell>
               <Cell
                 expandable
                 before={<Icon28HelpOutline width={24}/>}

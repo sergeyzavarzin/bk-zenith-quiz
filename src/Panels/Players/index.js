@@ -25,7 +25,7 @@ const Players = ({id, go, appContext}) => {
               .map(player =>
               <Cell
                 size="l"
-                expandable={appContext.featureToggle()}
+                expandable
                 key={player.id}
                 className='player'
                 before={<Avatar size={72} src={player.photo}/>}
@@ -37,10 +37,8 @@ const Players = ({id, go, appContext}) => {
                 }
                 data-to='player-info'
                 onClick={e => {
-                  if (appContext.featureToggle()) {
-                    appContext.setSelectedPlayer(player.id);
-                    go(e);
-                  }
+                  appContext.setSelectedPlayer(player.id);
+                  go(e);
                 }}
                 bottomContent={
                   <div>

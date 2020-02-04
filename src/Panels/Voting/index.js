@@ -15,7 +15,7 @@ import {withAppContext} from '../../Contexts/AppContext';
 import {MATCH_TYPES} from '../../Constants/matchTypes';
 
 const Voting = ({id, go, changeStory, appContext}) => {
-  const {setActiveMatch, state, updateMatches, featureToggle, createWallPost, setValue} = appContext;
+  const {setActiveMatch, state, updateMatches, createWallPost, setValue} = appContext;
   const {activeMatchVote, rivals, userVotes, isMatchesFetching, isUserCreateRepostForCurrentMatch, votingSelectedTab, matches} = state;
   const isUserSendAnswerForCurrentVote = !!activeMatchVote && userVotes.some(vote => vote.matchId === activeMatchVote.id);
   const now = moment();
@@ -76,7 +76,7 @@ const Voting = ({id, go, changeStory, appContext}) => {
                         </Button>
                     }
                     {
-                      featureToggle() && !isUserCreateRepostForCurrentMatch &&
+                      !isUserCreateRepostForCurrentMatch &&
                       <Button
                         size='xl'
                         level='outline'
@@ -130,26 +130,23 @@ const Voting = ({id, go, changeStory, appContext}) => {
             </List>
           </Group>
         }
-        {
-          featureToggle() &&
-          <FixedLayout vertical='bottom'>
-            {votingSelectedTab === MATCH_TYPES.NOT_STARTED && <Advertisement/>}
-            <Tabs type='default'>
-              <TabsItem
-                onClick={() => setValue('votingSelectedTab')(MATCH_TYPES.NOT_STARTED)}
-                selected={votingSelectedTab === MATCH_TYPES.NOT_STARTED}
-              >
-                Активные
-              </TabsItem>
-              <TabsItem
-                onClick={() => setValue('votingSelectedTab')(MATCH_TYPES.ENDED)}
-                selected={votingSelectedTab === MATCH_TYPES.ENDED}
-              >
-                Завершенные
-              </TabsItem>
-            </Tabs>
-          </FixedLayout>
-        }
+        <FixedLayout vertical='bottom'>
+          {votingSelectedTab === MATCH_TYPES.NOT_STARTED && <Advertisement/>}
+          <Tabs type='default'>
+            <TabsItem
+              onClick={() => setValue('votingSelectedTab')(MATCH_TYPES.NOT_STARTED)}
+              selected={votingSelectedTab === MATCH_TYPES.NOT_STARTED}
+            >
+              Активные
+            </TabsItem>
+            <TabsItem
+              onClick={() => setValue('votingSelectedTab')(MATCH_TYPES.ENDED)}
+              selected={votingSelectedTab === MATCH_TYPES.ENDED}
+            >
+              Завершенные
+            </TabsItem>
+          </Tabs>
+        </FixedLayout>
       </PullToRefresh>
     </Panel>
   )

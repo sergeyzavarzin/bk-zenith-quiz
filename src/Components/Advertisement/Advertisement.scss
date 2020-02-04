@@ -11,6 +11,8 @@
     display: block;
     background: var(--background_content);
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   &__image {
