@@ -38,15 +38,15 @@ class Order extends React.Component {
   state = {
     isValid: true,
     error: null,
-    firstName: null,
-    lastName: null,
-    email: null,
-    phone: null,
-    country: null,
-    city: null,
-    address: null,
-    postIndex: null,
-    description: null,
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    country: 'Российская федерация',
+    city: '',
+    address: '',
+    postIndex: '',
+    description: '',
     deliveryType: DELIVERY.MATCH.type,
     isUserWantToNewsSubscribe: false,
     fieldErrors: {
@@ -67,13 +67,17 @@ class Order extends React.Component {
       return {
         firstName: user.first_name,
         lastName: user.last_name,
-        country: user.country && user.country.title ? user.country.title : '',
-        city: user.city && user.city.title ? user.city.title : '',
       }
     }
   }
 
-  handleChange = field => e => this.setState({[field]: e.currentTarget.value, isValid: true});
+  handleChange = field => ({target: {value}}) => this.setState(prevState => {
+    return {
+      [field]: value,
+      isValid: true,
+      fieldErrors: {...prevState.fieldErrors, [field]: false}
+    }
+  });
 
   // TODO: VALIDATION!
   isValid = () => {
@@ -158,7 +162,7 @@ class Order extends React.Component {
     const {handleChange, handleSubmit} = this;
     const {id, go, marketContext} = this.props;
     const {
-      isValid, firstName, lastName, country, city,
+      isValid, firstName, lastName, city,
       error, isUserWantToNewsSubscribe, deliveryType,
       fieldErrors
     } = this.state;
@@ -238,7 +242,7 @@ class Order extends React.Component {
             isPhysical && deliveryType === DELIVERY.POST.type &&
             <Input
               top='Страна'
-              defaultValue={Boolean(country) ? country : ''}
+              defaultValue='Российская федерация'
               onChange={handleChange('country')}
               status={fieldErrors.country ? 'error' : 'default'}
             />
@@ -247,7 +251,7 @@ class Order extends React.Component {
             isPhysical && deliveryType === DELIVERY.POST.type &&
             <Input
               top='Город'
-              defaultValue={!!city && city}
+              defaultValue={city}
               onChange={handleChange('city')}
               status={fieldErrors.city ? 'error' : 'default'}
             />
