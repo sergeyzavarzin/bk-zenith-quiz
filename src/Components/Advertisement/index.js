@@ -23,6 +23,7 @@ const ads = [
 
 const AdItem = ({id, link, image}) => !window.matchMedia('(min-width: 576px)').matches ? (
   <a
+    id={id}
     className='advertisement__slide'
     href={link}
   >
@@ -34,6 +35,7 @@ const AdItem = ({id, link, image}) => !window.matchMedia('(min-width: 576px)').m
   </a>
 ) : (
   <div
+    id={id}
     className='advertisement__slide'
     onClick={() => window.open(link, '_blank')}
   >
