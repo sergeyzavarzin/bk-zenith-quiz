@@ -55,7 +55,7 @@ class AppContextProvider extends Component {
     const startUpParams = getUrlParams(window.location.search);
     const vkParams = {
       ...startUpParams,
-      vk_are_notifications_enabled: Boolean(startUpParams.vk_are_notifications_enabled),
+      vk_are_notifications_enabled: startUpParams.vk_are_notifications_enabled === "1",
     };
     this.setState({vkParams}, () => console.log(vkParams));
     this.subscribeVKActions();

@@ -79,7 +79,6 @@ class Order extends React.Component {
     }
   });
 
-  // TODO: VALIDATION!
   isValid = () => {
     const {
       firstName, lastName, email, phone, country,

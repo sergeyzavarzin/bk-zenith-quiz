@@ -82,7 +82,7 @@ class MatchView extends React.Component {
 
     const userVoteFirstFive = userVoteMatch && players.filter(player => userVoteMatch.firstFive.includes(player.id));
     const matchResultFirstFive = activeMatch && players.filter(player => activeMatch.firstFive.includes(player.id));
-    const firstFive = withAnswers ? userVoteFirstFive : matchResultFirstFive;
+    const firstFive = (withAnswers && userVoteMatch) ? userVoteFirstFive : matchResultFirstFive;
 
     const twoScore = activeMatch && players.find(player => player.id === activeMatch.twoScore);
     const threeScore = activeMatch && players.find(player => player.id === activeMatch.threeScore);
@@ -224,7 +224,7 @@ class MatchView extends React.Component {
               }
             </Group>
             <Group title='Стартовая пятерка'>
-              {withAnswers && <Div>Ваш ответ:</Div>}
+              {(withAnswers && userVoteMatch) && <Div>Ваш ответ:</Div>}
               {
                 firstFive.map(player =>
                   <Cell
