@@ -141,7 +141,7 @@ class Order extends React.Component {
     const status = () => {
       if (selectedMerchItem.type === MERCH_TYPES.DIGITAL) return ORDER_STATUSES.DELIVERED;
       if (deliveryType === DELIVERY.MATCH.type) {
-        return ORDER_STATUSES.AWAITING_EXTRADITION;
+        return ORDER_STATUSES.CREATED;
       } else {
         return ORDER_STATUSES.CREATED;
       }
