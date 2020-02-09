@@ -234,7 +234,7 @@ class AppContextProvider extends Component {
   };
 
   sendVote = () => {
-    const {firstFive, tossing, twoScore, threeScore, clubScore, rivalScore, user, activeMatchVote} = this.state;
+    const {firstFive, tossing, twoScore, threeScore, clubScore, rivalScore, winner, user, activeMatchVote} = this.state;
     const data = {
       id: `${user.id}-${activeMatchVote.id}`,
       playerId: `${user.id}`,
@@ -243,7 +243,7 @@ class AppContextProvider extends Component {
       tossing: tossing === 1,
       twoScore,
       threeScore,
-      winner: clubScore > rivalScore,
+      winner: winner === 1,
       score: [clubScore, rivalScore]
     };
     axios

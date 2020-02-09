@@ -153,20 +153,21 @@ class MatchView extends React.Component {
                 <Answer
                   isSuccess={userVoteMatch.winner === (activeMatch.score[0] > activeMatch.score[1])}
                 >
+                  {console.log(userVoteMatch.winner === (activeMatch.score[0] > activeMatch.score[1]))}
                   <Div style={resStyle}>
                     {
                       userVoteMatch.score[0] !== userVoteMatch.score[1] ?
                         <>
                           <img
                             width={100}
-                            src={userVoteMatch.score[0] > userVoteMatch.score[1] ? Zenith : currentRival.logo}
+                            src={userVoteMatch.winner ? Zenith : currentRival.logo}
                             alt='Логотип команды'
                             style={{
                               margin: '15px 0'
                             }}
                           />
                           {
-                            userVoteMatch.score[0] > userVoteMatch.score[1] ?
+                            userVoteMatch.winner ?
                               <b>Зенит</b> :
                               <b>{currentRival.name}</b>
                           }
