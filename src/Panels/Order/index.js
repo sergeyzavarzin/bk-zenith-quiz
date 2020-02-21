@@ -4,7 +4,7 @@ import {
   Panel, PanelHeader, HeaderButton,
   FormLayout, Input, Button, Checkbox,
   Textarea, Counter, FormStatus, Group,
-  List, Cell, Avatar, Select,
+  List, Cell, Avatar, Select, FormLayoutGroup,
 } from '@vkontakte/vkui';
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 
@@ -193,22 +193,29 @@ class Order extends React.Component {
         <FormLayout>
           {
             isPhysical &&
-            <Select
-              top='Способ доставки'
-              defaultValue={DELIVERY.MATCH.type}
-              onChange={({target: {value: deliveryType}}) => this.setState({deliveryType})}
-            >
-              {
-                Object.keys(DELIVERY).map(type =>
-                  <option
-                    key={type}
-                    value={DELIVERY[type].type}
-                  >
-                    {DELIVERY[type].label}
-                  </option>
-                )
-              }
-            </Select>
+              <FormLayoutGroup
+                bottom={
+                  deliveryType === DELIVERY.POST.type &&
+                  "Доставка по Санкт-Петербургу и ЛО не осуществляется. Жители СПб и ЛО могут забрать свои заказы на любом домашнем матче в нашем фан-шопе."
+                }
+              >
+                <Select
+                  top='Способ доставки'
+                  defaultValue={DELIVERY.MATCH.type}
+                  onChange={({target: {value: deliveryType}}) => this.setState({deliveryType})}
+                >
+                  {
+                    Object.keys(DELIVERY).map(type =>
+                      <option
+                        key={type}
+                        value={DELIVERY[type].type}
+                      >
+                        {DELIVERY[type].label}
+                      </option>
+                    )
+                  }
+                </Select>
+              </FormLayoutGroup>
           }
           {
             isPhysical &&
