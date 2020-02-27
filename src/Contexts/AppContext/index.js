@@ -47,9 +47,10 @@ class AppContextProvider extends Component {
     vkParams: null,
     matchesSelectedTab: MATCH_TYPES.NOT_STARTED,
     votingSelectedTab: MATCH_TYPES.NOT_STARTED,
+    leaderBoardSelectedTab: 'leaderboard',
   };
 
-  admins = [17188634, 127017464,  3918082, 84822103, 242750499, 2314852];
+  admins = [17188634, 127017464, 3918082, 84822103, 242750499, 2314852];
 
   componentDidMount() {
     const startUpParams = getUrlParams(window.location.search);
@@ -57,7 +58,7 @@ class AppContextProvider extends Component {
       ...startUpParams,
       vk_are_notifications_enabled: startUpParams.vk_are_notifications_enabled === "1",
     };
-    this.setState({vkParams}, () => console.log(vkParams));
+    this.setState({vkParams});
     this.subscribeVKActions();
     this.fetchUserData();
   }

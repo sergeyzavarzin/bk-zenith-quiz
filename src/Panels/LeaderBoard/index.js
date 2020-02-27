@@ -1,17 +1,12 @@
 import React from 'react';
 import {
-  Panel,
-  PanelHeader,
-  Group,
-  List,
-  Cell,
-  PanelSpinner,
-  Avatar,
-  Button,
-  Div
+  Panel, PanelHeader, Tabs,
+  TabsItem, FixedLayout
 } from '@vkontakte/vkui';
 
 import {withAppContext} from '../../Contexts/AppContext';
+import PlayOff from '../../Components/PlayOff';
+import LeaderBoard from '../../Components/LeaderBoard';
 
 class Table extends React.Component {
 
@@ -22,54 +17,36 @@ class Table extends React.Component {
     }
   }
 
-  handleUpdateButtonClick = () => {
-    const {updateLeaderBoard, state} = this.props.appContext;
-    const {leaderBoard: {nextPage, maxPage}} = state;
-    if (nextPage < maxPage) {
-      updateLeaderBoard(nextPage)
-    }
-  };
-
   render() {
     const {id, appContext} = this.props;
-    const {state} = appContext;
-    const {leaderBoard, isLeaderBoardFetching} = state;
+    const {state: {leaderBoardSelectedTab}, setValue, featureToggle} = appContext;
     return (
       <Panel id={id}>
         <PanelHeader>
           Турнирная таблица
         </PanelHeader>
-        <Group>
-          <List>
-            {
-              leaderBoard && leaderBoard.data && leaderBoard.data
-                .sort((a, b) => a.totalScore > b.totalScore ? -1 : 1)
-                .map(item =>
-                  <Cell
-                    key={item._id}
-                    before={<Avatar size={42} src={item.img}/>}
-                    size="m"
-                    asideContent={`${item.totalScore} очков`}
-                  >
-                    {item.name}
-                  </Cell>
-                )
-            }
-          </List>
-        </Group>
         {
-          isLeaderBoardFetching && <PanelSpinner/>
+          leaderBoardSelectedTab === 'leaderboard' ?
+            <LeaderBoard/> : <PlayOff/>
         }
         {
-          !isLeaderBoardFetching &&
-          <Div style={{marginBottom: 30}}>
-            <Button
-              size='xl'
-              onClick={this.handleUpdateButtonClick}
-            >
-              Показать еще
-            </Button>
-          </Div>
+          featureToggle() &&
+          <FixedLayout vertical='bottom'>
+            <Tabs type='default'>
+              <TabsItem
+                onClick={() => setValue('leaderBoardSelectedTab')('leaderboard')}
+                selected={leaderBoardSelectedTab === 'leaderboard'}
+              >
+                Турнирная таблица
+              </TabsItem>
+              <TabsItem
+                onClick={() => setValue('leaderBoardSelectedTab')('playoff')}
+                selected={leaderBoardSelectedTab === 'playoff'}
+              >
+                Плей-офф
+              </TabsItem>
+            </Tabs>
+          </FixedLayout>
         }
       </Panel>
     );

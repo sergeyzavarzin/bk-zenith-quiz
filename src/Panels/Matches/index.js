@@ -1,23 +1,26 @@
 import React from 'react';
-import moment from 'moment';
-import {Cell, List, Group, PanelHeader, Panel, PullToRefresh, Tabs, TabsItem, FixedLayout} from '@vkontakte/vkui';
+import {
+  Cell, List, Group, PanelHeader,
+  Panel, PullToRefresh, Tabs, TabsItem,
+  FixedLayout
+} from '@vkontakte/vkui';
 
 import MatchItem from '../../Components/Match';
 
 import {withAppContext} from '../../Contexts/AppContext';
 import {MATCH_TYPES} from '../../Constants/matchTypes';
 
+import sortByDate, {SORT_DIRECTION} from '../../Utils/sortByDate';
+
 const Matches = ({id, go, appContext}) => {
   const {state, setActiveMatch, updateMatches, setValue} = appContext;
   const {matches, rivals, isMatchesFetching, matchesSelectedTab} = state;
-  const sortByDateDESC = (a, b) => moment.utc(a.startDateTime).diff(moment.utc(b.startDateTime));
-  const sortByDateASC = (a, b) => moment.utc(b.startDateTime).diff(moment.utc(a.startDateTime));
   const upcomingMatches = matches
     .filter(match => !match.score.length)
-    .sort(sortByDateDESC);
+    .sort(sortByDate(SORT_DIRECTION.DESC));
   const endedMatches = matches
     .filter(match => match.score.length)
-    .sort(sortByDateASC);
+    .sort(sortByDate(SORT_DIRECTION.ASC));
   const viewMatchInfo = (event, activeMatch) => {
     setActiveMatch(activeMatch);
     go(event);

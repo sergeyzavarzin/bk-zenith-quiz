@@ -14,6 +14,8 @@ import Placeholder from '../../Components/Placeholder';
 import {withAppContext} from '../../Contexts/AppContext';
 import {MATCH_TYPES} from '../../Constants/matchTypes';
 
+import sortByDate, {SORT_DIRECTION} from '../../Utils/sortByDate';
+
 const Voting = ({id, go, changeStory, appContext}) => {
   const {setActiveMatch, state, updateMatches, createWallPost, setValue} = appContext;
   const {activeMatchVote, rivals, userVotes, isMatchesFetching, isUserCreateRepostForCurrentMatch, votingSelectedTab, matches} = state;
@@ -21,10 +23,9 @@ const Voting = ({id, go, changeStory, appContext}) => {
   const now = moment();
   const isTimeEnd = !!activeMatchVote && moment.duration(now.diff(activeMatchVote.startDateTime)).asMinutes() > -10;
   const hasActiveMatchVote = !!activeMatchVote && !isTimeEnd;
-  const sortByDateASC = (a, b) => moment.utc(b.startDateTime).diff(moment.utc(a.startDateTime));
   const endedMatches = matches
     .filter(match => match.score.length)
-    .sort(sortByDateASC);
+    .sort(sortByDate(SORT_DIRECTION.ASC));
   const viewMatchInfo = (event, activeMatch) => {
     setActiveMatch(activeMatch);
     go(event);
