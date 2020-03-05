@@ -34,6 +34,7 @@ import {withAppContext} from '../../Contexts/AppContext';
 import {MODALS} from '../../Constants/modals';
 
 import './App.scss';
+import PlayOff from '../../Panels/PlayOff';
 
 class App extends React.Component {
 
@@ -289,6 +290,7 @@ class App extends React.Component {
 
         <View id='table-view' activePanel={activePanelTable}>
           <Table id='table' go={goTable}/>
+          <PlayOff id='play-off' go={goTable}/>
         </View>
 
         <View id='players-view' activePanel={activePanelPlayers}>

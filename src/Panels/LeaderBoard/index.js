@@ -18,7 +18,7 @@ class Table extends React.Component {
   }
 
   render() {
-    const {id, appContext} = this.props;
+    const {id, appContext, go} = this.props;
     const {state: {leaderBoardSelectedTab}, setValue, featureToggle} = appContext;
     return (
       <Panel id={id}>
@@ -27,7 +27,7 @@ class Table extends React.Component {
         </PanelHeader>
         {
           leaderBoardSelectedTab === 'leaderboard' ?
-            <LeaderBoard/> : <PlayOff/>
+            <LeaderBoard/> : <PlayOff go={go}/>
         }
         {
           featureToggle() &&

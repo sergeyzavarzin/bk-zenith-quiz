@@ -48,6 +48,7 @@ class AppContextProvider extends Component {
     matchesSelectedTab: MATCH_TYPES.NOT_STARTED,
     votingSelectedTab: MATCH_TYPES.NOT_STARTED,
     leaderBoardSelectedTab: 'leaderboard',
+    selectedPlayOff: null,
   };
 
   admins = [17188634, 127017464, 3918082, 84822103, 242750499, 2314852];
@@ -319,6 +320,11 @@ class AppContextProvider extends Component {
       .catch(error => error);
   };
 
+  fetchPlayOffBoard = async matchId => {
+    const leaderBoard = await axios.get(`${API_URL}/playoff?matchId=${matchId}`);
+    return leaderBoard.data;
+  };
+
   render() {
     return (
       <AppContext.Provider
@@ -351,6 +357,7 @@ class AppContextProvider extends Component {
           disableNotifications: this.disableNotifications,
           setVkParams: this.setVkParams,
           createUserFlag: this.createUserFlag,
+          fetchPlayOffBoard: this.fetchPlayOffBoard,
         }}
       >
         {this.props.children}
