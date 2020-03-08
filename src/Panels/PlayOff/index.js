@@ -1,11 +1,30 @@
 import React from 'react';
 import {
   HeaderButton, List, Panel,
-  PanelHeader, PanelSpinner, Cell, Div
+  PanelHeader, PanelSpinner,
+  Cell, Div, Avatar, Group, Counter
 } from '@vkontakte/vkui';
 import Icon24BrowserBack from '@vkontakte/icons/dist/24/browser_back';
 
 import {withAppContext} from '../../Contexts/AppContext';
+
+const RED = 'rgba(250, 0, 0, .3)';
+const GREEN = 'rgba(0, 250, 0, .3)';
+
+const getCellStyle = (results, current) => {
+  const rival = current === 0 ? 1 : 0;
+  if (results[current].score === results[rival].score) {
+    if (results[current].totalScore === results[rival].totalScore) {
+      return { backgroundColor: current === 0 ? RED : GREEN }
+    } else {
+      return { backgroundColor: results[current].totalScore > results[rival].totalScore ? GREEN : RED }
+    }
+  } else {
+    return { backgroundColor: results[current].score > results[rival].score ? GREEN : RED }
+  }
+};
+
+const sortByTotalScore = data => (a, b) => data[a][0].totalScore > data[b][0].totalScore;
 
 class PlayOff extends React.Component {
 
@@ -40,8 +59,9 @@ class PlayOff extends React.Component {
   };
 
   render() {
-    const {id, appContext} = this.props;
+    const {id} = this.props;
     const {data, isLoading} = this.state;
+    const hasResults = data && !!Object.keys(data).reduce((acc, curr) => acc + data[curr][0].score + data[curr][1].score, 0);
     return (
       <Panel id={id}>
         <PanelHeader
@@ -62,20 +82,42 @@ class PlayOff extends React.Component {
             <>
               {
                 (data && Object.keys(data).length) ?
-                <List>
-                  {
-                    Object.keys(data).map(item =>
-                      <Cell key={item}>
-                        {data[item][0].name} : {data[item][1].name}
-                      </Cell>
-                    )
-                  }
-                </List> :
-                <Div>
-                  <div>
-                    Нет результатов
-                  </div>
-                </Div>
+                  <>
+                    {
+                      Object
+                        .keys(data)
+                        .sort(sortByTotalScore)
+                        .map(item =>
+                        <Group>
+                          <List key={item}>
+                            <Cell
+                              size="m"
+                              before={<Avatar size={42} src={data[item][0].img}/>}
+                              indicator={hasResults && <Counter>{data[item][0].score > 0 && '+'}{data[item][0].score}</Counter>}
+                              description={`${data[item][0].totalScore} очков`}
+                              style={hasResults ? getCellStyle(data[item], 0) : {}}
+                            >
+                              {data[item][0].name}
+                            </Cell>
+                            <Cell
+                              size="m"
+                              before={<Avatar size={42} src={data[item][1].img}/>}
+                              indicator={hasResults && <Counter>{data[item][1].score > 0 && '+'}{data[item][1].score}</Counter>}
+                              description={`${data[item][1].totalScore} очков`}
+                              style={hasResults ? getCellStyle(data[item], 1) : {}}
+                            >
+                              {data[item][1].name}
+                            </Cell>
+                          </List>
+                        </Group>
+                      )
+                    }
+                  </> :
+                  <Div>
+                    <div>
+                      Нет результатов
+                    </div>
+                  </Div>
               }
             </>
         }
