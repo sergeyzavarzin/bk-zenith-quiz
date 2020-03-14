@@ -47,9 +47,12 @@ const Match = ({rival, place, beginTime, game, enableCountdown, buyTickets, onCo
         <span className='match__rivals-list'>Зенит : {rival.name}</span>
       </div>
       <div className='match__bottom'>
-        <div className='match__info'>
-          {place}, {moment(beginTime).format(DATE_FORMAT)}
-        </div>
+        {
+          (place && beginTime) &&
+          <div className='match__info'>
+            {place}, {moment(beginTime).format(DATE_FORMAT)}
+          </div>
+        }
         {
           enableCountdown &&
           <div className={classNames('match__countdown', {

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Cell, Group, List} from '@vkontakte/vkui';
 
+import MatchItem from '../../Components/Match';
+
 import {withAppContext} from '../../Contexts/AppContext';
 
 const PlayOff = ({go, appContext}) => {
@@ -39,7 +41,11 @@ const PlayOff = ({go, appContext}) => {
                   data-to='play-off'
                   onClick={e => goToPlayOffMatch(e)(item.id)}
                 >
-                  Зенит : {rivals.find(({id}) => id === item.rivalId).name}
+                  <MatchItem
+                    rival={rivals.find(rival => rival.id === item.rivalId)}
+                    beginTime={item.startDateTime}
+                    place={item.place}
+                  />
                 </Cell>
               </List>
             </Group>
