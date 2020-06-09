@@ -157,8 +157,11 @@ class PlayOff extends React.Component {
                       Object
                         .keys(data)
                         .sort(sortByTotalScore)
-                        .map(item =>
-                        <Group key={item}>
+                        .map((item, index) =>
+                        <Group
+                          key={item}
+                          title={`Группа соперников ${index + 1}`}
+                        >
                           <List>
                             <Cell
                               size="m"

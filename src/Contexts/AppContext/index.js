@@ -49,6 +49,7 @@ class AppContextProvider extends Component {
     votingSelectedTab: MATCH_TYPES.NOT_STARTED,
     leaderBoardSelectedTab: 'leaderboard',
     selectedPlayOff: null,
+    hasPlayOffMatches: null,
   };
 
   admins = [17188634, 127017464, 3918082, 84822103, 242750499, 2314852];
@@ -70,6 +71,7 @@ class AppContextProvider extends Component {
       .then(async ([rivals, matches]) => {
         const {user, userScore, userTotalScore} = userData;
         const activeMatchVote = this.getOpenForVotingMatch(matches);
+        const hasPlayOffMatches = matches.reduce((acc, {isPlayOff}) => acc || isPlayOff, false);
         const isUserCreateRepostForCurrentMatch = await this.fetchUserRepost(activeMatchVote);
         const userVotes = await this.fetchUserVotes({playerId: user.id, matchId: activeMatchVote ? activeMatchVote.id : 'false'});
         const position = await this.getUserPosition(user.id);
@@ -77,7 +79,7 @@ class AppContextProvider extends Component {
           user, userScore, userTotalScore, rivals,
           matches, activeMatchVote,
           isUserCreateRepostForCurrentMatch,
-          userVotes, position
+          userVotes, position, hasPlayOffMatches,
         });
       })
       .catch(err => console.log(err))
