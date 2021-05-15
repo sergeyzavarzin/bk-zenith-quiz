@@ -2,7 +2,6 @@
   "name": "bk-zenith-quiz",
   "version": "2.0.4",
   "description": "",
-  "homepage": "https://sergeyzavarzin.github.com/bk-zenith-quiz/",
   "main": "index.js",
   "scripts": {
     "start": "cross-env PORT=10888 react-scripts start",
